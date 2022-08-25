@@ -1,0 +1,59 @@
+// app global css in SCSS form
+
+.landingPage {
+  font-size: 1rem;
+}
+
+.text-decoration-none {
+  text-decoration: none;
+}
+
+a.a-no-decoration {
+  text-decoration: none;
+  color: inherit;
+}
+
+.clubPage {
+  //display: flex;
+  //flex-direction: column;
+  //justify-content: space-between;
+  background-color: rgb(17 17 23);
+  color: #FFFFFF;
+  padding: 12px 24px;
+  //min-height: 100vh;
+}
+
+.clubButton {
+  border-radius: 8px;
+}
+
+.clubButtonActive {
+  background: rgb(31, 84, 215);
+  color: white;
+
+  .q-focus-helper {
+    opacity: 0;
+    color: inherit;
+  }
+}
+
+.clubButtonDisable {
+  background: #2b2e3b;
+}
+
+.clubBgDefault {
+  background: var(--q-dark);
+}
+
+.clubHeaderActive {
+  color: rgb(31, 84, 215);
+}
+
+.buttonSecondary {
+  background: var(--q-dark);
+}
+
+.q-notification {
+  border-radius: 8px;
+  //background: linear-gradient(45deg,darken(rgba(rgb(0, 76, 255),1),20%),darken(rgba(rgb(135, 28, 255),1),20%));
+}

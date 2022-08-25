@@ -1,0 +1,66 @@
+{
+  "name": "clubeeo-front",
+  "version": "0.0.1",
+  "description": "Clubeeo app",
+  "productName": "Clubeeo",
+  "author": "Roman Ekzempliarov <r.exemplarov@gmail.com>",
+  "private": true,
+  "scripts": {
+    "dev": "quasar dev",
+    "dev:ssr": "quasar dev -m ssr",
+    "build": "quasar build",
+    "build:pwa": "quasar build -m pwa",
+    "build:ssr": "quasar build -m ssr",
+    "start": "node dist/ssr/index.js",
+    "lint": "eslint --ext .js,.ts,.vue ./",
+    "format": "prettier --write \"**/*.{js,ts,vue,scss,html,md,json}\" --ignore-path .gitignore",
+    "test": "echo \"No test specified\" && exit 0"
+  },
+  "dependencies": {
+    "@metamask/detect-provider": "^1.2.0",
+    "@metamask/onboarding": "^1.0.1",
+    "@quasar/extras": "^1.14.0",
+    "@walletconnect/client": "^1.7.8",
+    "@walletconnect/qrcode-modal": "^1.7.8",
+    "axios": "^0.21.1",
+    "core-js": "^3.6.5",
+    "eth-wallet-connector": "^0.0.0",
+    "mixpanel-browser": "^2.45.0",
+    "moment": "^2.29.3",
+    "near-api-js": "^0.44.2",
+    "node-polyfill-webpack-plugin": "^1.1.4",
+    "pinia": "^2.0.17",
+    "quasar": "^2.7.1",
+    "vue": "^3.0.0",
+    "vue-i18n": "^9.0.0",
+    "vue-router": "^4.0.0",
+    "web3": "^1.7.3"
+  },
+  "devDependencies": {
+    "@babel/eslint-parser": "^7.13.14",
+    "@quasar/app-webpack": "^3.5.3",
+    "@types/node": "^12.20.21",
+    "@typescript-eslint/eslint-plugin": "^5.10.0",
+    "@typescript-eslint/parser": "^5.10.0",
+    "eslint": "^7.14.0",
+    "eslint-config-prettier": "^8.1.0",
+    "eslint-plugin-vue": "^7.0.0",
+    "prettier": "^2.5.1"
+  },
+  "browserslist": [
+    "last 10 Chrome versions",
+    "last 10 Firefox versions",
+    "last 4 Edge versions",
+    "last 7 Safari versions",
+    "last 8 Android versions",
+    "last 8 ChromeAndroid versions",
+    "last 8 FirefoxAndroid versions",
+    "last 10 iOS versions",
+    "last 5 Opera versions"
+  ],
+  "engines": {
+    "node": ">= 12.22.1",
+    "npm": ">= 6.13.4",
+    "yarn": ">= 1.21.1"
+  }
+}

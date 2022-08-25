@@ -1,0 +1,27 @@
+stages:
+  - build
+  - deploy
+
+build_image:
+  stage: build
+  script:
+    - docker info
+    - docker build -t $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA .
+    - docker tag $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA $CI_REGISTRY_IMAGE:latest
+    - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN $CI_REGISTRY
+    - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
+    - docker push $CI_REGISTRY_IMAGE:latest
+
+deploy_prod:
+  stage: deploy
+  only:
+    - main
+  script:
+    # restart web container #1
+    - docker stop clubeeo_ssr_1 || true
+    - docker container rm clubeeo_ssr_1 || true
+    - docker run --name clubeeo_ssr_1 --env-file $PROD_ENV -d -p 127.0.0.1:8500:3085 --restart unless-stopped $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
+    # restart web container #2
+    - docker stop clubeeo_ssr_2 || true
+    - docker container rm clubeeo_ssr_2 || true
+    - docker run --name clubeeo_ssr_2 --env-file $PROD_ENV -d -p 127.0.0.1:8501:3085 --restart unless-stopped $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
