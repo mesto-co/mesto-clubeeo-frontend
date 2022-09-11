@@ -4,6 +4,7 @@
   "description": "Clubeeo app",
   "productName": "Clubeeo",
   "author": "Roman Ekzempliarov <r.exemplarov@gmail.com>",
+  "license": "Apache-2.0",
   "private": true,
   "scripts": {
     "dev": "quasar dev",
