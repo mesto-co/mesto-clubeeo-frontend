@@ -23,17 +23,15 @@
 
 import { useRoute } from 'vue-router';
 
-import { computed, defineComponent, onMounted, ref, watch } from 'vue';
+import { computed, defineComponent, onMounted, watch } from 'vue';
 import ClubSelector from 'components/clublayout/ClubSelector.vue';
 import ClubMenu from 'components/clublayout/ClubMenu.vue';
-import { ILoadedClub } from 'src/api/clubGraphql';
 import { useStyleStore } from 'stores/styleStore';
 import LayoutLayout from 'src/backbones/LayoutLayout.vue';
 import { useClubStore } from 'stores/clubStore';
-import { IClubStyle } from 'src/models/clubStyle';
 
 export default defineComponent({
-  name: 'MainLayout',
+  name: 'ClubLayout',
 
   components: {
     LayoutLayout,

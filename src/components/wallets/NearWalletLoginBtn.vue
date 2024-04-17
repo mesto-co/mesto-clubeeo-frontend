@@ -1,8 +1,9 @@
 <template>
   <club-button
-    label='Log in with NEAR'
+    label='log in with NEAR'
     class='full-width'
     scheme='inverse'
+    icon='img:/icons/crypto/near.svg'
     @click='handleConnectWallet'
   />
 </template>
@@ -17,12 +18,7 @@ import ClubButton from 'components/clubpage/ClubButton.vue';
 import { web3LoginLogic } from 'src/services/Web3Login/web3LoginLogic';
 import { registerNonceApiAdapter, verifyAndLoginApiAdapter } from 'src/services/Web3Login/web3LoginApiAdapters';
 import { Notify } from 'quasar';
-
-const chainsConfigMap = {
-  near: 'mainnet',
-  near_testnet: 'testnet',
-  near_betanet: 'betanet',
-}
+import { nearChainsConfigMap } from 'src/lib/near/nearConsts';
 
 export default defineComponent({
   components: { ClubButton },
@@ -35,7 +31,7 @@ export default defineComponent({
       const keyStore = new BrowserLocalStorageKeyStore();
 
       const config = {
-        ...getNearConfig(chainsConfigMap[chain]),
+        ...getNearConfig(nearChainsConfigMap[chain]),
         keyStore
       }
 
@@ -68,7 +64,7 @@ export default defineComponent({
       const keyStore = new BrowserLocalStorageKeyStore();
 
       const config = {
-        ...getNearConfig(chainsConfigMap[chain]),
+        ...getNearConfig(nearChainsConfigMap[chain]),
         keyStore
       }
 

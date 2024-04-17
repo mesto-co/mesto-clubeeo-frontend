@@ -1,5 +1,5 @@
 <template>
-  <q-layout view='LHr lpR lFr' style='background-color: #1d282b'>
+  <q-layout view='LHr lpR lFr' style='background-color: #FFFFFF; color: #000000'>
 
 <!--    <q-header bordered class='bg-pool text-white'>-->
 <!--      <q-toolbar>-->

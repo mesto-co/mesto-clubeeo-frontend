@@ -22,6 +22,34 @@
     <template v-if='club'>
       <q-form ref='formRef'>
 
+        <q-uploader
+          flat
+          url='/api/uploads/image'
+          class='q-mb-lg full-width clubBgDefault'
+          label='Upload header image'
+          auto-upload
+          @uploaded='onHeroImgUploaded'
+        />
+
+<!--        <club-hero-->
+<!--          v-if='heroImg || logoImg'-->
+<!--          max-height='120px'-->
+<!--          :club-style='{-->
+<!--            heroImg: heroImg ? `\\static\\uploads\\${heroImg}` : undefined,-->
+<!--            logoImg: logoImg ? `\\static\\uploads\\${logoImg}` : undefined,-->
+<!--          }'-->
+<!--          class='q-mb-lg'-->
+<!--        />-->
+
+        <q-uploader
+          flat
+          url='/api/uploads/image'
+          class='q-mb-lg full-width clubBgDefault'
+          label='Upload logo image'
+          auto-upload
+          @uploaded='onLogoImgUploaded'
+        />
+
         <div class='q-mb-md'>
           <div class='q-pb-sm flex flex-center'>
             <q-input
@@ -88,6 +116,12 @@
   </club-page>
 </template>
 
+<style lang='scss'>
+.q-uploader__header {
+  background: linear-gradient(45deg,rgba(rgb(0, 76, 255),0.5),rgba(rgb(135, 28, 255),0.5));;
+}
+</style>
+
 <script lang='ts'>
 
 import { computed, defineComponent, onMounted, provide, ref, watch } from 'vue';
@@ -99,6 +133,7 @@ import { EClubSocialLinks, IClubSocialLinks } from 'src/api/clubApi';
 import { Notify, QForm } from 'quasar';
 import { mapSocialToIcon } from 'src/lib/components/socials';
 import ClubPage from 'components/clublayout/ClubPage.vue';
+import { imgUploaded } from 'src/lib/onImageUpload';
 
 interface ILoadedClub {
   id: number
@@ -111,7 +146,6 @@ interface ILoadedClub {
   },
   socialLinks: IClubSocialLinks
 }
-
 
 export default defineComponent({
   components: { ClubPage, ClubButton },
@@ -187,6 +221,8 @@ export default defineComponent({
             name: club.value.name,
             description: club.value.description,
             socialLinks: club.value.socialLinks,
+            heroImg: heroImg.value,
+            logoImg: logoImg.value,
           }
         }
       });
@@ -209,12 +245,22 @@ export default defineComponent({
       })
     ));
 
+    const logoImg = ref<string>('');
+    const heroImg = ref<string>('');
+
+    const onHeroImgUploaded = imgUploaded((name) => heroImg.value = name);
+    const onLogoImgUploaded = imgUploaded((name) => logoImg.value = name);
+
     return {
       formRef,
       club,
       socialLinkCodes,
       mapSocialToIcon,
       onSaveClicked,
+      onHeroImgUploaded,
+      onLogoImgUploaded,
+      logoImg,
+      heroImg,
     };
   }
 });

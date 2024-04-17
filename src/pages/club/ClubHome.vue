@@ -7,10 +7,16 @@
     <template v-slot:buttons>
       <div v-if='club.meInClub.isAdmin'>
         <club-button
+          class='clubButtonActive q-px-md q-mr-sm'
+          :to='{name: "club-home-roadmap-edit"}'
+          dense
+        >roadmap</club-button>
+
+        <club-button
           class='clubButtonActive q-px-md'
           :to='{name: "club-home-edit"}'
           dense
-        >edit</club-button>
+        >club profile</club-button>
       </div>
     </template>
 
@@ -26,10 +32,12 @@
 import { computed, defineComponent, onMounted, ref, watch } from 'vue';
 import { api } from '../../boot/axios';
 import { useRoute } from 'vue-router';
-import { clubSocialLinksPartial, clubStylePartial } from 'src/lib/api/graphqlPartials';
+import { clubSocialLinksPartial, clubStylePartial, clubRoadmapPartial } from 'src/lib/api/graphqlPartials';
 import HomePage2 from 'components/clubpage/HomePage2.vue';
 import ClubButton from 'components/clubpage/ClubButton.vue';
 import ClubPage from 'components/clublayout/ClubPage.vue';
+import { useStyleStore } from 'stores/styleStore';
+import { IClubRoadmap } from 'src/api/clubApi';
 
 interface ILoadedClub {
   id: number
@@ -40,6 +48,7 @@ interface ILoadedClub {
     logoImg?: string
     heroImg?: string
   }
+  roadmap: IClubRoadmap
   meInClub: {
     loggedIn: boolean
     isMember: boolean
@@ -57,6 +66,8 @@ export default defineComponent({
 
     const slug = computed(() => $route.params.clubSlug ? String($route.params.clubSlug) : null);
 
+    const styleStore = useStyleStore();
+
     const load = async () => {
       if (!slug.value) return;
 
@@ -73,6 +84,7 @@ export default defineComponent({
             description
             style ${clubStylePartial}
             socialLinks ${clubSocialLinksPartial}
+            roadmap ${clubRoadmapPartial}
             meInClub {
               loggedIn
               isMember
@@ -84,6 +96,8 @@ export default defineComponent({
       });
 
       club.value = result.data.data.club;
+
+      styleStore.patchWith(club.value.style);
     }
 
     onMounted(load);

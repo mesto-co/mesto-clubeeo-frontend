@@ -235,10 +235,70 @@ const longLinksList = [
     title: 'home',
     toName: 'demo-club-home'
   },
+  // {
+  //   title: 'me',
+  //   toName: 'demo-club-me'
+  // },
   {
-    title: 'contests',
-    toName: 'demo-contest-create'
+    type: 'split',
+    title: 'COMMUNITY'
   },
+  // {
+  //   title: 'Public feed',
+  //   toName: 'dashboard-roles'
+  // },
+  // {
+  //   title: 'posts feed',
+  //   toName: 'demo-posts'
+  // },
+  // {
+  //   title: 'Members',
+  //   toName: 'dashboard-members'
+  // },
+  // {
+  //   type: 'split',
+  //   title: 'MATERIALS'
+  // },
+  // {
+  //   title: 'tutorials',
+  //   toName: 'dashboard-roles'
+  // },
+  // {
+  //   title: 'videos',
+  //   toName: 'demo-videos'
+  // },
+  // {
+  //   type: 'split',
+  //   title: 'EVENTS'
+  // },
+  // {
+  //   title: 'streams',
+  //   toName: 'demo-streams'
+  // },
+  // {
+  //   title: 'meetings',
+  //   toName: 'demo-meetings'
+  // },
+  // {
+  //   type: 'split',
+  //   title: 'ACTIVITY'
+  // },
+  // {
+  //   title: 'proposals',
+  //   toName: 'demo-club-proposals'
+  // },
+  // // {
+  //   title: 'collaborations',
+  //   toName: 'demo-club-collaborations'
+  // },
+  {
+    title: 'referral program',
+    toName: 'demo-club-referral'
+  },
+  // {
+  //   title: 'contests',
+  //   toName: 'demo-contest-create'
+  // },
   {
     type: 'split',
     title: 'ADMINISTRATION'
@@ -255,6 +315,10 @@ const longLinksList = [
     title: 'roles',
     toName: 'demo-club-roles',
     selected: true
+  },
+  {
+    title: 'club apps store',
+    toName: 'demo-club-apps'
   },
   // {
   //   title: 'Docs',

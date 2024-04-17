@@ -3,10 +3,19 @@ export interface IMeInClub {
   isMember: boolean
   isAdmin: boolean
   isPlatformAdmin: boolean
+  isPremium: boolean
   screenName: string
   mainWallet: {
     address: string
     chain: string
+  }
+  menu: {
+    items: {
+      appSlug: string
+      appName: string
+      title: string
+      icon: string
+    }[]
   }
 }
 
@@ -16,10 +25,14 @@ export const getDefaultMeInClub = (): IMeInClub => {
     isMember: false,
     isAdmin: false,
     isPlatformAdmin: false,
+    isPremium: false,
     screenName: '',
     mainWallet: {
       address: '',
       chain: '',
+    },
+    menu: {
+      items: [],
     },
   }
 }
@@ -29,9 +42,18 @@ export const meInClubPartial = `{
   isMember
   isAdmin
   isPlatformAdmin
+  isPremium
   screenName
   mainWallet {
     address
     chain
+  }
+  menu {
+    items {
+      appSlug
+      appName
+      title
+      icon
+    }
   }
 }`;

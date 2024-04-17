@@ -1,6 +1,8 @@
 <template>
   <div class='powered-by-clubeeo'>
-    powered by <a href='https://clubeeo.com' target='_blank'>clubeeo.com</a>
+    <slot>
+      powered by <a href='https://clubeeo.com' target='_blank'>clubeeo.com</a>
+    </slot>
   </div>
 </template>
 

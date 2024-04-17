@@ -28,7 +28,11 @@ module.exports = configure(function (ctx) {
     // app boot file (/src/boot)
     // --> boot files are part of "main.js"
     // https://quasar.dev/quasar-cli/boot-files
-    boot: ['i18n', 'axios'],
+    boot: [
+      'i18n', 'axios', 'global-components', 'highlightjs',
+      { server: false, path: 'apexcharts' },
+      // { server: false, path: 'apexcharts' },
+    ],
 
     // https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-css
     css: ['app.scss'],
@@ -92,6 +96,10 @@ module.exports = configure(function (ctx) {
       proxy: {
         // proxy all requests starting with /api to jsonplaceholder
         '/api': {
+          target: process.env.TARGET_URL || 'http://localhost:9900',
+          changeOrigin: true,
+        },
+        '/static': {
           target: process.env.TARGET_URL || 'http://localhost:9900',
           changeOrigin: true,
         },

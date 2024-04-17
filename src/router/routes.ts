@@ -1,11 +1,24 @@
 import { RouteRecordRaw } from 'vue-router';
+import { appManagerRoutes } from 'src/modules/appManager/appManagerRoutes';
+import { automationRoutes } from 'src/modules/automation/automationRoutes';
 
 const routes: RouteRecordRaw[] = [
   {
     path: '/',
     name: 'root',
     component: () => import('layouts/PublicLayout.vue'),
-    children: [{ path: '', component: () => import('pages/Index.vue') }],
+    children: [
+      {
+        path: '',
+        component: () => import('pages/Index.vue'),
+        meta: { clubSlug: 'clubeeo' },
+      },
+      {
+        path: 'login',
+        name: 'login',
+        component: () => import('pages/auth/LogInPage.vue'),
+      },
+    ],
   },
 
   {
@@ -18,8 +31,20 @@ const routes: RouteRecordRaw[] = [
     path: '/:clubSlug',
     component: () => import('layouts/ClubLandingLayout.vue'),
     children: [
-      { path: '', name: 'club', component: () => import('pages/club/ClubRootPage.vue') },
-      { path: 'wallet-login', name: 'club-wallet-login', component: () => import('pages/club/WalletLoginPage.vue') },
+      {
+        path: '',
+        name: 'club',
+        component: () => import('pages/club/ClubRootPage.vue'),
+      },
+      {
+        path: 'dev-page/:pageSlug',
+        component: () => import('pages/club/DevPage.vue'),
+      },
+      {
+        path: 'wallet-login',
+        name: 'club-wallet-login',
+        component: () => import('pages/club/WalletLoginPage.vue'),
+      },
     ],
   },
 
@@ -27,8 +52,13 @@ const routes: RouteRecordRaw[] = [
     path: '/me',
     component: () => import('layouts/MeLayout.vue'),
     children: [
-      { path: 'club/new', name: 'club-new', component: () => import('pages/me/ClubCreate.vue') },
-    ]
+      { path: '', name: 'me', component: () => import('pages/MePage.vue') },
+      {
+        path: 'club/new',
+        name: 'club-new',
+        component: () => import('pages/me/ClubCreate.vue'),
+      },
+    ],
   },
 
   // {
@@ -43,13 +73,98 @@ const routes: RouteRecordRaw[] = [
     path: '/:clubSlug',
     component: () => import('layouts/ClubLayout.vue'),
     children: [
-      { path: 'home', name: 'club-home', component: () => import('pages/club/ClubHome.vue')},
-      { path: 'home/edit', name: 'club-home-edit', component: () => import('pages/club/ClubHomeEdit.vue')},
-      { path: 'roles/:roleId', name: 'club-role-by-id', component: () => import('pages/club/ClubRole.vue')},
-      { path: 'roles', name: 'club-roles', component: () => import('pages/club/ClubRoles.vue')},
-      { path: 'members', name: 'club-members', component: () => import('pages/club/ClubMembers.vue')},
-      { path: 'members/:userId', name: 'club-member-by-user-id', component: () => import('pages/club/ClubMemberByUserId.vue')},
-      { path: 'me', name: 'club-me', component: () => import('pages/club/ClubMe.vue')},
+      ...automationRoutes,
+      ...appManagerRoutes,
+
+      {
+        path: 'home',
+        name: 'club-home',
+        component: () => import('pages/club/ClubHome.vue'),
+      },
+      {
+        path: 'home/edit',
+        name: 'club-home-edit',
+        component: () => import('pages/club/ClubHomeEdit.vue'),
+      },
+      {
+        path: 'home/roadmap/edit',
+        name: 'club-home-roadmap-edit',
+        component: () => import('pages/club/ClubRoadmapEdit.vue'),
+      },
+
+      {
+        path: 'members',
+        name: 'club-members',
+        component: () => import('pages/club/ClubMembers.vue'),
+      },
+
+      {
+        path: 'members/:memberId',
+        name: 'club-member',
+        component: () => import('pages/club/ClubMember.vue'),
+        meta: { parent: { name: 'club-members' } },
+      },
+
+      {
+        path: 'roles/:roleId',
+        name: 'club-role-by-id',
+        component: () => import('pages/club/ClubRole.vue'),
+      },
+      {
+        path: 'roles',
+        name: 'club-roles',
+        component: () => import('pages/club/ClubRoles.vue'),
+      },
+
+      {
+        path: 'badges',
+        name: 'club-badges',
+        component: () => import('pages/club/ClubBadges.vue'),
+      },
+
+      {
+        path: 'analytics',
+        name: 'club-analytics',
+        component: () => import('pages/club/ClubAnalytics.vue'),
+      },
+
+      {
+        path: 'me',
+        name: 'club-me',
+        component: () => import('pages/club/ClubMe.vue'),
+      },
+
+      {
+        path: 'page/:appSlug',
+        name: 'club-app-page',
+        component: () => import('pages/club/apps/PageApp.vue'),
+      },
+      {
+        path: 'posts/:appSlug',
+        name: 'club-app-posts',
+        component: () => import('pages/club/post/ClubPostsPage.vue'),
+      },
+      {
+        path: 'posts/:appSlug/new',
+        name: 'club-app-posts-new',
+        component: () => import('pages/club/post/NewPostPage.vue'),
+      },
+
+      {
+        path: ':appSlug',
+        name: 'club-dynamic-app',
+        component: () => import('pages/DynamicAppPage.vue'),
+      },
+      {
+        path: ':appSlug/config',
+        name: 'club-dynamic-app-config',
+        component: () => import('pages/DynamicAppConfigPage.vue'),
+      },
+      {
+        path: ':appSlug/:appPage',
+        name: 'club-dynamic-app-page',
+        component: () => import('pages/DynamicAppPage.vue'),
+      },
     ],
   },
 
@@ -57,46 +172,23 @@ const routes: RouteRecordRaw[] = [
     path: '/telegram',
     component: () => import('layouts/PublicLayout.vue'),
     children: [
-      { path: 'webapp', name: 'telegram-webapp', component: () => import('pages/telegram/TelegramWebapp.vue')},
-    ]
-  },
-
-  //------------
-  // DEMO
-  //------------
-
-  {
-    path: '/near-demo-page',
-    component: () => import('layouts/ClubLandingLayout.vue'),
-    children: [
-      { path: '', name: 'near-demo-page', component: () => import('pages/NearDemoPage.vue')},
+      {
+        path: 'webapp',
+        name: 'telegram-webapp',
+        component: () => import('pages/telegram/TelegramWebapp.vue'),
+      },
+      {
+        path: 'webapp/:clubSlug',
+        name: 'telegram-webapp-club',
+        component: () => import('pages/telegram/TelegramWebapp.vue'),
+      },
+      {
+        path: 'webapp-demo',
+        name: 'telegram-webapp-demo',
+        component: () => import('pages/telegram/TelegramWebappDemo.vue'),
+      },
     ],
   },
-
-  {
-    path: '/demo/public',
-    component: () => import('layouts/ClubLandingLayout.vue'),
-    children: [
-      { path: 'contest', name: 'demo-contest', component: () => import('pages/demo/club/DemoPublicContest.vue')},
-    ],
-  },
-
-  {
-    path: '/demo/club',
-    component: () => import('layouts/DemoClubLayout.vue'),
-    children: [
-      { path: 'home', name: 'demo-club-home', component: () => import('pages/demo/club/DemoClubHome.vue')},
-      { path: 'me', name: 'demo-club-me', component: () => import('pages/demo/club/DemoClubMe.vue')},
-      // { path: 'roles/:roleId', name: 'dashboard-role', component: () => import('pages/dashboard/DashboardRole.vue')},
-      { path: 'roles', name: 'demo-club-roles', component: () => import('pages/demo/club/DemoClubRoles.vue')},
-      { path: 'members', name: 'demo-club-members', component: () => import('pages/demo/club/DemoClubMembers.vue')},
-      { path: 'contests/create', name: 'demo-contest-create', component: () => import('pages/demo/club/DemoClubContestCreate.vue')},
-    ],
-  },
-
-  //------------
-  // END of DEMO
-  //------------
 
   // Always leave this as last one,
   // but you can also remove it

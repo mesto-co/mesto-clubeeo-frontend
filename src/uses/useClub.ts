@@ -1,17 +1,23 @@
 import { useRoute, useRouter } from 'vue-router';
 import { computed, reactive, ref } from 'vue';
 import { getClub, IClub, IMeInClub } from 'src/api/clubApi';
+import { useSessionStore } from 'stores/sessionStore';
+import { Notify } from 'quasar';
 
 export type TUseClub = ReturnType<typeof useClub>;
 
 export const useClub = () => {
   const $router = useRouter();
   const $route = useRoute();
+  const $sessionStorage = useSessionStore();
 
-  const clubSlugRouteParam = computed(() => $route.params.clubSlug ? String($route.params.clubSlug) : null);
+  const clubSlugRouteParam = computed(() =>
+    $route.params.clubSlug ? String($route.params.clubSlug) :
+      ($route.meta?.clubSlug ? String($route.meta.clubSlug) : null)
+  );
 
   const club = reactive<IClub>({
-    id: 0,
+    id: '',
     slug: '',
     name: '',
     description: '',
@@ -35,8 +41,10 @@ export const useClub = () => {
 
   const meInClub = reactive<IMeInClub>({
     isMember: null,
+    isLoggedIn: null,
     services: {},
     wallets: {},
+    mainWallet: {}
   });
 
   const pushToClubRoot = async () => {
@@ -46,26 +54,35 @@ export const useClub = () => {
   const isLoading = ref(false);
   const isOnceLoaded = ref(false);
 
-  const loadClub = async (opts: {background?: boolean} = {}) => {
-    if (isOnceLoaded.value && !opts.background) isLoading.value = true;
+  const loadClub = async (opts: {background?: boolean, redirect404?: boolean} = {}) => {
+    try {
+      if (!opts.background) isLoading.value = true;
 
-    const clubSlug = clubSlugRouteParam.value;
-    if (clubSlug) {
-      try {
-        const response = await getClub(clubSlug);
-        Object.assign(club, response.club);
-        Object.assign(meInClub, response.me);
-        isOnceLoaded.value = true;
-      } catch (e) {
-        const err = e as {response?: {status: number}};
+      const clubSlug = clubSlugRouteParam.value;
+      if (clubSlug) {
+        try {
+          const response = await getClub(clubSlug, { session: JSON.stringify($sessionStorage.sessionData) });
+          Object.assign(club, response.club);
+          Object.assign(meInClub, response.me);
+          isOnceLoaded.value = true;
+        } catch (e) {
+          const err = e as { response?: { status: number } };
 
-        if (err.response?.status === 404) {
-          await $router.push({name: 'notFound'});
+          const redirect404 = opts.redirect404 || opts.redirect404 === undefined;
+          if (err.response?.status === 404 && redirect404) {
+            await $router.push({ name: 'notFound' });
+          }
         }
       }
+    } catch (e) {
+      const err = e as {message: string};
+      Notify.create({
+        type: 'negative',
+        message: String(err.message || 'error'),
+      })
+    } finally {
+      isLoading.value = false;
     }
-
-    isLoading.value = false;
   }
 
   return {

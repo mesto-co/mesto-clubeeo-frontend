@@ -21,6 +21,7 @@ export interface TVerifyAndLoginPortParams {
   walletAddress: string
   nonce: string
   chain: string //todo: ChainEnum
+  data?: Record<string, unknown>
 }
 
 export interface ILogicFailure {
@@ -37,6 +38,7 @@ export const web3LoginLogic = async (ports: {
   verifyAndLogin: TVerifyAndLoginPort,
   onLogInSuccess?: () => void,
   onLogInFail?: (e: ILogicFailure) => void,
+  getData?: () => Record<string, unknown>
 }) => {
   const chain = await ports.getChain();
   const walletAddress = await ports.getWalletAddress();
@@ -55,6 +57,7 @@ export const web3LoginLogic = async (ports: {
     walletAddress,
     nonce,
     chain,
+    data: ports.getData ? ports.getData() : {},
   });
 
   if (isLoggedIn) {

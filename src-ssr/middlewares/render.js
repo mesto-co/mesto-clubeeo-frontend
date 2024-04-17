@@ -8,7 +8,20 @@ export default ssrMiddleware(({ app, resolve, render, serve }) => {
   // we capture any other Express route and hand it
   // over to Vue and Vue Router to render our page
   app.get(resolve.urlPath('*'), (req, res) => {
-    res.setHeader('Content-Type', 'text/html')
+    res.setHeader('Content-Type', 'text/html');
+
+    if (req.headers.host !== 'playground.clubeeo.com') {
+      // redirect subdomains
+      const subdomainSplit = req.headers.host.split('.clubeeo.com');
+      if (subdomainSplit.length === 2 && subdomainSplit[0]) {
+        const subdomain = subdomainSplit[0];
+
+        if (!req._parsedUrl.pathname.startsWith(`/${subdomain}`)) {
+          res.redirect(`https://${subdomain}.clubeeo.com/${subdomain}`);
+          return;
+        }
+      }
+    }
 
     render(/* the ssrContext: */ { req, res })
       .then(html => {

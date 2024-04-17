@@ -38,7 +38,7 @@
               label='link name'
               dark outlined
               style='width: 550px'
-              :rules="[ val => val.length > 0 || 'please fill this field' ]"
+              :rules="[ val => val.length > 0 || 'please fill this field', val => slugify(val) === val || 'please use url-friendly naming' ]"
               v-model='club.slug'
             >
               <template v-slot:prepend>
@@ -102,14 +102,16 @@
 
 <script lang='ts'>
 
-import { defineComponent, ref, watch } from 'vue';
+import { defineComponent, onMounted, ref, watch } from 'vue';
 import { api } from 'boot/axios';
-import { useRouter } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import ClubButton from 'components/clubpage/ClubButton.vue';
 import { EClubSocialLinks, IClubSocialLinks } from 'src/api/clubApi';
-import { Notify, QForm } from 'quasar';
+import { LocalStorage, Notify, QForm } from 'quasar';
 import { mapSocialToIcon } from 'src/lib/components/socials';
 import ClubPage from 'components/clublayout/ClubPage.vue';
+import { nameToSlug } from 'src/lib/strHelpers';
+import slugify from 'slugify';
 
 interface INewClub {
   slug: string
@@ -121,7 +123,42 @@ interface INewClub {
 export default defineComponent({
   components: { ClubPage, ClubButton },
   setup() {
+    const $route = useRoute();
     const $router = useRouter();
+
+    const isMeLoading = ref(true);
+    const me = ref({
+      loggedIn: false,
+    });
+
+    onMounted(async () => {
+      isMeLoading.value = true;
+      const result = await api.post<{
+        data: {
+          me: {
+            loggedIn: boolean
+          }
+        }
+      }>('/graphql', {
+        query: `{
+            me {
+              loggedIn
+            }
+          }`
+      }, {
+        headers: {
+          'X-SuppressError': '401'
+        }
+      });
+
+      me.value = result.data.data.me;
+      isMeLoading.value = false;
+
+      if (!me.value.loggedIn) {
+        LocalStorage.set('afterLoginRoute', {name: $route.name, params: $route.params});
+        await $router.push({name: 'login'});
+      }
+    });
 
     const club = ref<INewClub>({
       description: '',
@@ -191,12 +228,22 @@ export default defineComponent({
 
     };
 
+    watch(
+      () => club.value.name,
+      () => {
+        club.value.slug = nameToSlug(club.value.name);
+      }
+    );
+
     return {
       formRef,
       club,
       socialLinkCodes,
       mapSocialToIcon,
-      onCreateClicked: saveClicked
+      onCreateClicked: saveClicked,
+      slugify,
+      isMeLoading,
+      me,
     };
   }
 });

@@ -1,5 +1,12 @@
 <template>
+  <template
+    v-if='club.settings.layout === "custom"'
+  >
+
+  </template>
+
   <main
+    v-else
     class='clubeeo-wrapper'
     :style='clubPageStyle'
   >
@@ -16,13 +23,8 @@
 
     <aside class='token-gate-invite' :style='clubAsideStyle'>
 
-      <club-aside-2
-        v-if='club && club.settings && club.settings.asideComponent === "club-aside-2"'
-        @reload='onAsideReload'
-      />
-
-      <club-aside
-        v-else
+      <club-aside-proxy
+        :aside-component='club && club.settings && club.settings.asideComponent'
         @reload='onAsideReload'
       />
 
@@ -113,8 +115,9 @@ import { IClubStyle, normLandingClubStyle } from 'src/models/clubStyle';
 import { useQuasar } from 'quasar';
 import { mapSocialToIcon } from 'src/lib/components/socials';
 import HomePage2 from 'components/clubpage/HomePage2.vue';
-import ClubAside2 from 'components/clubpage/ClubAside2.vue';
-import ClubAside from 'components/clubpage/ClubAside.vue';
+import ClubAsideProxy from 'components/clubpage/clubAside/ClubAsideProxy.vue';
+import { useRoute } from 'vue-router';
+import { useSessionStore } from 'stores/sessionStore';
 
 const clubWelcomeDefault = '<h2>Welcome to the club</h2><p>Please, log in using a wallet with NFT community pass</p>';
 
@@ -130,9 +133,12 @@ interface ITelegramUser {
 
 export default defineComponent({
   name: 'ClubRootPage',
-  components: { ClubAside, ClubAside2, HomePage2 },
+  components: { ClubAsideProxy, HomePage2 },
   setup() {
     const $q = useQuasar();
+    const $route = useRoute();
+
+    const $sessionStorage = useSessionStore();
 
     const onLoad = async (opts: {background?: boolean} = {}) => {
       if (state.$club.clubSlugRouteParam.value) {
@@ -140,12 +146,18 @@ export default defineComponent({
       }
     };
 
-    onMounted(onLoad);
+    onMounted(async () => {
+      $sessionStorage.setQuery($route.query);
+      await onLoad();
+    });
 
-    watch(state.$club.clubSlugRouteParam, onLoad);
+    watch(state.$club.clubSlugRouteParam, async () => {
+      $sessionStorage.clearQuery();
+      await onLoad()
+    });
 
     const onAsideReload = async () => {
-      await onLoad();
+      await onLoad({background: true});
     }
 
     const telegramAuthCallback = async (user: ITelegramUser) => {
@@ -181,6 +193,7 @@ export default defineComponent({
       fontFamily: `'${clubStyle.value.font}', sans-serif`,
       backgroundColor: clubStyle.value.color || '#ffffff',
       color: clubStyle.value.textColor || '#000000',
+      flexDirection: clubStyle.value.aside === 'left' ? 'row-reverse' : ''
     }));
 
     const clubAsideStyle = computed(() => ({

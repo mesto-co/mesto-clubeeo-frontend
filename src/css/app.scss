@@ -1,11 +1,21 @@
 // app global css in SCSS form
 
+@import url('https://fonts.googleapis.com/css2?family=Poppins&family=Questrial&family=Roboto&display=swap');
+
+a, a:link {
+  color: inherit;
+}
+
 .landingPage {
   font-size: 1rem;
 }
 
 .text-decoration-none {
   text-decoration: none;
+}
+
+.bg-pool {
+  background-color: rgb(15, 46, 53);
 }
 
 a.a-no-decoration {
@@ -17,10 +27,14 @@ a.a-no-decoration {
   //display: flex;
   //flex-direction: column;
   //justify-content: space-between;
-  background-color: rgb(17 17 23);
+  background-color: rgb(17, 17, 23);
   color: #FFFFFF;
   padding: 12px 24px;
   //min-height: 100vh;
+}
+
+.clubCard {
+  background-color: rgb(29, 29, 39)
 }
 
 .clubButton {
@@ -28,7 +42,8 @@ a.a-no-decoration {
 }
 
 .clubButtonActive {
-  background: rgb(31, 84, 215);
+  box-shadow: rgb(26, 92, 255) -12px 0 20px -10px;
+  background: linear-gradient(30deg, rgba(rgb(21, 75, 208), 1) 25%, rgba(rgb(111, 23, 212), 1));
   color: white;
 
   .q-focus-helper {
@@ -37,23 +52,128 @@ a.a-no-decoration {
   }
 }
 
+.clubButtonGrey {
+  background: linear-gradient(30deg, #252731, #343653);
+}
+
 .clubButtonDisable {
   background: #2b2e3b;
 }
 
 .clubBgDefault {
-  background: var(--q-dark);
+  background: #1d1d27
+}
+
+.clubBgDark {
+  background: #111117;
+}
+
+.clubButtonBlue {
+  box-shadow: rgb(26, 92, 255) -12px 0 20px -10px;
+  background: linear-gradient(30deg, #00d2ff 25%, #3a7bd5);
+  color: white;
+
+  .q-focus-helper {
+    opacity: 0;
+    color: inherit;
+  }
+}
+
+.clubButtonFire {
+  box-shadow: rgb(255, 28, 73) -12px 0 20px -10px;
+  background: linear-gradient(45deg, rgba(rgb(255, 119, 0), 1), rgba(rgb(255, 28, 73), 1));
+  color: white;
+}
+
+.clubButtonEmerald {
+  box-shadow: #00ffe1 -12px 0 20px -10px;
+  //background: linear-gradient(45deg,rgba(#04ff00,1),rgba(#008e7d,1));
+  background: linear-gradient(45deg, rgba(#04e301, 1), rgba(#00b69f, 1));
+  //background-image: linear-gradient(45deg, #06ff00 0%, #00d4ba 51%, #05ff00 100%);
+  color: white;
 }
 
 .clubHeaderActive {
-  color: rgb(31, 84, 215);
+  background: linear-gradient(45deg, rgba(rgb(0, 76, 255), 1), rgba(rgb(135, 28, 255), 1));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.clubHeaderBlue {
+  background: linear-gradient(30deg, #00d2ff 25%, #3a7bd5);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.clubHeaderFire {
+  background: linear-gradient(45deg, rgba(rgb(255, 119, 0), 1), rgba(rgb(255, 28, 73), 1));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.clubHeaderEmeraldSymmetrical {
+  background-image: linear-gradient(45deg, #89ff87 0%, #00ffe1 51%, #89ff87 100%);
+  //background: linear-gradient(45deg,rgba(rgb(0, 255, 136),1),rgba(rgb(0, 208, 135),1));
+  //background: linear-gradient(45deg,#AAFFA9,#11FFBD);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.clubButtonPink {
+  background: linear-gradient(30deg, #dc3483 25%, #8f0043);
+  box-shadow: -12px 0 20px -10px #ff0078;
+  color: #fff;
+}
+
+.clubButtonSepia {
+  background: linear-gradient(30deg, #ffb156 30%, #9c5b0b);
+  box-shadow: -12px 0 20px -10px #ffb156;
+  color: #fff;
+}
+
+.clubButtonGrass {
+  background: linear-gradient(30deg, #7bb211 25%, #2b6104);
+  box-shadow: -12px 0 20px -10px #a8ff00;
+  color: #fff;
+}
+
+.clubButtonYellowPurple {
+  background: linear-gradient(75deg, #F2CD08, #D94CBA);
+  box-shadow: -12px 0 20px -10px #F2CD08;
+  color: #fff;
+}
+
+.aside {
+  .clubButtonAsideLeft {
+    .q-btn__content {
+      justify-content: left !important;
+    }
+  }
 }
 
 .buttonSecondary {
-  background: var(--q-dark);
+  background: rgb(29, 29, 39);
 }
 
 .q-notification {
   border-radius: 8px;
   //background: linear-gradient(45deg,darken(rgba(rgb(0, 76, 255),1),20%),darken(rgba(rgb(135, 28, 255),1),20%));
+}
+
+body {
+  background: #000000;
+}
+
+.bgNoiseWhite {
+  //background-image: url(data:image/png;base64,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)
+  background-image: url('/imgs/NoiseWhite20.svg')
+  //background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 700 700' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")
+}
+
+.dialog-width {
+  min-width: min(640px, 96vw)
+}
+
+.text-mono {
+  font-family: monospace;
 }

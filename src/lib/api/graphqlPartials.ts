@@ -35,6 +35,14 @@ export const clubSocialLinksPartial = `{
   web
 }`
 
+export const clubRoadmapPartial = `{
+  entries {
+    title
+    text
+    when
+  }
+}`
+
 // type ClubBuyLinks {
 //   opensea: String
 //   rarible: String

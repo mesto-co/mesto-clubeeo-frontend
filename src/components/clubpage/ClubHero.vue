@@ -2,8 +2,8 @@
 
   <div>
     <q-img
-      v-if='clubStyle.heroImg'
-      :src='clubStyle.heroImg'
+      v-if='style.heroImg'
+      :src='style.heroImg'
       :style='{
         ...(maxHeight ? {maxHeight: maxHeight} : {}),
         ...(minHeight ? {minHeight: minHeight} : {}),
@@ -13,18 +13,18 @@
       v-else
       :style='{
         ...(minHeight ? {minHeight: minHeight} : {}),
-        backgroundColor: clubStyle.heroColor,
+        backgroundColor: style.heroColor,
        }'
     >
 
     </div>
 
     <div
-      v-if='showLogo && clubStyle.logoImg'
+      v-if='showLogo && style.logoImg'
       class='clubHero_logoWrapper'
     >
       <avatar
-        :src='clubStyle.logoImg'
+        :src='style.logoImg'
         :name='club.name'
         :alt='`${club.name} logo`'
         class='avatar'
@@ -54,9 +54,10 @@ div.clubHero_logoWrapper {
 </style>
 
 <script lang='ts'>
-import { defineComponent, inject } from 'vue';
+import { defineComponent, inject, PropType } from 'vue';
 import { state } from 'src/state';
 import Avatar from 'components/elements/Avatar.vue';
+import { IClubStyle } from 'src/models/clubStyle';
 
 export default defineComponent({
   components: { Avatar },
@@ -71,14 +72,18 @@ export default defineComponent({
     showLogo: {
       type: Boolean,
       default: true
+    },
+    clubStyle: {
+      type: Object as PropType<IClubStyle>,
+      required: false
     }
   },
-  setup() {
-    const clubStyle = inject('clubStyle');
+  setup(props) {
+    const style = props.clubStyle || inject<IClubStyle>('clubStyle');
 
     return {
       club: state.$club.club,
-      clubStyle
+      style,
     };
   }
 });

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <q-scroll-area style='height: calc(100vh - 76px); width: 76px;'>
+    <q-scroll-area style='height: calc(100vh - 80px); width: 76px;'>
       <div style='padding: 12px; width: 76px; background-color: rgb(17 17 23); min-height: calc(100vh - 76px);'>
 
         <q-list style='width: 52px'>
@@ -72,10 +72,12 @@
 </style>
 
 <script lang='ts'>
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import { defineComponent, onMounted, ref } from 'vue';
 import { api } from 'boot/axios';
 import Avatar from 'components/elements/Avatar.vue';
+import { errorHasHttpCode } from 'src/lib/axiosErrorHelpers';
+import { LocalStorage } from 'quasar';
 
 interface ILoadedClub {
   id: number
@@ -93,6 +95,7 @@ export default defineComponent({
 
   setup() {
     const $route = useRoute();
+    const $router = useRouter();
 
     const isCurrentClub = (clubSlug: string) => {
       return $route.params.clubSlug === clubSlug;
@@ -101,24 +104,51 @@ export default defineComponent({
     const clubs = ref<ILoadedClub[]>([]);
 
     onMounted(async () => {
-      const result = await api.post<{
-        data: {
-          clubs: ILoadedClub[]
-        }
-      }>('/graphql', {
-        query: `{
-          clubs {
-            id
-            name
-            slug
-            style {
-              logoImg
-            }
-          }
-        }`
-      });
+      try {
+        if ($route.query.telegramLoginCode) {
+          const telegramLoginCode = $route.query.telegramLoginCode;
+          const clubSlug = $route.params.clubSlug;
+          const routeName = $route.name;
+          // redirect forth-and-back to force reload
+          await $router.push({name: 'login'});
 
-      clubs.value = result.data.data.clubs;
+          const {data: {ok}} = await api.post<{ok: boolean}>(
+            '/api/telegram/auth/code-login', {
+              code: telegramLoginCode,
+            });
+
+          if (ok) {
+            await $router.push({name: routeName || undefined, params: {clubSlug}});
+          }
+        }
+
+        const result = await api.post<{
+          data: {
+            clubs: ILoadedClub[]
+          }
+        }>('/graphql', {
+          query: `{
+            clubs {
+              id
+              name
+              slug
+              style {
+                logoImg
+              }
+            }
+          }`
+        }, {
+          headers: {
+            'X-SuppressError': '401'
+          }
+        });
+
+        clubs.value = result.data.data.clubs;
+      } catch (e) {
+        console.log(errorHasHttpCode(e, 401));
+        LocalStorage.set('afterLoginRoute', {name: $route.name, params: $route.params});
+        // await $router.push({name: 'login'});
+      }
     });
 
     return {

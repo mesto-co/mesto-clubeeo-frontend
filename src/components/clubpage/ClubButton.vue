@@ -12,6 +12,10 @@
   </q-btn>
 </template>
 
+<style>
+
+</style>
+
 <script lang='ts'>
 import { computed, defineComponent, inject, Ref } from 'vue';
 import { IClubStyle } from 'src/models/clubStyle';

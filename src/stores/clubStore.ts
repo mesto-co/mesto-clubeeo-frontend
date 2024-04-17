@@ -48,6 +48,13 @@ export const useClubStore = defineStore('club', {
 
         this.$state.clubLoaded = true;
       }
-    }
+    },
+    // async onSyncBySlug(slug: string, cb: () => Promise<void>) {
+    //   if (this.slug === slug) {
+    //     await cb();
+    //   } else {
+    //     setTimeout(() => void this.onSyncBySlug(slug, cb), 200);
+    //   }
+    // },
   },
 })

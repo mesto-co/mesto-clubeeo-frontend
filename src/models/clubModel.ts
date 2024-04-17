@@ -4,12 +4,13 @@ import { getDefaultMeInClub } from 'src/models/meInClub';
 
 export const getDefaultClub = (): ILoadedClub => {
   return {
-    id: 0,
+    id: '',
     slug: '',
     name: '',
     description: '',
     socialLinks: {},
     style: getDefaultDashClubStyle(),
     meInClub: getDefaultMeInClub(),
+    settings: {},
   }
 }

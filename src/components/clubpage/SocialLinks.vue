@@ -30,8 +30,8 @@ export default defineComponent({
     const clubStyle = inject('clubStyle') as Ref<IClubStyle>;
 
     const itemStyle = computed(() => ({
-      backgroundColor: clubStyle.value.socialColor,
-      color: clubStyle.value.socialTextColor,
+      backgroundColor: clubStyle?.value?.socialColor || '#FFFFFF',
+      color: clubStyle?.value?.socialTextColor || '#000000',
       margin: '0 6px'
     }));
 

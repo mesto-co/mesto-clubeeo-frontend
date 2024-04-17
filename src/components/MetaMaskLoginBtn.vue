@@ -1,6 +1,6 @@
 <template>
   <club-button
-    label='Log in with MetaMask'
+    :label='`${labels.logInWith || "log in with"} MetaMask`'
     class='full-width'
     icon='img:/imgs/MetaMask_Fox.svg'
     scheme='inverse'
@@ -9,7 +9,7 @@
 </template>
 
 <script lang='ts'>
-import { computed, defineComponent } from 'vue';
+import { computed, defineComponent, PropType } from 'vue';
 import { useRoute } from 'vue-router';
 import Web3 from 'web3';
 import detectEthereumProvider from '@metamask/detect-provider';
@@ -24,6 +24,16 @@ export default defineComponent({
   name: 'meta-mask-login-btn',
   components: { ClubButton },
   emits: ['loggedIn'],
+
+  props: {
+    labels: {
+      type: Object as PropType<{
+        logInWith?: string
+      }>,
+      default: () => ({}),
+    },
+    appData: Object as PropType<{ appId: number, clubId: number }>
+  },
 
   setup(props, { emit }) {
     const $route = useRoute();
@@ -47,7 +57,8 @@ export default defineComponent({
           personalSign: personalSignWeb3AdapterFactory(web3),
           verifyAndLogin: verifyAndLoginApiAdapter,
           onLogInSuccess: () => emit('loggedIn'),
-          onLogInFail: (e) => Notify.create({ type: 'warning', message: e.message })
+          onLogInFail: (e) => Notify.create({ type: 'warning', message: e.message }),
+          getData: () => ({appData: {appId: props.appData?.appId, clubId: props.appData?.clubId}}),
         });
       } else {
         console.error('Can\'t connect MetaMask');

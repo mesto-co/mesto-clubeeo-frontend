@@ -1,6 +1,6 @@
 <template>
   <q-no-ssr>
-    <q-layout view='lHh Lpr lFf'>
+    <q-layout view='lHh LpR lFf'>
       <q-header
         class='md-hide lg-hide xl-hide'
         style='background-color: rgb(29 29 39)'
@@ -26,7 +26,7 @@
       </q-header>
 
       <q-drawer v-model='leftDrawerOpen' show-if-above bordered dark>
-        <div class='flex' style='width: 299px'>
+        <div class='flex'>
 
           <slot />
 

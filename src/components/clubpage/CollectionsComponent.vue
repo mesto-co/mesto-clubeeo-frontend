@@ -33,7 +33,19 @@
               class='full-width'
               style='border-radius: 0 0 8px 8px'
               :href='collection.url'>
-              {{ collection.siteName ? `On ${collection.siteName}` : 'Buy' }}&nbsp;<q-icon name='fa-solid fa-chevron-right' size='xs'/>
+
+              <template
+                v-if='collection.label'
+              >
+                {{ collection.label }}
+              </template>
+
+              <template
+                v-else
+              >
+                {{ collection.siteName ? `On ${collection.siteName}` : 'Buy' }}&nbsp;<q-icon name='fa-solid fa-chevron-right' size='xs'/>
+              </template>
+
             </club-button>
           </q-card>
         </div>

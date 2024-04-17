@@ -3,14 +3,23 @@ import { api } from 'boot/axios';
 import { IClubStyle } from 'src/models/clubStyle';
 import { IMeInClub, meInClubPartial } from 'src/models/meInClub';
 
+export interface IClubSettings {
+  isPremium: boolean,
+}
+
+export const clubSettingsPartial = `{
+  isPremium
+}`
+
 export interface ILoadedClub {
-  id: number
+  id: string
   name: string
   slug: string
   description: string
   socialLinks: IClubSocialLinks
   style: IClubStyle
   meInClub: IMeInClub
+  settings: Partial<IClubSettings>
 }
 
 export const graphqlClubSchema = `{
@@ -21,6 +30,7 @@ export const graphqlClubSchema = `{
   socialLinks ${clubSocialLinksPartial}
   style ${clubStylePartial}
   meInClub ${meInClubPartial}
+  settings ${clubSettingsPartial}
 }`;
 
 export const getClubGraphql = async (clubSlug: string): Promise<{club: ILoadedClub}> => {

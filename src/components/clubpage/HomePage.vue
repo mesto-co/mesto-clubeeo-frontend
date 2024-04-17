@@ -84,7 +84,7 @@
 import SiteLink from './SiteLink.vue';
 import SocialLinks from './SocialLinks.vue';
 import BuyLinkBtn from './BuyLinkBtn.vue';
-import { defineComponent, inject } from 'vue';
+import { defineComponent, inject, onMounted } from 'vue';
 import { state } from 'src/state';
 import ClubHero from 'components/clubpage/ClubHero.vue';
 
@@ -92,6 +92,10 @@ export default defineComponent({
   components: { ClubHero, BuyLinkBtn, SocialLinks, SiteLink },
   setup() {
     const clubStyle = inject('clubStyle');
+
+    onMounted(async () => {
+      await state.$club.loadClub();
+    })
 
     return {
       club: state.$club.club,

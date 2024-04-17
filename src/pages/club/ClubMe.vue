@@ -22,12 +22,24 @@
 
 <!--    <hr style='border-top: 0; width: 90%' />-->
 
+    <div class='q-pb-md'>Active wallet: {{ shortenAddressOnChain(meInClub.mainWallet) }}</div>
+
+    <div
+      v-for='badge in userData.user.badges' :key='badge.id'
+      class='inline-block q-mb-md'
+    >
+      <badge-renderer
+        :badge='badge'
+        size='120px'
+      />
+    </div>
+
 <!--    <div class='q-mb-md'>-->
 <!--      My community pass:-->
 <!--    </div>-->
 
 <!--    <div class='flex q-mb-md'>-->
-<!--      <q-card style='width: 180px; border-radius: 12px; background-color: #1D1D1D' class='q-mr-md' flat>-->
+<!--      <q-card style='width: 180px; border-radius: 12px; background-color: rgb(29, 29, 39)' class='q-mr-md' flat>-->
 <!--        <q-img-->
 <!--          src='https://img.rarible.com/prod/video/upload/t_video_thumb_preview/prod-itemAnimations/0x7171965c9eb3ece226cca9f7eb2f0542e5c35366:72475762466921778884703330387740705564141322443071743540995683200273523671043/2e55ab85tv1'-->
 <!--        />-->
@@ -54,9 +66,12 @@ import { useRoute } from 'vue-router';
 import { IClubStyle } from 'src/models/clubStyle';
 import ClubHero from 'components/clubpage/ClubHero.vue';
 import SocialLinks from 'components/clubpage/SocialLinks.vue';
+import { shortenAddressOnChain } from 'src/lib/components/chains';
+import BadgeRenderer from 'components/renderers/BadgeRenderer.vue';
+import { ILoadMemberResponse, loadMe } from 'src/api/clubApi';
 
 export default defineComponent({
-  components: { SocialLinks, ClubHero, ClubPage },
+  components: { BadgeRenderer, SocialLinks, ClubHero, ClubPage },
   setup() {
     const $route = useRoute();
 
@@ -66,12 +81,16 @@ export default defineComponent({
     const clubLoaded = ref(false);
     const club = ref<Partial<ILoadedClub>>({});
 
+    const userData = ref<Partial<ILoadMemberResponse>>({});
+
     const load = async () => {
       if (slug.value) {
         clubLoaded.value = false;
 
         const result = await getClubGraphql(slug.value);
         club.value = result.club;
+
+        userData.value = await loadMe({clubSlug: slug.value});
 
         clubLoaded.value = true;
       }
@@ -89,7 +108,9 @@ export default defineComponent({
       clubStyle,
       club,
       clubLoaded,
+      userData,
       meInClub: computed(() => club.value.meInClub || {}),
+      shortenAddressOnChain,
     }
   }
 });

@@ -12,6 +12,7 @@ export const verifyAndLoginApiAdapter: TVerifyAndLoginPort = async (params: TVer
     address: params.walletAddress,
     nonce: params.nonce,
     chain: params.chain,
+    data: params.data || {},
   });
 };
 

@@ -7,7 +7,8 @@
         class='full-width text-center q-pb-sm'
       >
         <wallet-login-btn-switcher
-          :club='club'
+          :redirect-path='club.slug'
+          :labels='club.settings.labels'
           @loggedIn='onLoggedIn'
         />
 
@@ -18,6 +19,7 @@
 
       <div class='full-width text-center q-pb-sm'>
         <wallet-connect-login-btn
+          :labels='club.settings.labels'
           @loggedIn='onLoggedIn'
         />
       </div>
@@ -32,7 +34,7 @@
         </div>
 
         <club-button
-          label='Download Chrome'
+          label='download Chrome'
           class='full-width q-mb-sm'
           icon='fa-brands fa-chrome'
           scheme='inverse'
@@ -41,7 +43,7 @@
         />
 
         <club-button
-          label='Download MetaMask'
+          label='download MetaMask'
           class='full-width q-mb-sm'
           icon='img:/imgs/MetaMask_Fox.svg'
           scheme='inverse'
@@ -157,7 +159,7 @@ export default defineComponent({
     // };
     //
     return {
-    //   club: state.$club.club,
+      club: state.$club.club,
     //   meInClub: state.$club.meInClub,
     //   isClubLoading: state.$club.isLoading,
     //   telegramAuthCallback,

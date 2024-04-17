@@ -1,6 +1,6 @@
 <template>
   <club-button
-    label='Log in with WalletConnect'
+    :label='`${labels.logInWith || "log in with"} WalletConnect`'
     class='full-width'
     icon='img:/imgs/walletconnect-circle-blue.svg'
     scheme='inverse'
@@ -9,7 +9,7 @@
 </template>
 
 <script lang='ts'>
-import { defineComponent } from 'vue';
+import { defineComponent, PropType } from 'vue';
 import WalletConnect from '@walletconnect/client';
 import QRCodeModal from '@walletconnect/qrcode-modal';
 import { web3LoginLogic } from 'src/services/Web3Login/web3LoginLogic';
@@ -22,6 +22,16 @@ export default defineComponent({
   name: 'wallet-connect-login-btn',
   components: { ClubButton },
   emits: ['loggedIn'],
+
+  props: {
+    labels: {
+      type: Object as PropType<{
+        logInWith?: string
+      }>,
+      default: () => ({}),
+    },
+    appData: Object as PropType<{ appId: number, clubId: number }>
+  },
 
   setup(props, { emit }) {
     const handleConnectWallet = async () => {
@@ -40,7 +50,8 @@ export default defineComponent({
           personalSign: personalSignWalletConnectAdapterFactory(connector),
           verifyAndLogin: verifyAndLoginApiAdapter,
           onLogInSuccess: () => emit('loggedIn'),
-          onLogInFail: (e) => Notify.create({ type: 'warning', message: e.message })
+          onLogInFail: (e) => Notify.create({ type: 'warning', message: e.message }),
+          getData: () => ({appData: props.appData || {}}),
         });
       };
 

@@ -7,7 +7,7 @@
     />
 
     <div class='q-mb-md text-center'>
-      <div class='text-h5 q-pb-sm'>
+      <div class='text-h5 q-pb-sm' v-if='clubState && !clubState.settings.hideTitle'>
         {{ club.name }}
       </div>
 
@@ -27,9 +27,23 @@
         class='q-page'
         ref='clubPageCollections'
       >
+<!--        <div class='text-right q-pr-md'>collections</div>-->
+
         <collections-component
           :club-name='club.name'
           :buy-links='club.buyLinks'
+        />
+      </div>
+
+      <div
+        v-if='club.roadmap && club.roadmap.entries && club.roadmap.entries.length > 0'
+        class='q-pt-md'
+      >
+        <div class='text-right q-pr-md'>roadmap</div>
+
+        <roadmap-viewer
+          v-model='club.roadmap.entries'
+          class='text-left'
         />
       </div>
 
@@ -62,17 +76,20 @@ import { computed, defineComponent, inject, onMounted, provide, ref, watch } fro
 import { state } from 'src/state';
 import { useRoute } from 'vue-router';
 import { api } from 'boot/axios';
-import { clubSocialLinksPartial, clubStylePartial } from 'src/lib/api/graphqlPartials';
+import { clubRoadmapPartial, clubSocialLinksPartial, clubStylePartial } from 'src/lib/api/graphqlPartials';
 import ClubHero from 'components/clubpage/ClubHero.vue';
 import CollectionsComponent from 'components/clubpage/CollectionsComponent.vue';
 import PoweredByClubeeo from 'components/clubpage/PoweredByClubeeo.vue';
 import BuyLinkBtn from 'components/clubpage/BuyLinkBtn.vue';
+import { IClubRoadmap } from 'src/api/clubApi';
+import RoadmapViewer from 'components/clubpage/RoadmapViewer.vue';
 
 interface ILoadedClub {
   id: number
   name: string
   description: string
   slug: string
+  roadmap: IClubRoadmap
   style: {
     logoImg?: string
     heroImg?: string
@@ -88,7 +105,7 @@ interface ILoadedClub {
 }
 
 export default defineComponent({
-  components: { BuyLinkBtn, PoweredByClubeeo, CollectionsComponent, ClubHero, SocialLinks },
+  components: { RoadmapViewer, BuyLinkBtn, PoweredByClubeeo, CollectionsComponent, ClubHero, SocialLinks },
   props: {
     showPoweredBy: {
       type: Boolean,
@@ -129,6 +146,7 @@ export default defineComponent({
             description
             style ${clubStylePartial}
             socialLinks ${clubSocialLinksPartial}
+            roadmap ${clubRoadmapPartial}
             buyLinks {
               main
               opensea
@@ -158,6 +176,7 @@ export default defineComponent({
     const clubStyle = inject('clubStyle');
 
     return {
+      clubState: state.$club.club,
       club, // : state.$club.club,
       meInClub: state.$club.meInClub,
       clubStyle,
