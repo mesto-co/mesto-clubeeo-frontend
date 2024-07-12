@@ -4,7 +4,6 @@ import { IClub } from 'src/api/clubApi';
 import { computed, provide } from 'vue';
 import { getClubGraphql } from 'src/api/clubGraphql';
 import { useStyleStore } from 'stores/styleStore';
-import { api } from 'src/boot/axios';
 
 const styleStore = useStyleStore();
 

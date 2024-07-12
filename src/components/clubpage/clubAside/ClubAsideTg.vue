@@ -1,63 +1,69 @@
 <template>
-  <q-page class="flex flex-center" style="background: #111117">
-    <div></div>
+  <div></div>
 
-    <div>
-      <telegram-bot-login-btn
-        v-if="!meInClub.services?.tg?.loggedIn"
+  <div style="padding: 30px 0" v-if="!isClubLoading">
+    <telegram-bot-login-btn
+      v-if="!meInClub.services?.tg?.loggedIn"
+      class="clubButtonActive"
+      :telegram-login-bot="meInClub.services?.tg?.telegramLoginBot"
+      :login-code="meInClub.services?.tg?.telegramLoginCode"
+      @click="onTelegramLoginClicked"
+    />
+    <div v-else>
+      <club-button
         class="clubButtonActive"
-        :telegram-login-bot="meInClub.services?.tg?.telegramLoginBot"
-        :login-code="meInClub.services?.tg?.telegramLoginCode"
-        @click="onTelegramLoginClicked"
+        @click="pushToClubRoot"
+        rounded
+        label="Dashboard"
+        icon="fa-solid fa-arrow-right"
       />
-      <div v-else>
-        <q-btn
-          class="clubButtonActive"
-          @click="pushToClubRoot"
-          style="cursor: pointer"
-          rounded
-          label="Continue"
-        />
-      </div>
-
-      <!-- <eth-wallets-login
-        redirect-path='login'
-        buttons-class='clubButtonActive'
-        @loggedIn='onLoggedIn'
-      />
-
-      <near-wallet-login-btn
-        class='clubButtonActive'
-        @loggedIn='onLoggedIn'
-      /> -->
-
-      <!--      <wallet-login-btn-switcher-->
-      <!--        style='color: #FFFFFF'-->
-      <!--        redirect-path='login'-->
-      <!--        @loggedIn='onLoggedIn'-->
-      <!--      />-->
     </div>
+  </div>
 
-    <div></div>
-  </q-page>
+  <div v-if="!isClubLoading" class="q-pb-md">
+    <me-in-club-widget
+      v-if="!club.settings.asideHideMe && meInClubStore.data.loggedIn"
+      :me-in-club="meInClubStore.data"
+      class="full-width"
+      @click="meInClubMenuShowing = true"
+    >
+      <q-btn icon="fa-solid fa-caret-up" size="sm" dense flat>
+        <q-menu v-model="meInClubMenuShowing">
+          <q-list dense style="min-width: 100px">
+            <q-item clickable v-close-popup>
+              <q-item-section @click="onLogOut">Log out</q-item-section>
+            </q-item>
+          </q-list>
+        </q-menu>
+      </q-btn>
+    </me-in-club-widget>
+  </div>
+
+  <q-inner-loading :showing="isClubLoading" dark />
 </template>
 
 <script lang="ts">
 import { RouteParamsRaw, useRouter } from 'vue-router';
 import { LocalStorage } from 'quasar';
-import { onMounted, provide, ref } from 'vue';
+import { computed, onMounted, provide, ref } from 'vue';
 import MetaMaskOnboarding from '@metamask/onboarding';
-// import EthWalletsLogin from 'components/wallets/EthWalletsLogin.vue';
-// import NearWalletLoginBtn from 'components/wallets/NearWalletLoginBtn.vue';
 import { inBrowser } from 'src/lib/inBrowser';
 import TelegramBotLoginBtn from 'src/components/telegram/TelegramBotLoginBtn.vue';
 import { state } from 'src/state';
 import { useMeInClubStore } from 'src/stores/meInClubStore';
+import { useLogout } from 'src/uses/useLogout';
+import MeInClubWidget from 'src/components/me/MeInClubWidget.vue';
+import ClubButton from '../ClubButton.vue';
 
 export default {
-  components: { TelegramBotLoginBtn },
-  setup() {
+  components: { TelegramBotLoginBtn, MeInClubWidget, ClubButton },
+  emits: ['reload'],
+  setup(
+    _,
+    { emit }: { emit: (event: 'reload', payload: { reason: string }) => void }
+  ) {
     const $router = useRouter();
+    const $logout = useLogout();
     const meInClub = state.$club.meInClub;
     const meInClubStore = useMeInClubStore();
 
@@ -131,12 +137,27 @@ export default {
       });
     };
 
+    const meInClubMenuShowing = ref(false);
+
+    const onLogOut = async () => {
+      await $logout.logout();
+
+      emit('reload', { reason: 'logged-out' });
+    };
+
     return {
+      club: state.$club.club,
       showMetaMaskBtn,
       onLoggedIn,
       onTelegramLoginClicked,
       meInClub,
+      meInClubStore,
       pushToClubRoot,
+      isClubLoading: computed(
+        () => state.$club.isLoading.value || !state.$club.isOnceLoaded.value
+      ),
+      meInClubMenuShowing,
+      onLogOut,
     };
   },
 };

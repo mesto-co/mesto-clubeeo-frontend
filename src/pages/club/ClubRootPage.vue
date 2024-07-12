@@ -1,40 +1,28 @@
 <template>
-  <template
-    v-if='club.settings.layout === "custom"'
-  >
+  <template v-if="club.settings.layout === 'custom'"> </template>
 
-  </template>
-
-  <main
-    v-else
-    class='clubeeo-wrapper'
-    :style='clubPageStyle'
-  >
-    <section class='main-content-section'>
-
-      <div class='content-wrapper'>
+  <main v-else class="clubeeo-wrapper" :style="clubPageStyle">
+    <section class="main-content-section">
+      <div class="content-wrapper">
         <home-page2
-          heroMinHeight='115px'
-          :showSocialLinks='club && club.settings && !club.settings.hideSocialLinks'
+          heroMinHeight="115px"
+          :showSocialLinks="
+            club && club.settings && !club.settings.hideSocialLinks
+          "
         />
       </div>
-
     </section>
 
-    <aside class='token-gate-invite' :style='clubAsideStyle'>
-
+    <aside class="token-gate-invite" :style="clubAsideStyle">
       <club-aside-proxy
-        :aside-component='club && club.settings && club.settings.asideComponent'
-        @reload='onAsideReload'
+        :aside-component="club && club.settings && club.settings.asideComponent"
+        @reload="onAsideReload"
       />
-
     </aside>
   </main>
-
 </template>
 
-<style lang='scss'>
-
+<style lang="scss">
 main.clubeeo-wrapper {
   @media (max-width: $breakpoint-xs-max) {
     display: flex;
@@ -48,7 +36,6 @@ main.clubeeo-wrapper {
   overflow: hidden;
 
   section.main-content-section {
-
     @media (min-width: $breakpoint-xs-max) {
       overflow-y: scroll;
       width: 100%;
@@ -86,9 +73,14 @@ main.clubeeo-wrapper {
     //padding: 210px 30px 30px;
 
     font-weight: 600;
-    color: #FFFFFF;
+    color: #ffffff;
 
-    h1,h2,h3,h4,h5,h6 {
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
       margin: 0;
       font-weight: 600;
     }
@@ -100,14 +92,12 @@ main.clubeeo-wrapper {
       li {
         margin-bottom: 18px;
       }
-
     }
   }
 }
-
 </style>
 
-<script lang='ts'>
+<script lang="ts">
 import { computed, defineComponent, onMounted, provide, watch } from 'vue';
 import { api } from 'boot/axios';
 import { state } from 'src/state';
@@ -119,16 +109,17 @@ import ClubAsideProxy from 'components/clubpage/clubAside/ClubAsideProxy.vue';
 import { useRoute } from 'vue-router';
 import { useSessionStore } from 'stores/sessionStore';
 
-const clubWelcomeDefault = '<h2>Welcome to the club</h2><p>Please, log in using a wallet with NFT community pass</p>';
+const clubWelcomeDefault =
+  '<h2>Welcome to the club</h2><p>Please, log in using a wallet with NFT community pass</p>';
 
 interface ITelegramUser {
-  auth_date: number,
-  hash: string,
-  id: number,
-  first_name: string,
-  last_name: string,
-  photo_url: string,
-  username: string,
+  auth_date: number;
+  hash: string;
+  id: number;
+  first_name: string;
+  last_name: string;
+  photo_url: string;
+  username: string;
 }
 
 export default defineComponent({
@@ -140,7 +131,7 @@ export default defineComponent({
 
     const $sessionStorage = useSessionStore();
 
-    const onLoad = async (opts: {background?: boolean} = {}) => {
+    const onLoad = async (opts: { background?: boolean } = {}) => {
       if (state.$club.clubSlugRouteParam.value) {
         await state.$club.loadClub(opts);
       }
@@ -153,15 +144,18 @@ export default defineComponent({
 
     watch(state.$club.clubSlugRouteParam, async () => {
       $sessionStorage.clearQuery();
-      await onLoad()
+      await onLoad();
     });
 
     const onAsideReload = async () => {
-      await onLoad({background: true});
-    }
+      await onLoad({ background: true });
+    };
 
     const telegramAuthCallback = async (user: ITelegramUser) => {
-      const result = await api.post<{ ok: boolean }>('/api/telegram/auth/login', user);
+      const result = await api.post<{ ok: boolean }>(
+        '/api/telegram/auth/login',
+        user
+      );
 
       if (result.data.ok) {
         await state.$club.loadClub();
@@ -175,7 +169,7 @@ export default defineComponent({
     };
 
     const clubStyle = computed<IClubStyle>(() => {
-      const s = state.$club.club.style || {} as Partial<IClubStyle>;
+      const s = state.$club.club.style || ({} as Partial<IClubStyle>);
       return normLandingClubStyle(s);
     });
 
@@ -193,7 +187,7 @@ export default defineComponent({
       fontFamily: `'${clubStyle.value.font}', sans-serif`,
       backgroundColor: clubStyle.value.color || '#ffffff',
       color: clubStyle.value.textColor || '#000000',
-      flexDirection: clubStyle.value.aside === 'left' ? 'row-reverse' : ''
+      flexDirection: clubStyle.value.aside === 'left' ? 'row-reverse' : '',
     }));
 
     const clubAsideStyle = computed(() => ({
@@ -226,6 +220,6 @@ export default defineComponent({
       mapSocialToIcon,
       onAsideReload,
     };
-  }
+  },
 });
 </script>
