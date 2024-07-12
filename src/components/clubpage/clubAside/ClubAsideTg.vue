@@ -59,7 +59,7 @@ export default {
   components: { TelegramBotLoginBtn, MeInClubWidget, ClubButton },
   emits: ['reload'],
   setup(
-    _,
+    props: Record<string, string>,
     { emit }: { emit: (event: 'reload', payload: { reason: string }) => void }
   ) {
     const $router = useRouter();
