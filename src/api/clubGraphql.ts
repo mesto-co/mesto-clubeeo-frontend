@@ -1,25 +1,29 @@
-import { clubSocialLinksPartial, clubStylePartial, IClubSocialLinks } from 'src/lib/api/graphqlPartials';
+import {
+  clubSocialLinksPartial,
+  clubStylePartial,
+  IClubSocialLinks,
+} from 'src/lib/api/graphqlPartials';
 import { api } from 'boot/axios';
 import { IClubStyle } from 'src/models/clubStyle';
 import { IMeInClub, meInClubPartial } from 'src/models/meInClub';
 
 export interface IClubSettings {
-  isPremium: boolean,
+  isPremium: boolean;
 }
 
 export const clubSettingsPartial = `{
   isPremium
-}`
+}`;
 
 export interface ILoadedClub {
-  id: string
-  name: string
-  slug: string
-  description: string
-  socialLinks: IClubSocialLinks
-  style: IClubStyle
-  meInClub: IMeInClub
-  settings: Partial<IClubSettings>
+  id: string;
+  name: string;
+  slug: string;
+  description: string;
+  socialLinks: IClubSocialLinks;
+  style: IClubStyle;
+  meInClub: IMeInClub;
+  settings: Partial<IClubSettings>;
 }
 
 export const graphqlClubSchema = `{
@@ -33,13 +37,15 @@ export const graphqlClubSchema = `{
   settings ${clubSettingsPartial}
 }`;
 
-export const getClubGraphql = async (clubSlug: string): Promise<{club: ILoadedClub}> => {
+export const getClubGraphql = async (
+  clubSlug: string
+): Promise<{ club: ILoadedClub }> => {
   const response = await api.post<{
     data: {
-      club: ILoadedClub
-    }
+      club: ILoadedClub;
+    };
   }>('/graphql', {
-    query: `{ club(slug:"${clubSlug}") ${graphqlClubSchema} }`
+    query: `{ club(slug:"${clubSlug}") ${graphqlClubSchema} }`,
   });
 
   return response.data.data;

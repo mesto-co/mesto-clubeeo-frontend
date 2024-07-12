@@ -13,14 +13,14 @@ export const useMeInClubStore = defineStore('meInClub', {
       isLoading: false,
       isOnceLoaded: false,
       clubSlug: '',
-    }
+    };
   },
   actions: {
     setDefault() {
       this.data = getDefaultMeInClub();
     },
     patchWith(meInClub: Partial<IMeInClub>) {
-      this.$patch({ data: meInClub })
+      this.$patch({ data: meInClub });
     },
     async loadByClub(clubSlug: string | null) {
       this.setDefault();
@@ -43,6 +43,6 @@ export const useMeInClubStore = defineStore('meInClub', {
     },
     async logout() {
       await api.post('/api/auth/logout', {});
-    }
+    },
   },
-})
+});

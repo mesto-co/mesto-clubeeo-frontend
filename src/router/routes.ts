@@ -11,12 +11,13 @@ const routes: RouteRecordRaw[] = [
       {
         path: '',
         component: () => import('pages/Index.vue'),
-        meta: { clubSlug: 'clubeeo' },
+        meta: { clubSlug: 'mesto' },
       },
       {
         path: 'login',
         name: 'login',
         component: () => import('pages/auth/LogInPage.vue'),
+        meta: { clubSlug: 'mesto' },
       },
     ],
   },
