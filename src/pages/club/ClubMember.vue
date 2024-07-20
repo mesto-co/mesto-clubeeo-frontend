@@ -1,40 +1,32 @@
 <template>
-  <club-page
-    header='member'
-    sticky='bottom'
-  >
-    <template v-if='userData && userData.user'>
+  <club-page header="member" sticky="bottom">
+    <template v-if="!isLoading && userData && userData.user">
       <h4>{{ userData.user.screenName }}</h4>
 
-      <div
-        class='q-mb-lg'
-      >
+      <div class="q-mb-lg">
         <member-roles-manager
-          :club-slug='clubSlug'
-          :member-id='memberId'
-          :user-data='userData'
-          @saved='onLoad'
+          :club-slug="clubSlug"
+          :member-id="memberId"
+          :user-data="userData"
+          @saved="onLoad"
         />
       </div>
 
-      <div
-        class='q-mb-lg'
-      >
+      <div class="q-mb-lg">
         <member-badges-manager
-          :club-slug='clubSlug'
-          :user-id='memberId'
-          :user-data='userData'
-          @saved='onLoad'
+          :club-slug="clubSlug"
+          :user-id="memberId"
+          :user-data="userData"
+          @saved="onLoad"
         />
       </div>
-
     </template>
-  </club-page>
 
+    <q-spinner v-if="isLoading" />
+  </club-page>
 </template>
 
-<script lang='ts'>
-
+<script lang="ts">
 import { defineComponent, onMounted, ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import { state } from 'src/state';
@@ -53,14 +45,24 @@ export default defineComponent({
     const memberId = requireParam('memberId');
 
     const userData = ref<Partial<ILoadMemberResponse>>({});
+    const isLoading = ref(false);
 
     const onLoad = async () => {
-      await state.$club.loadClub();
+      try {
+        isLoading.value = true;
+        await state.$club.loadClub();
 
-      userData.value = await loadMember({
-        clubSlug: clubSlug.value,
-        memberId: memberId.value
-      });
+        if (memberId.value && clubSlug.value) {
+          userData.value = await loadMember({
+            clubSlug: clubSlug.value,
+            memberId: memberId.value,
+          });
+        }
+      } catch (error) {
+        console.error(error);
+      } finally {
+        isLoading.value = false;
+      }
     };
 
     onMounted(async () => {
@@ -73,8 +75,9 @@ export default defineComponent({
       memberId,
       userData,
       club: state.$club,
-      onLoad
+      onLoad,
+      isLoading,
     };
-  }
+  },
 });
 </script>
