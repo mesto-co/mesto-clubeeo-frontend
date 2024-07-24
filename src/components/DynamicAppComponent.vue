@@ -1,36 +1,43 @@
 <template>
-  <template v-if='!dynamicApp.isLoading'>
-
+  <template v-if="!dynamicApp.isLoading">
     <eth-wallet-app
-      v-if='dynamicApp.appName === "eth-wallet"' :app-data='dynamicApp' />
+      v-if="dynamicApp.appName === 'eth-wallet'"
+      :app-data="dynamicApp"
+    />
     <eth-gating-app
-      v-else-if='dynamicApp.appName === "eth-gating"' :app-data='dynamicApp' />
+      v-else-if="dynamicApp.appName === 'eth-gating'"
+      :app-data="dynamicApp"
+    />
     <feed-app
-      v-else-if='dynamicApp.appName === "feed"' :app-data='dynamicApp' />
+      v-else-if="dynamicApp.appName === 'feed'"
+      :app-data="dynamicApp"
+    />
     <leaderboard-app
-      v-else-if='dynamicApp.appName === "leaderboard"' :app-data='dynamicApp' />
+      v-else-if="dynamicApp.appName === 'leaderboard'"
+      :app-data="dynamicApp"
+    />
     <page-app
-      v-else-if='dynamicApp.appName === "page"' :app-data='dynamicApp' />
+      v-else-if="dynamicApp.appName === 'page'"
+      :app-data="dynamicApp"
+    />
     <platform-clubs-app
-      v-else-if='dynamicApp.appName === "platform-clubs"' :app-data='dynamicApp' />
+      v-else-if="dynamicApp.appName === 'platform-clubs'"
+      :app-data="dynamicApp"
+    />
+    <telegram-app
+      v-else-if="dynamicApp.appName === 'telegram'"
+      :app-data="dynamicApp"
+    />
 
-    <club-page
-      v-else
-      :header='dynamicApp.appSlug'
-      class='text-center'
-    >
+    <club-page v-else :header="dynamicApp.appSlug" class="text-center">
       application "{{ dynamicApp.appName }}" is unknown
     </club-page>
-
   </template>
 
-  <q-inner-loading
-    dark
-    :showing='dynamicApp.isLoading'
-  />
+  <q-inner-loading dark :showing="dynamicApp.isLoading" />
 </template>
 
-<script lang='ts'>
+<script lang="ts">
 import { defineComponent, onMounted, watch } from 'vue';
 import { useDynamicAppStore } from 'stores/dynamicAppStore';
 import ClubPage from 'components/clublayout/ClubPage.vue';
@@ -40,6 +47,7 @@ import LeaderboardApp from 'src/apps/LeaderboardApp/LeaderboardApp.vue';
 import EthWalletApp from 'src/apps/EthWalletApp/EthWalletApp.vue';
 import EthGatingApp from 'src/apps/EthGatingApp/EthGatingApp.vue';
 import FeedApp from 'src/apps/FeedApp/FeedApp.vue';
+import TelegramApp from 'src/apps/TelegramApp/TelegramApp.vue';
 
 const routeParamToString = (param: string | string[]): string => {
   if (Array.isArray(param)) return param[0] || ''; //take first if multiple
@@ -48,7 +56,16 @@ const routeParamToString = (param: string | string[]): string => {
 
 export default defineComponent({
   name: 'DynamicAppComponent',
-  components: { FeedApp, EthGatingApp, EthWalletApp, LeaderboardApp, PageApp, PlatformClubsApp, ClubPage },
+  components: {
+    FeedApp,
+    EthGatingApp,
+    EthWalletApp,
+    LeaderboardApp,
+    PageApp,
+    PlatformClubsApp,
+    TelegramApp,
+    ClubPage,
+  },
   props: {
     clubSlug: {
       type: String,
@@ -72,14 +89,14 @@ export default defineComponent({
         appSlug: routeParamToString(props.appSlug),
         appPage: routeParamToString(props.appPage),
       });
-    }
+    };
 
     onMounted(init);
-    watch(props, init, {deep: true});
+    watch(props, init, { deep: true });
 
     return {
-      dynamicApp: $dynamicApp
+      dynamicApp: $dynamicApp,
     };
-  }
+  },
 });
 </script>
