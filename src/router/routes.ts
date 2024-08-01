@@ -23,6 +23,18 @@ const routes: RouteRecordRaw[] = [
   },
 
   {
+    path: '/demo',
+    component: () => import('layouts/PublicLayout.vue'),
+    children: [
+      {
+        path: 'profile',
+        name: 'demo-profile',
+        component: () => import('src/apps/ProfileApp/ProfileApp.vue'),
+      },
+    ],
+  },
+
+  {
     path: '/auth/wallet-login',
     component: () => import('layouts/PublicLayout.vue'),
     children: [{ path: '', component: () => import('pages/wallet/Login.vue') }],
