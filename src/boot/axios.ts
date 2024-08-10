@@ -1,10 +1,10 @@
 import { boot } from 'quasar/wrappers';
 import axios, { AxiosInstance } from 'axios';
-import { Notify } from 'quasar';
 
 declare module '@vue/runtime-core' {
   interface ComponentCustomProperties {
     $axios: AxiosInstance;
+    $api: AxiosInstance;
   }
 }
 
@@ -17,38 +17,6 @@ declare module '@vue/runtime-core' {
 const api = axios.create({
   withCredentials: true,
   baseURL: '/',
-});
-
-api.interceptors.response.use(function (response) {
-  return response;
-}, function (error) {
-  const err = error as {
-    response?: {status: number, data: unknown},
-    config?: {headers: Record<string, string>}
-  };
-
-  /* eslint-disable @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-assignment */
-  const message = error.response?.data?.error
-    || (error.response?.data?.errors || [])[0]?.message;
-  /* eslint-enable @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-assignment */
-
-  console.log('message',message)
-
-  const suppressError = (err.config?.headers['X-SuppressError'] || '')
-    .split(',');
-  const responseStatus = err.response?.status ? String(err.response?.status) : null;
-
-  console.log(suppressError, responseStatus, suppressError.length > 0 && responseStatus && suppressError.includes(responseStatus))
-
-  if (typeof message !== 'string') {
-    Notify.create({type: 'negative', message: String(err.response?.data || 'Error occurred')})
-  } else if (suppressError.length > 0 && responseStatus && suppressError.includes(responseStatus)) {
-    // don't create notification
-  } else if (message) {
-    Notify.create({type: 'negative', message: message})
-  }
-
-  return Promise.reject(error);
 });
 
 export default boot(({ app }) => {

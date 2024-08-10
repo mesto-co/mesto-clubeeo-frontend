@@ -22,7 +22,7 @@
         <q-item-label header> Essential Links </q-item-label>
 
         <EssentialLink
-          v-for="link in essentialLinks"
+          v-for="link in linksList"
           :key="link.title"
           v-bind="link"
         />
@@ -35,10 +35,17 @@
   </q-layout>
 </template>
 
-<script lang="ts">
-import EssentialLink from '@components/EssentialLink.vue';
+<script setup lang="ts">
+import { ref } from 'vue';
+import EssentialLink, {
+  EssentialLinkProps,
+} from 'components/EssentialLink.vue';
 
-const linksList = [
+defineOptions({
+  name: 'MainLayout',
+});
+
+const linksList: EssentialLinkProps[] = [
   {
     title: 'Docs',
     caption: 'quasar.dev',
@@ -83,25 +90,9 @@ const linksList = [
   },
 ];
 
-import { defineComponent, ref } from 'vue';
+const leftDrawerOpen = ref(false);
 
-export default defineComponent({
-  name: 'MainLayout',
-
-  components: {
-    EssentialLink,
-  },
-
-  setup() {
-    const leftDrawerOpen = ref(false);
-
-    return {
-      essentialLinks: linksList,
-      leftDrawerOpen,
-      toggleLeftDrawer() {
-        leftDrawerOpen.value = !leftDrawerOpen.value;
-      },
-    };
-  },
-});
+function toggleLeftDrawer() {
+  leftDrawerOpen.value = !leftDrawerOpen.value;
+}
 </script>

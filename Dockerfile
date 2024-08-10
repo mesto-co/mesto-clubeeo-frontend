@@ -19,8 +19,8 @@ RUN yarn install
 
 COPY . .
 
-RUN yarn run build:ssr
+RUN yarn run build
 
-EXPOSE 3085
+EXPOSE 4000
 
-CMD [ "yarn", "run", "start" ]
+CMD [ "yarn", "run", "serve" ]

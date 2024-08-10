@@ -1,14 +1,13 @@
 <template>
   <template v-if="!dynamicApp.isLoading">
-    <!-- <eth-wallet-app
-      v-if="dynamicApp.appName === 'eth-wallet'"
+    <profile-app
+      v-if="dynamicApp.appName === 'profile'"
       :app-data="dynamicApp"
-    /> -->
-    <!-- <eth-gating-app
-      v-else-if="dynamicApp.appName === 'eth-gating'"
+    />
+    <feed-app
+      v-else-if="dynamicApp.appName === 'feed'"
       :app-data="dynamicApp"
-    /> -->
-    <feed-app v-if="dynamicApp.appName === 'feed'" :app-data="dynamicApp" />
+    />
     <leaderboard-app
       v-else-if="dynamicApp.appName === 'leaderboard'"
       :app-data="dynamicApp"
@@ -25,7 +24,6 @@
       v-else-if="dynamicApp.appName === 'telegram'"
       :app-data="dynamicApp"
     />
-
     <club-page v-else :header="dynamicApp.appSlug" class="text-center">
       application "{{ dynamicApp.appName }}" is unknown
     </club-page>
@@ -34,19 +32,18 @@
   <q-inner-loading dark :showing="dynamicApp.isLoading" />
 </template>
 
-<script lang="ts">
+<script>
 import { defineComponent, onMounted, watch } from 'vue';
 import { useDynamicAppStore } from '@stores/dynamicAppStore';
+import ProfileApp from 'apps/ProfileApp/ProfileApp.vue';
 import ClubPage from '@components/clublayout/ClubPage.vue';
 import PlatformClubsApp from '@apps/PlatformClubsApp/PlatformClubsApp.vue';
 import PageApp from '@apps/PageApp/PageApp.vue';
 import LeaderboardApp from '@apps/LeaderboardApp/LeaderboardApp.vue';
-// import EthWalletApp from '@apps/EthWalletApp/EthWalletApp.vue';
-// import EthGatingApp from '@apps/EthGatingApp/EthGatingApp.vue';
 import FeedApp from '@apps/FeedApp/FeedApp.vue';
 import TelegramApp from '@apps/TelegramApp/TelegramApp.vue';
 
-const routeParamToString = (param: string | string[]): string => {
+const routeParamToString = (param) => {
   if (Array.isArray(param)) return param[0] || ''; //take first if multiple
   return param || '';
 };
@@ -54,9 +51,8 @@ const routeParamToString = (param: string | string[]): string => {
 export default defineComponent({
   name: 'DynamicAppComponent',
   components: {
+    ProfileApp,
     FeedApp,
-    // EthGatingApp,
-    // EthWalletApp,
     LeaderboardApp,
     PageApp,
     PlatformClubsApp,

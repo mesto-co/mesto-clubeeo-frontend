@@ -1,16 +1,52 @@
 {
-  "extends": "@quasar/app-webpack/tsconfig-preset",
+  "extends": "@quasar/app-vite/tsconfig-preset",
   "compilerOptions": {
     "baseUrl": ".",
+    "allowImportingTsExtensions": true,
+    "allowJs": true,
+
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    // Needed to address https://github.com/quasarframework/app-extension-typescript/issues/36
+    "noEmit": true,
+    "resolveJsonModule": true,
+    "sourceMap": true,
+    "strict": true,
+    "target": "esnext",
+    "lib": ["esnext", "dom"],
+    "isolatedModules": true,
+    "skipLibCheck": true,
+
     "paths": {
+      "src/*": ["src/*"],
+      "app/*": ["*"],
+      "components/*": ["src/components/*"],
+      "layouts/*": ["src/layouts/*"],
+      "pages/*": ["src/pages/*"],
+      "assets/*": ["src/assets/*"],
       "boot/*": ["src/boot/*"],
-      "@src/*": ["src/*"],
-      "@apps/*": ["src/apps/*"],
-      "@components/*": ["src/components/*"],
-      "@layouts/*": ["src/layouts/*"],
-      "@pages/*": ["src/pages/*"],
-      "@modules/*": ["src/modules/*"],
-      "@stores/*": ["src/stores/*"]
+      "stores/*": ["src/stores/*"],
+      "@modules/appManager/appManagerRoutes": [
+        "node_modules/clubeeo-front/src/modules/appManager/appManagerRoutes.ts"
+      ],
+      "@modules/automation/automationRoutes": [
+        "node_modules/clubeeo-front/src/modules/automation/automationRoutes.ts"
+      ],
+      "@apps/_common/appProps": [
+        "node_modules/clubeeo-front/src/apps/_common/appProps.ts"
+      ],
+      "@apps/_common/appInterfaces": [
+        "node_modules/clubeeo-front/src/apps/_common/appInterfaces.ts"
+      ]
     }
-  }
+  },
+  "exclude": [
+    "./dist",
+    "./.quasar",
+    "./node_modules",
+    "./src-capacitor",
+    "./src-cordova",
+    "./quasar.config.*.temporary.compiled*"
+  ]
 }
