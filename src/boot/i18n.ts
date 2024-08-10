@@ -2,7 +2,6 @@ import { boot } from 'quasar/wrappers';
 import { createI18n } from 'vue-i18n';
 
 import messages from 'src/i18n';
-import slugify from 'slugify';
 
 export type MessageLanguages = keyof typeof messages;
 // Type-define 'en-US' as the master schema for the resource
@@ -23,7 +22,6 @@ declare module 'vue-i18n' {
 /* eslint-enable @typescript-eslint/no-empty-interface */
 
 export default boot(({ app }) => {
-  console.log(slugify('test'));
   const i18n = createI18n({
     locale: 'en-US',
     legacy: false,

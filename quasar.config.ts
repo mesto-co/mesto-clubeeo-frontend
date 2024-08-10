@@ -98,27 +98,20 @@ export default configure((ctx) => {
       ],
 
       alias: {
-        '@assets': corePath('assets'),
-        // pages: path.join(__dirname, './node_modules/clubeeo-front/src/pages'),
-        // '@components': path.join(
-        //   __dirname,
-        //   './node_modules/clubeeo-front/src/components',
-        // ),
-        // src: path.join(__dirname, './node_modules/clubeeo-front/src'),
-
-        // '@assets': path.join(__dirname, './src/assets'),
-
         apps: path.join(__dirname, './src/apps'),
         components: path.join(__dirname, './src/components'),
         layouts: path.join(__dirname, './src/layouts'),
         pages: path.join(__dirname, './src/pages'),
-        // stores: path.join(__dirname, './src/stores'),
-        // modules: path.join(__dirname, './src/modules'),
 
         '@components/DynamicAppComponent.vue': path.join(
           __dirname,
           './src/components/DynamicAppComponent.vue',
         ),
+        '@pages/club/ClubRootPage.vue': path.resolve(
+          './src/pages/club/ClubRootPage.vue',
+        ),
+
+        '@assets': corePath('assets'),
         '@src': corePath('.'),
         '@apps': corePath('apps'),
         '@components': corePath('components'),

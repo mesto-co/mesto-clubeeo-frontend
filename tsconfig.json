@@ -27,6 +27,15 @@
       "assets/*": ["src/assets/*"],
       "boot/*": ["src/boot/*"],
       "stores/*": ["src/stores/*"],
+
+      "@src/models/*": ["node_modules/clubeeo-front/src/models/*"],
+      "@src/api/*": ["node_modules/clubeeo-front/src/api/*"],
+      "@src/uses/*": ["node_modules/clubeeo-front/src/uses/*"],
+      "@stores/*": ["node_modules/clubeeo-front/src/stores/*"],
+      "@src/stores/*": ["node_modules/clubeeo-front/src/stores/*"],
+      "@src/lib/api/*": ["node_modules/clubeeo-front/src/lib/api/*"],
+      "@src/boot/axios": ["src/boot/axios.ts"],
+      "@src/state": ["node_modules/clubeeo-front/src/state"],
       "@modules/appManager/appManagerRoutes": [
         "node_modules/clubeeo-front/src/modules/appManager/appManagerRoutes.ts"
       ],
