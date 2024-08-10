@@ -10,6 +10,12 @@ ENV VERSION=${VERSION} \
 
 WORKDIR /app
 
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends apt-utils && \
+    apt-get install -y yarn && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
 RUN npm install -g typescript ts-node
 
 COPY package.json ./
@@ -19,8 +25,12 @@ RUN yarn install
 
 COPY . .
 
-RUN yarn run build
+ENV NODE_ENV=production
 
-EXPOSE 4000
+RUN yarn run build && \
+    rm -rf /var/www/html && \
+    mv /app/dist/spa /var/www/html
 
-CMD [ "yarn", "run", "serve" ]
+ENTRYPOINT ["/bin/sh"]
+
+CMD ["docker-serve.sh"]
