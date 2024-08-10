@@ -6,8 +6,8 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import ClubPage from 'components/clublayout/ClubPage.vue';
-import { appProps } from 'src/apps/_common/appProps';
+import ClubPage from '@components/clublayout/ClubPage.vue';
+import { appProps } from '@apps/_common/appProps';
 
 export default defineComponent({
   components: { ClubPage },

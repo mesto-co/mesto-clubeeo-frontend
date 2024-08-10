@@ -1,30 +1,35 @@
 <template>
   <div>
-    <q-scroll-area style='height: calc(100vh - 80px); width: 76px;'>
-      <div style='padding: 12px; width: 76px; background-color: rgb(17 17 23); min-height: calc(100vh - 76px);'>
-
-        <q-list style='width: 52px'>
+    <q-scroll-area style="height: calc(100vh - 80px); width: 76px">
+      <div
+        style="
+          padding: 12px;
+          width: 76px;
+          background-color: rgb(17 17 23);
+          min-height: calc(100vh - 76px);
+        "
+      >
+        <q-list style="width: 52px">
           <!--           <q-item-label header> Club dashboard </q-item-label>-->
           <!--{{clubList}}-->
 
-          <template
-            v-for='club in clubs'
-            :key='club.slug'
-          >
-
+          <template v-for="club in clubs" :key="club.slug">
             <q-item
               clickable
-              :to='{name: "club-home", params: {clubSlug: club.slug}}'
-              :class='{clubButtonActive: isCurrentClub(club.slug)}'
-              class='clubSelectorButton'
+              :to="{ name: 'club-home', params: { clubSlug: club.slug } }"
+              :class="{ clubButtonActive: isCurrentClub(club.slug) }"
+              class="clubSelectorButton"
             >
-              <q-avatar style='margin: 2px'>
+              <q-avatar style="margin: 2px">
                 <avatar
-                  :src='club.style.logoImg || `https://ui-avatars.com/api/?name=${club.name}&size=128&bold=true&format=svg&background=1c1c1f&color=fff`'
-                  width='48px'
-                  height='48px'
-                  :name='club.name'
-                  :alt='`${club.name} logo`'
+                  :src="
+                    club.style.logoImg ||
+                    `https://ui-avatars.com/api/?name=${club.name}&size=128&bold=true&format=svg&background=1c1c1f&color=fff`
+                  "
+                  width="48px"
+                  height="48px"
+                  :name="club.name"
+                  :alt="`${club.name} logo`"
                 />
 
                 <!--              <q-img-->
@@ -36,29 +41,25 @@
                 <!--              />-->
               </q-avatar>
             </q-item>
-
           </template>
         </q-list>
-
       </div>
     </q-scroll-area>
 
-    <div style='padding: 12px; width: 76px; background-color: rgb(17 17 23); '>
+    <div style="padding: 12px; width: 76px; background-color: rgb(17 17 23)">
       <q-list>
         <q-item
           clickable
-          class='clubSelectorButton'
-          @click='$router.push({name: "club-new"})'
+          class="clubSelectorButton"
+          @click="$router.push({ name: 'club-new' })"
         >
-          <q-avatar style='margin: 2px'>
-            <q-icon name='fa fa-plus' />
+          <q-avatar style="margin: 2px">
+            <q-icon name="fa fa-plus" />
           </q-avatar>
         </q-item>
       </q-list>
     </div>
-
   </div>
-
 </template>
 
 <style>
@@ -71,21 +72,21 @@
 }
 </style>
 
-<script lang='ts'>
+<script lang="ts">
 import { useRoute, useRouter } from 'vue-router';
 import { defineComponent, onMounted, ref } from 'vue';
 import { api } from 'boot/axios';
-import Avatar from 'components/elements/Avatar.vue';
-import { errorHasHttpCode } from 'src/lib/axiosErrorHelpers';
+import Avatar from '@components/elements/Avatar.vue';
+import { errorHasHttpCode } from '@src/lib/axiosErrorHelpers';
 import { LocalStorage } from 'quasar';
 
 interface ILoadedClub {
-  id: number
-  name: string
-  slug: string
+  id: number;
+  name: string;
+  slug: string;
   style: {
-    logoImg: string | null
-  }
+    logoImg: string | null;
+  };
 }
 
 export default defineComponent({
@@ -110,24 +111,30 @@ export default defineComponent({
           const clubSlug = $route.params.clubSlug;
           const routeName = $route.name;
           // redirect forth-and-back to force reload
-          await $router.push({name: 'login'});
+          await $router.push({ name: 'login' });
 
-          const {data: {ok}} = await api.post<{ok: boolean}>(
-            '/api/telegram/auth/code-login', {
-              code: telegramLoginCode,
-            });
+          const {
+            data: { ok },
+          } = await api.post<{ ok: boolean }>('/api/telegram/auth/code-login', {
+            code: telegramLoginCode,
+          });
 
           if (ok) {
-            await $router.push({name: routeName || undefined, params: {clubSlug}});
+            await $router.push({
+              name: routeName || undefined,
+              params: { clubSlug },
+            });
           }
         }
 
         const result = await api.post<{
           data: {
-            clubs: ILoadedClub[]
-          }
-        }>('/graphql', {
-          query: `{
+            clubs: ILoadedClub[];
+          };
+        }>(
+          '/graphql',
+          {
+            query: `{
             clubs {
               id
               name
@@ -136,25 +143,30 @@ export default defineComponent({
                 logoImg
               }
             }
-          }`
-        }, {
-          headers: {
-            'X-SuppressError': '401'
+          }`,
+          },
+          {
+            headers: {
+              'X-SuppressError': '401',
+            },
           }
-        });
+        );
 
         clubs.value = result.data.data.clubs;
       } catch (e) {
         console.log(errorHasHttpCode(e, 401));
-        LocalStorage.set('afterLoginRoute', {name: $route.name, params: $route.params});
+        LocalStorage.set('afterLoginRoute', {
+          name: $route.name,
+          params: $route.params,
+        });
         // await $router.push({name: 'login'});
       }
     });
 
     return {
       clubs,
-      isCurrentClub
+      isCurrentClub,
     };
-  }
+  },
 });
 </script>

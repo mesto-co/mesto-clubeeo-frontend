@@ -47,12 +47,12 @@ import { RouteParamsRaw, useRouter } from 'vue-router';
 import { LocalStorage } from 'quasar';
 import { onMounted, provide, ref } from 'vue';
 import MetaMaskOnboarding from '@metamask/onboarding';
-// import EthWalletsLogin from 'components/wallets/EthWalletsLogin.vue';
-// import NearWalletLoginBtn from 'components/wallets/NearWalletLoginBtn.vue';
-import { inBrowser } from 'src/lib/inBrowser';
-import TelegramBotLoginBtn from 'src/components/telegram/TelegramBotLoginBtn.vue';
-import { state } from 'src/state';
-import { useMeInClubStore } from 'src/stores/meInClubStore';
+// import EthWalletsLogin from '@components/wallets/EthWalletsLogin.vue';
+// import NearWalletLoginBtn from '@components/wallets/NearWalletLoginBtn.vue';
+import { inBrowser } from '@src/lib/inBrowser';
+import TelegramBotLoginBtn from '@src/components/telegram/TelegramBotLoginBtn.vue';
+import { state } from '@src/state';
+import { useMeInClubStore } from '@src/stores/meInClubStore';
 
 export default {
   components: { TelegramBotLoginBtn },

@@ -1,9 +1,9 @@
 import { useRoute, useRouter } from 'vue-router';
 import { computed, reactive, ref } from 'vue';
-import { getClub, IClub, IMeInClub } from 'src/api/clubApi';
-import { useSessionStore } from 'stores/sessionStore';
+import { getClub, IClub, IMeInClub } from '@src/api/clubApi';
+import { useSessionStore } from '@stores/sessionStore';
 import { Notify } from 'quasar';
-import { api } from 'src/boot/axios';
+import { api } from '@src/boot/axios';
 
 export type TUseClub = ReturnType<typeof useClub>;
 

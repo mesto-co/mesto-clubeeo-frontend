@@ -1,25 +1,21 @@
 <template>
   <club-page
-    :header='appData.title'
-    sticky='bottom'
-    :loading='appData.isLoading || isLoading'
+    :header="appData.title"
+    sticky="bottom"
+    :loading="appData.isLoading || isLoading"
   >
-
-    <div
-      v-html='data.content'
-    />
-
+    <div v-html="data.content" />
   </club-page>
 </template>
 
-<script lang='ts'>
+<script lang="ts">
 import { defineComponent } from 'vue';
-import { useLoad } from 'src/uses/useLoaders';
-import ClubPage from 'components/clublayout/ClubPage.vue';
-import { appProps } from 'src/apps/_common/appProps';
+import { useLoad } from '@src/uses/useLoaders';
+import ClubPage from '@components/clublayout/ClubPage.vue';
+import { appProps } from '@apps/_common/appProps';
 
 interface IPageAppData {
-  content: string
+  content: string;
 }
 
 export default defineComponent({
@@ -27,14 +23,17 @@ export default defineComponent({
   props: appProps,
   setup(props) {
     const { data, isLoading } = useLoad<IPageAppData, 'page'>({
-      url: () => props.appData?.clubId && props.appData?.appId ? `/api/club/${props.appData.clubId}/apps/${props.appData.appId}/page` : null,
-      key: 'page'
+      url: () =>
+        props.appData?.clubId && props.appData?.appId
+          ? `/api/club/${props.appData.clubId}/apps/${props.appData.appId}/page`
+          : null,
+      key: 'page',
     });
 
     return {
       data,
       isLoading,
-    }
-  }
+    };
+  },
 });
 </script>

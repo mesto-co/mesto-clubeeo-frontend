@@ -1,28 +1,25 @@
 <template>
-
   <apexchart
     class="charts"
     type="line"
     :options="chartOptions"
     :series="series"
   ></apexchart>
-
 </template>
 
-<script lang='ts'>
-
+<script lang="ts">
 import { computed, defineComponent, PropType } from 'vue';
-import { TTimeSeries } from 'src/models/analytics';
+import { TTimeSeries } from '@src/models/analytics';
 
 export default defineComponent({
   props: {
     data: {
-      type: Object as PropType<TTimeSeries>
+      type: Object as PropType<TTimeSeries>,
     },
     minMax: {
       type: Number,
-      default: 10
-    }
+      default: 10,
+    },
   },
   setup(props) {
     const values = computed(() => Object.values(props.data || {}));
@@ -37,13 +34,14 @@ export default defineComponent({
       },
       stroke: {
         width: 1,
-        curve: 'smooth'
+        curve: 'smooth',
       },
       // colors: ['#071455'],
       plotOptions: {
         bar: {
           colors: {
-            ranges: [{ from: 0, to: 100, color: '#1A5CFF'}
+            ranges: [
+              { from: 0, to: 100, color: '#1A5CFF' },
               // }, {
               //   from: 100,
               //   to: 200,
@@ -53,17 +51,17 @@ export default defineComponent({
               //   to: 300,
               //   color: '#7E63C2'
               // }]
-            ]
+            ],
           },
           columnWidth: '50',
-        }
+        },
       },
       legend: {
-        show: false
+        show: false,
       },
       dataLabels: {
         enabled: false,
-        enabledOnSeries: [1]
+        enabledOnSeries: [1],
       },
       xaxis: {
         type: 'numeric',
@@ -80,7 +78,7 @@ export default defineComponent({
           },
           formatter: function (val: number) {
             return values.value.length - val;
-          }
+          },
         },
       },
       yaxis: {
@@ -102,7 +100,7 @@ export default defineComponent({
         borderColor: '#1A5CFF',
       },
       tooltip: {
-        enabled: false
+        enabled: false,
       },
       markers: {
         size: 2,
@@ -122,20 +120,21 @@ export default defineComponent({
         showNullDataPoints: true,
         hover: {
           size: undefined,
-          sizeOffset: 3
-        }
+          sizeOffset: 3,
+        },
       },
     }));
 
     return {
       chartOptions,
-      series: computed(() => [{
-        name: 'Trend Analysis',
-        type: 'bar',
-        data: values.value,
-      }]),
+      series: computed(() => [
+        {
+          name: 'Trend Analysis',
+          type: 'bar',
+          data: values.value,
+        },
+      ]),
     };
-  }
+  },
 });
-
 </script>

@@ -1,46 +1,31 @@
 <template>
-
-  <div class='home-page'>
+  <div class="home-page">
     <club-hero />
 
     <h1>
       {{ club.name }}
     </h1>
 
-    <div class='description-wrapper'>
-      <div
-        v-html='club.description'
-      />
+    <div class="description-wrapper">
+      <div v-html="club.description" />
     </div>
 
-    <buy-link-btn
-      :buy-links='club.buyLinks'
-    />
+    <buy-link-btn :buy-links="club.buyLinks" />
   </div>
 
-  <div class='text-center q-pa-md'>
+  <div class="text-center q-pa-md">
     <div>
-      <social-links
-        :social-links='club.socialLinks'
-      />
+      <social-links :social-links="club.socialLinks" />
     </div>
 
-    <div
-      v-if='club.website'
-      class='clubpage-website'
-    >
-      <site-link
-        :url='club.website'
-      />
+    <div v-if="club.website" class="clubpage-website">
+      <site-link :url="club.website" />
     </div>
   </div>
-
 </template>
 
-<style lang='scss'>
-
+<style lang="scss">
 .home-page {
-
   div.logo-wrapper {
     display: flex;
     justify-content: center;
@@ -75,18 +60,16 @@
   .clubpage-website {
     margin-top: 12px;
   }
-
 }
-
 </style>
 
-<script lang='ts'>
+<script lang="ts">
 import SiteLink from './SiteLink.vue';
 import SocialLinks from './SocialLinks.vue';
 import BuyLinkBtn from './BuyLinkBtn.vue';
 import { defineComponent, inject, onMounted } from 'vue';
-import { state } from 'src/state';
-import ClubHero from 'components/clubpage/ClubHero.vue';
+import { state } from '@src/state';
+import ClubHero from '@components/clubpage/ClubHero.vue';
 
 export default defineComponent({
   components: { ClubHero, BuyLinkBtn, SocialLinks, SiteLink },
@@ -95,13 +78,13 @@ export default defineComponent({
 
     onMounted(async () => {
       await state.$club.loadClub();
-    })
+    });
 
     return {
       club: state.$club.club,
       meInClub: state.$club.meInClub,
       clubStyle,
-    }
-  }
+    };
+  },
 });
 </script>

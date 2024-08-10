@@ -1,30 +1,26 @@
 <template>
-  <q-page class='flex flex-center' style='background: #111117'>
-    <div>
+  <q-page class="flex flex-center" style="background: #111117">
+    <div></div>
 
-    </div>
-
-    <div class='text-white'>
+    <div class="text-white">
       <eth-wallets-login
-        :redirect-path='`${window.location.origin}${$route.fullPath}`'
-        buttons-class='clubButtonActive'
-        :app-data='appData'
-        @loggedIn='onLoggedIn'
+        :redirect-path="`${window.location.origin}${$route.fullPath}`"
+        buttons-class="clubButtonActive"
+        :app-data="appData"
+        @loggedIn="onLoggedIn"
       />
     </div>
 
-    <div>
-
-    </div>
+    <div></div>
   </q-page>
 </template>
 
-<script lang='ts'>
+<script lang="ts">
 import { defineComponent } from 'vue';
 import { useRouter } from 'vue-router';
-import EthWalletsLogin from 'components/wallets/EthWalletsLogin.vue';
-import { useClubStore } from 'stores/clubStore';
-import { appProps } from 'src/apps/_common/appProps';
+import EthWalletsLogin from '@components/wallets/EthWalletsLogin.vue';
+import { useClubStore } from '@stores/clubStore';
+import { appProps } from '@apps/_common/appProps';
 
 export default defineComponent({
   components: { EthWalletsLogin },
@@ -40,6 +36,6 @@ export default defineComponent({
       },
       window,
     };
-  }
+  },
 });
 </script>

@@ -10,10 +10,10 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import ClubAside from 'components/clubpage/clubAside/ClubAside.vue';
-import ClubAside2 from 'components/clubpage/clubAside/ClubAside2.vue';
-import ClubAside3 from 'components/clubpage/clubAside/ClubAside3.vue';
-import ClubAsideTg from 'components/clubpage/clubAside/ClubAsideTg.vue';
+import ClubAside from '@components/clubpage/clubAside/ClubAside.vue';
+import ClubAside2 from '@components/clubpage/clubAside/ClubAside2.vue';
+import ClubAside3 from '@components/clubpage/clubAside/ClubAside3.vue';
+import ClubAsideTg from '@components/clubpage/clubAside/ClubAsideTg.vue';
 
 export default defineComponent({
   name: 'ClubAsideProxy',

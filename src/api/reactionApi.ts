@@ -1,14 +1,13 @@
 import { api } from 'boot/axios';
-import { IPostView } from 'src/api/postApi';
-
+import { IPostView } from '@src/api/postApi';
 
 export interface IPostResponse {
-  post: IPostView
+  post: IPostView;
 }
 
 export interface IPostPostReactionRequest {
-  postId: number
-  reaction: PostReactionTypes
+  postId: number;
+  reaction: PostReactionTypes;
 }
 
 export enum PostReactionTypes {
@@ -18,7 +17,11 @@ export enum PostReactionTypes {
   fire = 'fire',
 }
 
-export const postPostReaction = async (postReaction: IPostPostReactionRequest) => {
-  const response = await api.post<IPostResponse>('/api/post/reaction', { postReaction });
+export const postPostReaction = async (
+  postReaction: IPostPostReactionRequest
+) => {
+  const response = await api.post<IPostResponse>('/api/post/reaction', {
+    postReaction,
+  });
   return response.data;
 };

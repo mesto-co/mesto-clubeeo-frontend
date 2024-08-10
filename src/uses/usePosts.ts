@@ -1,9 +1,9 @@
-import { TUseClub } from 'src/uses/useClub';
+import { TUseClub } from '@src/uses/useClub';
 import { ref } from 'vue';
-import { getPostList, IPagination, IPostView } from 'src/api/postApi';
-import { TUseClubApp } from 'src/uses/useClubApp';
+import { getPostList, IPagination, IPostView } from '@src/api/postApi';
+import { TUseClubApp } from '@src/uses/useClubApp';
 
-export const usePosts = (dep: { $club: TUseClub, $clubApp: TUseClubApp}) => {
+export const usePosts = (dep: { $club: TUseClub; $clubApp: TUseClubApp }) => {
   const { $club, $clubApp } = dep;
 
   const isLoading = ref(false);
@@ -13,7 +13,7 @@ export const usePosts = (dep: { $club: TUseClub, $clubApp: TUseClubApp}) => {
   const pagination = ref<IPagination>({
     page: 1,
     take: 100,
-    skip: 0
+    skip: 0,
   });
 
   const loadPostList = async () => {
@@ -32,11 +32,12 @@ export const usePosts = (dep: { $club: TUseClub, $clubApp: TUseClubApp}) => {
     isLoading.value = false;
   };
 
-  const updatePostState = (post: {id: number}, data: IPostView) => {
+  const updatePostState = (post: { id: number }, data: IPostView) => {
     const postId = data.id;
-    if (!postId || postId !== post.id) return console.error("postId don't match");
+    if (!postId || postId !== post.id)
+      return console.error("postId don't match");
 
-    const currentPost = posts.value.filter(p => p.id === postId);
+    const currentPost = posts.value.filter((p) => p.id === postId);
 
     return Object.assign(currentPost, data);
   };

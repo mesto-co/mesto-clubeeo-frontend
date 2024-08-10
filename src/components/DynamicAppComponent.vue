@@ -1,17 +1,14 @@
 <template>
   <template v-if="!dynamicApp.isLoading">
-    <eth-wallet-app
+    <!-- <eth-wallet-app
       v-if="dynamicApp.appName === 'eth-wallet'"
       :app-data="dynamicApp"
-    />
-    <eth-gating-app
+    /> -->
+    <!-- <eth-gating-app
       v-else-if="dynamicApp.appName === 'eth-gating'"
       :app-data="dynamicApp"
-    />
-    <feed-app
-      v-else-if="dynamicApp.appName === 'feed'"
-      :app-data="dynamicApp"
-    />
+    /> -->
+    <feed-app v-if="dynamicApp.appName === 'feed'" :app-data="dynamicApp" />
     <leaderboard-app
       v-else-if="dynamicApp.appName === 'leaderboard'"
       :app-data="dynamicApp"
@@ -39,15 +36,15 @@
 
 <script lang="ts">
 import { defineComponent, onMounted, watch } from 'vue';
-import { useDynamicAppStore } from 'stores/dynamicAppStore';
-import ClubPage from 'components/clublayout/ClubPage.vue';
-import PlatformClubsApp from 'src/apps/PlatformClubsApp/PlatformClubsApp.vue';
-import PageApp from 'src/apps/PageApp/PageApp.vue';
-import LeaderboardApp from 'src/apps/LeaderboardApp/LeaderboardApp.vue';
-import EthWalletApp from 'src/apps/EthWalletApp/EthWalletApp.vue';
-import EthGatingApp from 'src/apps/EthGatingApp/EthGatingApp.vue';
-import FeedApp from 'src/apps/FeedApp/FeedApp.vue';
-import TelegramApp from 'src/apps/TelegramApp/TelegramApp.vue';
+import { useDynamicAppStore } from '@stores/dynamicAppStore';
+import ClubPage from '@components/clublayout/ClubPage.vue';
+import PlatformClubsApp from '@apps/PlatformClubsApp/PlatformClubsApp.vue';
+import PageApp from '@apps/PageApp/PageApp.vue';
+import LeaderboardApp from '@apps/LeaderboardApp/LeaderboardApp.vue';
+// import EthWalletApp from '@apps/EthWalletApp/EthWalletApp.vue';
+// import EthGatingApp from '@apps/EthGatingApp/EthGatingApp.vue';
+import FeedApp from '@apps/FeedApp/FeedApp.vue';
+import TelegramApp from '@apps/TelegramApp/TelegramApp.vue';
 
 const routeParamToString = (param: string | string[]): string => {
   if (Array.isArray(param)) return param[0] || ''; //take first if multiple
@@ -58,8 +55,8 @@ export default defineComponent({
   name: 'DynamicAppComponent',
   components: {
     FeedApp,
-    EthGatingApp,
-    EthWalletApp,
+    // EthGatingApp,
+    // EthWalletApp,
     LeaderboardApp,
     PageApp,
     PlatformClubsApp,

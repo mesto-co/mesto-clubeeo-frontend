@@ -1,16 +1,14 @@
 <template>
-  <snippet-renderer
-    :data='pageData'
-  />
+  <snippet-renderer :data="pageData" />
 </template>
 
-<script lang='ts'>
+<script lang="ts">
 import { defineComponent, ref } from 'vue';
 // import { useRoute } from 'vue-router';
-import { screenPage, content } from 'components/snippets/shortcuts';
+import { screenPage, content } from '@components/snippets/shortcuts';
 
 export default defineComponent({
-  components: { },
+  components: {},
   setup() {
     // const $route = useRoute();
 
@@ -24,21 +22,24 @@ export default defineComponent({
           cards: [
             {
               title: 'web2 to web3 transformations',
-            },{
+            },
+            {
               title: 'events',
-            },{
+            },
+            {
               title: 'NFT projects',
-            },{
+            },
+            {
               title: 'p2e games',
             },
-          ]
+          ],
         })
       )
     );
 
     return {
-      pageData
+      pageData,
     };
-  }
+  },
 });
 </script>

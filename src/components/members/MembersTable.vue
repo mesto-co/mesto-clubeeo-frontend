@@ -74,9 +74,9 @@
 </template>
 
 <script lang="ts">
-import { defaultPagination } from 'src/lib/components/table';
+import { defaultPagination } from '@src/lib/components/table';
 import { defineComponent } from 'vue';
-import { shortenAddress as shortenAddressFunction } from 'src/lib/components/chains';
+import { shortenAddress as shortenAddressFunction } from '@src/lib/components/chains';
 
 const columns = [
   {

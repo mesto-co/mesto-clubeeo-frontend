@@ -1,27 +1,36 @@
 <template>
   <club-page
-    header='trigger'
-    sticky='top'
-    :back-link='{name: "club-automation"}'
+    header="trigger"
+    sticky="top"
+    :back-link="{ name: 'club-automation' }"
   >
     <template v-slot:buttons>
-      <club-button label='dry run' class='clubButtonActive q-mr-sm' @click='onDryRunClick' />
-      <club-button label='save trigger' class='clubButtonActive' @click='onSave' />
+      <club-button
+        label="dry run"
+        class="clubButtonActive q-mr-sm"
+        @click="onDryRunClick"
+      />
+      <club-button
+        label="save trigger"
+        class="clubButtonActive"
+        @click="onSave"
+      />
     </template>
 
     <trigger-editor />
-
   </club-page>
-
 </template>
 
-<script lang='ts'>
-import ClubPage from 'src/components/clublayout/ClubPage.vue';
+<script lang="ts">
+import ClubPage from '@src/components/clublayout/ClubPage.vue';
 import { defineComponent, onMounted, watch } from 'vue';
-import ClubButton from 'components/clubpage/ClubButton.vue';
-import { requireParam } from 'src/uses/useAppRoute';
-import TriggerEditor from 'src/modules/automation/components/TriggerEditor.vue';
-import { useTriggerDryRunStore, useTriggerStore } from 'src/modules/automation/useTriggerStore';
+import ClubButton from '@components/clubpage/ClubButton.vue';
+import { requireParam } from '@src/uses/useAppRoute';
+import TriggerEditor from '@src/modules/automation/components/TriggerEditor.vue';
+import {
+  useTriggerDryRunStore,
+  useTriggerStore,
+} from '@src/modules/automation/useTriggerStore';
 
 export default defineComponent({
   components: { TriggerEditor, ClubButton, ClubPage },
@@ -36,18 +45,17 @@ export default defineComponent({
       if (!triggerId.value) return;
       if (!clubSlug.value) return;
       await trigger.load(clubSlug.value, triggerId.value);
-    }
+    };
     onMounted(load);
     watch([clubSlug, triggerId], load);
 
     const onSave = async () => {
       await trigger.save(clubSlug.value);
-    }
+    };
 
     const onDryRunClick = async () => {
       await triggerDryRun.dryRun(clubSlug.value);
-    }
-
+    };
 
     return {
       clubSlug,
@@ -56,6 +64,6 @@ export default defineComponent({
       onSave,
       onDryRunClick,
     };
-  }
-})
+  },
+});
 </script>

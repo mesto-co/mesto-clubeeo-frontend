@@ -1,31 +1,20 @@
 <template>
   <div>
-
-    <div class='flex'>
-      <template v-for='badge of badges' v-bind:key='badge.name'>
-        <badge
-          size='48px'
-          class='q-mt-md'
-          :badge='badge'
-          :showName='false'
-        />
+    <div class="flex">
+      <template v-for="badge of badges" v-bind:key="badge.name">
+        <badge size="48px" class="q-mt-md" :badge="badge" :showName="false" />
       </template>
     </div>
-
   </div>
 
-  <div style='padding: 30px 0' v-if='!isClubLoading'>
-    <template v-if='!isLoggedIn'>
-      <div
-        v-html='club.welcome || clubWelcomeDefault'
-      />
+  <div style="padding: 30px 0" v-if="!isClubLoading">
+    <template v-if="!isLoggedIn">
+      <div v-html="club.welcome || clubWelcomeDefault" />
 
-      <login-buttons
-        :meInClub='meInClub'
-      />
+      <login-buttons :meInClub="meInClub" />
     </template>
 
-    <template v-else-if='!meInClub.services.tg.loggedIn'>
+    <template v-else-if="!meInClub.services.tg.loggedIn">
       <!--          <telegram-login-->
       <!--            mode='callback'-->
       <!--            :telegram-login='meInClub.services.tg.telegramLoginBot'-->
@@ -35,133 +24,133 @@
       <!--          />-->
 
       <telegram-bot-login-btn
-        class='full-width q-mb-sm'
-        :telegram-login-bot='meInClub.services.tg.telegramLoginBot'
-        :login-code='meInClub.services.tg.telegramLoginCode'
-        @click='onTelegramLoginClicked'
+        class="full-width q-mb-sm"
+        :telegram-login-bot="meInClub.services.tg.telegramLoginBot"
+        :login-code="meInClub.services.tg.telegramLoginCode"
+        @click="onTelegramLoginClicked"
       />
     </template>
 
-    <template v-else-if='meInClub.services.tg.chatInviteLink && !club.settings.asideDisableTelegram'>
+    <template
+      v-else-if="
+        meInClub.services.tg.chatInviteLink &&
+        !club.settings.asideDisableTelegram
+      "
+    >
       <club-button
-        :href='meInClub.services.tg.chatInviteLink'
-        label='Join Telegram'
-        class='full-width q-mb-sm'
-        icon='fab fa-telegram-plane'
-        scheme='inverse'
+        :href="meInClub.services.tg.chatInviteLink"
+        label="Join Telegram"
+        class="full-width q-mb-sm"
+        icon="fab fa-telegram-plane"
+        scheme="inverse"
       />
       <!--      :label='`${club.name || club.slug} in Telegram`'-->
     </template>
 
-    <template v-if='isLoggedIn && discordValidation'>
+    <template v-if="isLoggedIn && discordValidation">
       <discord-validation-btn
-        class='full-width q-mb-sm'
-        :code='discordValidation'
+        class="full-width q-mb-sm"
+        :code="discordValidation"
       />
     </template>
     <template
-      v-else-if='isLoggedIn && !discordValidation && club.socialLinks.discord && !club.settings.asideDisableDiscord'>
+      v-else-if="
+        isLoggedIn &&
+        !discordValidation &&
+        club.socialLinks.discord &&
+        !club.settings.asideDisableDiscord
+      "
+    >
       <club-button
-        :href='club.socialLinks.discord'
-        class='full-width q-mb-sm'
-        scheme='inverse'
-        :icon='mapSocialToIcon("discord")'
-        label='Join Discord'
+        :href="club.socialLinks.discord"
+        class="full-width q-mb-sm"
+        scheme="inverse"
+        :icon="mapSocialToIcon('discord')"
+        label="Join Discord"
       />
       <!--        :label='`${club.name || club.slug} in Discord`'-->
       <!--      />-->
     </template>
 
-    <template v-if='isLoggedIn && club.settings.showDashboardLink'>
+    <template v-if="isLoggedIn && club.settings.showDashboardLink">
       <club-button
-        :to='{name: "club-home"}'
-        class='full-width q-mb-sm'
-        scheme='inverse'
+        :to="{ name: 'club-home' }"
+        class="full-width q-mb-sm"
+        scheme="inverse"
       >
         <q-img
-          src='/icons/Fav-Icon-Black.png' width='24px' height='24px'
-          class='q-mr-sm'
+          src="/icons/Fav-Icon-Black.png"
+          width="24px"
+          height="24px"
+          class="q-mr-sm"
         />
         {{ `${club.name || club.slug} club` }}
       </club-button>
     </template>
 
-    <template v-if='isLoggedIn && meInClub.services.tg.loggedIn && club.settings.whitelistButton'>
-      <whitelist-button
-        :club='club'
-      />
+    <template
+      v-if="
+        isLoggedIn &&
+        meInClub.services.tg.loggedIn &&
+        club.settings.whitelistButton
+      "
+    >
+      <whitelist-button :club="club" />
     </template>
   </div>
 
-  <div
-    v-if="!isClubLoading"
-    class='q-pb-md'
-  >
-
+  <div v-if="!isClubLoading" class="q-pb-md">
     <me-in-club-widget
-      v-if='!club.settings.asideHideMe && meInClubStore.data.loggedIn'
-      :me-in-club='meInClubStore.data'
-      class='full-width'
-      @click='meInClubMenuShowing = true'
+      v-if="!club.settings.asideHideMe && meInClubStore.data.loggedIn"
+      :me-in-club="meInClubStore.data"
+      class="full-width"
+      @click="meInClubMenuShowing = true"
     >
-      <q-btn
-        icon='fa-solid fa-caret-up'
-        size='sm'
-        dense flat
-      >
-
+      <q-btn icon="fa-solid fa-caret-up" size="sm" dense flat>
         <q-menu v-model="meInClubMenuShowing">
-
-          <q-list dense style='min-width: 100px'>
-<!--            <q-separator />-->
+          <q-list dense style="min-width: 100px">
+            <!--            <q-separator />-->
             <q-item clickable v-close-popup>
-              <q-item-section
-                @click='onLogOut'
-              >Log out</q-item-section>
+              <q-item-section @click="onLogOut">Log out</q-item-section>
             </q-item>
           </q-list>
-
         </q-menu>
       </q-btn>
     </me-in-club-widget>
-
   </div>
 
-  <q-inner-loading
-    :showing='isClubLoading'
-    dark
-  />
-
+  <q-inner-loading :showing="isClubLoading" dark />
 </template>
 
-<script lang='ts'>
+<script lang="ts">
 import { computed, defineComponent, inject, onMounted, ref, watch } from 'vue';
 import { api } from 'boot/axios';
-import { state } from 'src/state';
-import { IClubStyle } from 'src/models/clubStyle';
+import { state } from '@src/state';
+import { IClubStyle } from '@src/models/clubStyle';
 import { useQuasar } from 'quasar';
-import ClubButton from 'components/clubpage/ClubButton.vue';
-import TelegramBotLoginBtn from 'components/telegram/TelegramBotLoginBtn.vue';
+import ClubButton from '@components/clubpage/ClubButton.vue';
+import TelegramBotLoginBtn from '@components/telegram/TelegramBotLoginBtn.vue';
 import { useRoute } from 'vue-router';
-import DiscordValidationBtn from 'src/apps/DiscordApp/components/DiscordValidationBtn.vue';
-import { mapSocialToIcon } from 'src/lib/components/socials';
-import WhitelistButton from 'components/clubpage/WhitelistButton.vue';
-import LoginButtons from 'components/clubpage/LoginButtons.vue';
-import MeInClubWidget from 'components/me/MeInClubWidget.vue';
-import { useMeInClubStore } from 'stores/meInClubStore';
-import Badge from 'components/clubpage/Badge.vue';
-import { useLogout } from 'src/uses/useLogout';
+import DiscordValidationBtn from '@apps/DiscordApp/components/DiscordValidationBtn.vue';
+import { mapSocialToIcon } from '@src/lib/components/socials';
+import WhitelistButton from '@components/clubpage/WhitelistButton.vue';
+import LoginButtons from '@components/clubpage/LoginButtons.vue';
+import MeInClubWidget from '@components/me/MeInClubWidget.vue';
+import { useMeInClubStore } from '@stores/meInClubStore';
+import Badge from '@components/clubpage/Badge.vue';
+import { useLogout } from '@src/uses/useLogout';
 
-const clubWelcomeDefault = '<h2>Welcome to the club</h2><p>Please, log in using a wallet with NFT community pass</p>';
+const clubWelcomeDefault =
+  '<h2>Welcome to the club</h2><p>Please, log in using a wallet with NFT community pass</p>';
 
 interface ITelegramUser {
-  auth_date: number,
-  hash: string,
-  id: number,
-  first_name: string,
-  last_name: string,
-  photo_url: string,
-  username: string,
+  auth_date: number;
+  hash: string;
+  id: number;
+  first_name: string;
+  last_name: string;
+  photo_url: string;
+  username: string;
 }
 
 export default defineComponent({
@@ -173,7 +162,7 @@ export default defineComponent({
     WhitelistButton,
     DiscordValidationBtn,
     TelegramBotLoginBtn,
-    ClubButton
+    ClubButton,
   },
   emits: ['reload'],
   setup(props, { emit }) {
@@ -186,7 +175,10 @@ export default defineComponent({
     const discordValidation = computed(() => $route.query.discordValidation);
 
     const telegramAuthCallback = async (user: ITelegramUser) => {
-      const result = await api.post<{ ok: boolean }>('/api/telegram/auth/login', user);
+      const result = await api.post<{ ok: boolean }>(
+        '/api/telegram/auth/login',
+        user
+      );
 
       if (result.data.ok) {
         await state.$club.loadClub();
@@ -202,7 +194,6 @@ export default defineComponent({
     const isMobileSafari = computed(() => {
       return $q.platform.is.mobile && $q.platform.is.safari;
     });
-
 
     const isLoggedIn = computed(() => {
       if (meInClub.wallets.eth?.loggedIn) return true;
@@ -224,14 +215,11 @@ export default defineComponent({
     onMounted(async () => {
       await meInClubStore.loadByRoute();
     });
-    watch(
-      state.$club.isLoading,
-      async (isLoading) => {
-        if (!isLoading) {
-          await meInClubStore.loadByRoute();
-        }
+    watch(state.$club.isLoading, async (isLoading) => {
+      if (!isLoading) {
+        await meInClubStore.loadByRoute();
       }
-    )
+    });
 
     const $logout = useLogout();
 
@@ -239,7 +227,7 @@ export default defineComponent({
       await $logout.logout();
 
       emit('reload', { reason: 'logged-out' });
-    }
+    };
 
     const meInClubMenuShowing = ref(false);
 
@@ -249,7 +237,9 @@ export default defineComponent({
       club: state.$club.club,
       meInClub: state.$club.meInClub,
       meInClubStore,
-      isClubLoading: computed(() => state.$club.isLoading.value || !state.$club.isOnceLoaded.value),
+      isClubLoading: computed(
+        () => state.$club.isLoading.value || !state.$club.isOnceLoaded.value
+      ),
       telegramAuthCallback,
       onTelegramLoginClicked,
       isLoggedIn,
@@ -263,6 +253,6 @@ export default defineComponent({
       meInClubMenuShowing,
       badges,
     };
-  }
+  },
 });
 </script>

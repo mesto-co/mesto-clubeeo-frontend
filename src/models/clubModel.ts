@@ -1,6 +1,6 @@
-import { ILoadedClub } from 'src/api/clubGraphql';
-import { getDefaultDashClubStyle } from 'src/models/clubStyle';
-import { getDefaultMeInClub } from 'src/models/meInClub';
+import { ILoadedClub } from '@src/api/clubGraphql';
+import { getDefaultDashClubStyle } from '@src/models/clubStyle';
+import { getDefaultMeInClub } from '@src/models/meInClub';
 
 export const getDefaultClub = (): ILoadedClub => {
   return {
@@ -12,5 +12,5 @@ export const getDefaultClub = (): ILoadedClub => {
     style: getDefaultDashClubStyle(),
     meInClub: getDefaultMeInClub(),
     settings: {},
-  }
-}
+  };
+};

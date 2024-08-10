@@ -29,12 +29,12 @@
 <script lang="ts">
 import { defineComponent, onMounted, ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
-import { state } from 'src/state';
-import ClubPage from 'components/clublayout/ClubPage.vue';
-import { ILoadMemberResponse, loadMember } from 'src/api/clubApi';
-import MemberRolesManager from 'components/dashboard/member/MemberRolesManager.vue';
-import MemberBadgesManager from 'components/dashboard/member/MemberBadgesManager.vue';
-import { requireParam } from 'src/uses/useAppRoute';
+import { state } from '@src/state';
+import ClubPage from '@components/clublayout/ClubPage.vue';
+import { ILoadMemberResponse, loadMember } from '@src/api/clubApi';
+import MemberRolesManager from '@components/dashboard/member/MemberRolesManager.vue';
+import MemberBadgesManager from '@components/dashboard/member/MemberBadgesManager.vue';
+import { requireParam } from '@src/uses/useAppRoute';
 
 export default defineComponent({
   components: { MemberBadgesManager, MemberRolesManager, ClubPage },

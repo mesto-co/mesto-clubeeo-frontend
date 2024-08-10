@@ -1,8 +1,8 @@
 import { defineStore } from 'pinia';
-import { getDefaultMeInClub, IMeInClub } from 'src/models/meInClub';
+import { getDefaultMeInClub, IMeInClub } from '@src/models/meInClub';
 import { api } from 'boot/axios';
-import { useClubStore } from 'stores/clubStore';
-import { state } from 'src/state';
+import { useClubStore } from '@stores/clubStore';
+import { state } from '@src/state';
 
 const clubStore = useClubStore();
 

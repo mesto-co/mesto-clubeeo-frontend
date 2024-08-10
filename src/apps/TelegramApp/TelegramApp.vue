@@ -50,9 +50,9 @@
 
 <script lang="ts">
 import { computed, defineComponent, ref } from 'vue';
-import { useLoadIndex } from 'src/uses/useLoaders';
-import ClubPage from 'components/clublayout/ClubPage.vue';
-import { appProps } from 'src/apps/_common/appProps';
+import { useLoadIndex } from '@src/uses/useLoaders';
+import ClubPage from '@components/clublayout/ClubPage.vue';
+import { appProps } from '@apps/_common/appProps';
 
 const columns = [
   {

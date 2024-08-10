@@ -159,15 +159,15 @@
 import { computed, defineComponent, onMounted, ref } from 'vue';
 import { api } from 'boot/axios';
 import { useRoute } from 'vue-router';
-import { shortenAddress } from 'src/lib/components/chains';
-import MembersTable from 'components/members/MembersTable.vue';
+import { shortenAddress } from '@src/lib/components/chains';
+import MembersTable from '@components/members/MembersTable.vue';
 import { Notify } from 'quasar';
-import ClubButton from 'components/clubpage/ClubButton.vue';
-import ClubPage from 'components/clublayout/ClubPage.vue';
-import { gqlErrorNotification } from 'src/lib/notifications';
-import { TGQLErrors } from 'src/lib/gqlInterfaces';
-import { IPagination } from 'src/lib/components/table';
-import { useMeInClubStore } from 'stores/meInClubStore';
+import ClubButton from '@components/clubpage/ClubButton.vue';
+import ClubPage from '@components/clublayout/ClubPage.vue';
+import { gqlErrorNotification } from '@src/lib/notifications';
+import { TGQLErrors } from '@src/lib/gqlInterfaces';
+import { IPagination } from '@src/lib/components/table';
+import { useMeInClubStore } from '@stores/meInClubStore';
 
 interface IFetchedUser {
   id: number;

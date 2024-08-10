@@ -9,6 +9,7 @@
 /* eslint-env node */
 /* eslint-disable @typescript-eslint/no-var-requires */
 const { configure } = require('quasar/wrappers');
+const path = require('path');
 
 module.exports = configure(function (ctx) {
   return {
@@ -29,7 +30,11 @@ module.exports = configure(function (ctx) {
     // --> boot files are part of "main.js"
     // https://quasar.dev/quasar-cli/boot-files
     boot: [
-      'i18n', 'axios', 'global-components', 'highlightjs',
+      'i18n',
+      'axios',
+      'pinia',
+      'global-components',
+      'highlightjs',
       { server: false, path: 'apexcharts' },
       // { server: false, path: 'apexcharts' },
     ],
@@ -58,7 +63,7 @@ module.exports = configure(function (ctx) {
       env: {
         APP_ADDRESS: process.env.APP_ADDRESS,
         BACKEND_URL: process.env.BACKEND_URL,
-        NODE_ENV: process.env.NODE_ENV
+        NODE_ENV: process.env.NODE_ENV,
       },
 
       // transpile: false,
@@ -80,10 +85,24 @@ module.exports = configure(function (ctx) {
 
       // https://quasar.dev/quasar-cli/handling-webpack
       // "chain" is a webpack-chain object https://github.com/neutrinojs/webpack-chain
-      chainWebpack (chain) {
-        const nodePolyfillWebpackPlugin = require('node-polyfill-webpack-plugin')
-        chain.plugin('node-polyfill').use(nodePolyfillWebpackPlugin)
-      }
+      chainWebpack(chain) {
+        const nodePolyfillWebpackPlugin = require('node-polyfill-webpack-plugin');
+        chain.plugin('node-polyfill').use(nodePolyfillWebpackPlugin);
+      },
+
+      extendWebpack(cfg, { isServer, isClient }) {
+        cfg.resolve.alias = {
+          ...cfg.resolve.alias,
+
+          '@src': path.resolve(__dirname, './src'),
+          '@apps': path.resolve(__dirname, './src/apps'),
+          '@components': path.resolve(__dirname, './src/components'),
+          '@layouts': path.resolve(__dirname, './src/layouts'),
+          '@pages': path.resolve(__dirname, './src/pages'),
+          '@stores': path.resolve(__dirname, './src/stores'),
+          '@modules': path.resolve(__dirname, './src/modules'),
+        };
+      },
     },
 
     // Full list of options: https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-devServer
@@ -107,7 +126,7 @@ module.exports = configure(function (ctx) {
           target: process.env.TARGET_URL || 'http://localhost:9900',
           changeOrigin: true,
         },
-      }
+      },
     },
 
     // https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-framework
@@ -126,12 +145,7 @@ module.exports = configure(function (ctx) {
       // directives: [],
 
       // Quasar plugins
-      plugins: [
-        'Notify',
-        'Loading',
-        'Dialog',
-        'Meta',
-      ]
+      plugins: ['Notify', 'Loading', 'Dialog', 'Meta'],
     },
 
     // animations: 'all', // --- includes all animations

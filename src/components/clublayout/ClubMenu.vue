@@ -1,36 +1,40 @@
 <template>
   <div>
-    <q-scroll-area style='height: calc(100vh - 48px); width: 223px; background-color: rgb(29 29 39);'>
-
-      <div style='padding: 12px 8px 12px 8px; width: 223px'>
-        <q-list
-          style='margin: 0'
-        >
+    <q-scroll-area
+      style="
+        height: calc(100vh - 48px);
+        width: 223px;
+        background-color: rgb(29 29 39);
+      "
+    >
+      <div style="padding: 12px 8px 12px 8px; width: 223px">
+        <q-list style="margin: 0">
           <q-btn
             flat
             no-caps
-            class='full-width q-mb-md clubBgDark'
-            :to='{name: "club"}'
-            style='border-radius: 8px'
+            class="full-width q-mb-md clubBgDark"
+            :to="{ name: 'club' }"
+            style="border-radius: 8px"
           >
-            {{club.name}}
+            {{ club.name }}
             <q-icon
-              v-if='(club.settings || {}).isPremium'
-              name='fa-solid fa-star'
-              size='13px'
-              class='q-pl-sm clubHeaderActive'
-              style='bottom: 1px'
+              v-if="(club.settings || {}).isPremium"
+              name="fa-solid fa-star"
+              size="13px"
+              class="q-pl-sm clubHeaderActive"
+              style="bottom: 1px"
             />
           </q-btn>
 
-          <template
-            v-for='link in linksList'
-            :key='link.title'
-          >
+          <template v-for="link in linksList" :key="link.title">
             <q-item
-              v-if='link.type == "split"'
+              v-if="link.type == 'split'"
               dense
-              style='color: rgba(255,255,255,0.5); margin: 12px 0 0; font-weight: 700'
+              style="
+                color: rgba(255, 255, 255, 0.5);
+                margin: 12px 0 0;
+                font-weight: 700;
+              "
             >
               <q-item-section>
                 {{ link.title }}
@@ -38,15 +42,18 @@
             </q-item>
 
             <q-item
-              v-else-if='link.toName'
+              v-else-if="link.toName"
               clickable
-              :to='{name: link.toName, params: link.toParams || {}}'
+              :to="{ name: link.toName, params: link.toParams || {} }"
               dense
-              style='border-radius: 8px; margin: 2px 0'
-              :class='{clubButtonActive: isCurrentRoute(link.toName, link.toParams), clubMenuItem: true}'
+              style="border-radius: 8px; margin: 2px 0"
+              :class="{
+                clubButtonActive: isCurrentRoute(link.toName, link.toParams),
+                clubMenuItem: true,
+              }"
             >
-              <q-item-section v-if='link.icon' avatar>
-                <q-icon :name='link.icon' />
+              <q-item-section v-if="link.icon" avatar>
+                <q-icon :name="link.icon" />
               </q-item-section>
 
               <q-item-section>
@@ -56,26 +63,29 @@
                 <!--                 </q-item-label>-->
               </q-item-section>
 
-              <q-item-section side v-if='link.configurable'>
+              <q-item-section side v-if="link.configurable">
                 <q-btn
-                  dense round flat size='xs'
-                  icon='fa-solid fa-gear'
-                  color='white'
-                  @click.prevent='onAppSettingsClicked(link)'
+                  dense
+                  round
+                  flat
+                  size="xs"
+                  icon="fa-solid fa-gear"
+                  color="white"
+                  @click.prevent="onAppSettingsClicked(link)"
                 />
-<!--                <q-icon name='fa-solid fa-gear' size='xs' />-->
+                <!--                <q-icon name='fa-solid fa-gear' size='xs' />-->
               </q-item-section>
             </q-item>
 
             <q-item
               v-else
               clickable
-              tag='a'
-              target='_blank'
-              :href='link.url'
+              tag="a"
+              target="_blank"
+              :href="link.url"
               dense
-              style='border-radius: 8px; margin: 2px 0'
-              :class='{clubMenuItem: true}'
+              style="border-radius: 8px; margin: 2px 0"
+              :class="{ clubMenuItem: true }"
             >
               <q-item-section>
                 <q-item-label>{{ link.title }}</q-item-label>
@@ -84,44 +94,32 @@
                 <!--                 </q-item-label>-->
               </q-item-section>
 
-              <q-item-section v-if='link.icon' avatar>
-                <q-icon :name='link.icon' size='xs' />
+              <q-item-section v-if="link.icon" avatar>
+                <q-icon :name="link.icon" size="xs" />
               </q-item-section>
-
             </q-item>
-
           </template>
         </q-list>
 
-        <div
-          v-if='!menuLoaded'
-          class='text-center'
-        >
-          <q-spinner size='xl' class='q-mt-lg' />
+        <div v-if="!menuLoaded" class="text-center">
+          <q-spinner size="xl" class="q-mt-lg" />
         </div>
-
       </div>
-
     </q-scroll-area>
 
     <me-in-club-widget
-      v-if='club && club.meInClub.loggedIn'
-      :me-in-club='club.meInClub'
-      :class='{clubButtonActive: isCurrentRoute("club-me")}'
-      style='cursor: pointer;'
-      @click='$router.push({name: "club-me"})'
+      v-if="club && club.meInClub.loggedIn"
+      :me-in-club="club.meInClub"
+      :class="{ clubButtonActive: isCurrentRoute('club-me') }"
+      style="cursor: pointer"
+      @click="$router.push({ name: 'club-me' })"
     >
-      <q-btn
-        icon='fa-solid fa-user'
-        size='sm'
-        dense flat
-      />
+      <q-btn icon="fa-solid fa-user" size="sm" dense flat />
     </me-in-club-widget>
-
   </div>
 </template>
 
-<style lang='scss' scoped>
+<style lang="scss" scoped>
 .q-item.clubMenuItem {
   color: inherit;
 
@@ -131,42 +129,47 @@
 }
 </style>
 
-<script lang='ts'>
+<script lang="ts">
 import { useRoute, useRouter } from 'vue-router';
-import { computed, defineComponent, onMounted, PropType, ref, watch } from 'vue';
-import { state } from 'src/state';
-import { IClubSocialLinks } from 'src/lib/api/graphqlPartials';
-import { shortenAddress } from 'src/lib/components/chains';
-import MeInClubWidget from 'components/me/MeInClubWidget.vue';
+import {
+  computed,
+  defineComponent,
+  onMounted,
+  PropType,
+  ref,
+  watch,
+} from 'vue';
+import { state } from '@src/state';
+import { IClubSocialLinks } from '@src/lib/api/graphqlPartials';
+import { shortenAddress } from '@src/lib/components/chains';
+import MeInClubWidget from '@components/me/MeInClubWidget.vue';
 import _ from 'lodash';
-import { useClubMenuStore } from 'stores/clubMenuStore';
+import { useClubMenuStore } from '@stores/clubMenuStore';
 
 interface ILoadedClub {
-  id: number
-  name: string
-  socialLinks: IClubSocialLinks
+  id: number;
+  name: string;
+  socialLinks: IClubSocialLinks;
   meInClub: {
-    loggedIn: boolean
-    isMember: boolean
-    isAdmin: boolean
-    isPlatformAdmin: boolean
-    screenName: string
+    loggedIn: boolean;
+    isMember: boolean;
+    isAdmin: boolean;
+    isPlatformAdmin: boolean;
+    screenName: string;
     mainWallet: {
-      address: string
-      chain: string
-    }
+      address: string;
+      chain: string;
+    };
     menu: {
       items: {
-        appSlug: string
-        appName: string
-        title: string
-        icon: string
-      }[]
-    }
-  }
+        appSlug: string;
+        appName: string;
+        title: string;
+        icon: string;
+      }[];
+    };
+  };
 }
-
-
 
 export default defineComponent({
   name: 'ClubMenu',
@@ -175,8 +178,8 @@ export default defineComponent({
 
   props: {
     club: {
-      type: Object as PropType<ILoadedClub>
-    }
+      type: Object as PropType<ILoadedClub>,
+    },
   },
 
   setup(props) {
@@ -195,7 +198,9 @@ export default defineComponent({
       }
     );
 
-    const menuLoaded = computed(() => clubLoaded.value && state.$club.isOnceLoaded.value);
+    const menuLoaded = computed(
+      () => clubLoaded.value && state.$club.isOnceLoaded.value
+    );
 
     const $menu = useClubMenuStore();
 
@@ -203,12 +208,13 @@ export default defineComponent({
 
     watch(
       () => props?.club?.meInClub,
-      () => $menu.$patch({
-        menuItems: props?.club?.meInClub?.menu.items || [],
-        isAdmin: props?.club?.meInClub?.isAdmin || false,
-      }),
+      () =>
+        $menu.$patch({
+          menuItems: props?.club?.meInClub?.menu.items || [],
+          isAdmin: props?.club?.meInClub?.isAdmin || false,
+        }),
       { deep: true }
-    )
+    );
 
     // const linksList2 = computed(() => {
     //   const result: Array<IMenuItem> = [
@@ -309,19 +315,23 @@ export default defineComponent({
     //   return result;
     // });
 
-    const isCurrentRoute = (routeName: string, routeParams?: Record<string, string>) => {
+    const isCurrentRoute = (
+      routeName: string,
+      routeParams?: Record<string, string>
+    ) => {
       if ('club-dynamic-app-config' === $route.name) {
         return routeParams?.appSlug === $route.params.appSlug;
       }
 
-      const parentRouteName = ($route.meta?.parent as {name?: string})?.name;
-      if ($route.name !== routeName && parentRouteName !== routeName) return false;
+      const parentRouteName = ($route.meta?.parent as { name?: string })?.name;
+      if ($route.name !== routeName && parentRouteName !== routeName)
+        return false;
 
       if (routeParams === undefined) {
         return true;
       } else {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const {clubSlug, ...routeParamsForCheck} = $route.params;
+        const { clubSlug, ...routeParamsForCheck } = $route.params;
         return _.isEqual(routeParams, routeParamsForCheck);
       }
     };
@@ -333,15 +343,15 @@ export default defineComponent({
       linksList,
       menuLoaded,
       shortenAddress,
-      onAppSettingsClicked: async (link: {toParams: {appSlug: string}}) => {
+      onAppSettingsClicked: async (link: { toParams: { appSlug: string } }) => {
         await $router.push({
           name: 'club-app-manage',
           params: {
-            appSlug: link.toParams.appSlug
-          }
+            appSlug: link.toParams.appSlug,
+          },
         });
       },
     };
-  }
+  },
 });
 </script>

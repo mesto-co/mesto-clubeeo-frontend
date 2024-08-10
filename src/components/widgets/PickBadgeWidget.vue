@@ -1,14 +1,14 @@
 <template>
-  <q-card dark class='clubCard'>
-    <q-card-section class='row items-center q-pb-none'>
-      <div class='text-h6'>edit badges</div>
+  <q-card dark class="clubCard">
+    <q-card-section class="row items-center q-pb-none">
+      <div class="text-h6">edit badges</div>
       <q-space />
-      <q-btn icon='close' flat round dense v-close-popup />
+      <q-btn icon="close" flat round dense v-close-popup />
     </q-card-section>
 
     <q-card-section>
       <q-list>
-        <q-item v-for='(badge, badgeIdx) in badges' :key='badge.id'>
+        <q-item v-for="(badge, badgeIdx) in badges" :key="badge.id">
           <!--          <q-item-section side top>-->
           <!--            <q-checkbox v-model="selectedRoles[badge.id]" />-->
           <!--          </q-item-section>-->
@@ -18,67 +18,69 @@
           <q-item-section>
             <div>
               <badge-renderer
-                :badge='userBadgesByBadgeId[badge.id] || {clubBadge: badge}'
+                :badge="userBadgesByBadgeId[badge.id] || { clubBadge: badge }"
               />
             </div>
           </q-item-section>
 
-          <q-item-section class='text-right full-height'>
-
-            <div
-              v-if='badge.badgeType === "score"'
-            >
+          <q-item-section class="text-right full-height">
+            <div v-if="badge.badgeType === 'score'">
               <club-button
-                class='clubButtonActive q-mb-sm'
-                :disabled='!inputs[badgeIdx].value || inputs[badgeIdx].value == 0'
-                @click='onAssign(badge, inputs[badgeIdx])'
-              >assign
+                class="clubButtonActive q-mb-sm"
+                :disabled="
+                  !inputs[badgeIdx].value || inputs[badgeIdx].value == 0
+                "
+                @click="onAssign(badge, inputs[badgeIdx])"
+                >assign
               </club-button>
 
               <q-input
-                dark filled dense
-                label='amount'
-                v-model='inputs[badgeIdx].value'
-                type='number'
+                dark
+                filled
+                dense
+                label="amount"
+                v-model="inputs[badgeIdx].value"
+                type="number"
               />
             </div>
 
-            <div
-              v-else-if='badge.badgeType === "basic"'
-            >
+            <div v-else-if="badge.badgeType === 'basic'">
               <club-button
-                v-if='!userBadgesByBadgeId[badge.id]'
-                class='clubButtonActive'
-                @click='onAssign(badge, 1)'
-              >assign</club-button>
+                v-if="!userBadgesByBadgeId[badge.id]"
+                class="clubButtonActive"
+                @click="onAssign(badge, 1)"
+                >assign</club-button
+              >
 
-              <club-button
-                v-else
-                disabled
-                style='background: #303247;'
-              >assigned</club-button>
+              <club-button v-else disabled style="background: #303247"
+                >assigned</club-button
+              >
             </div>
-
           </q-item-section>
         </q-item>
       </q-list>
     </q-card-section>
 
-    <q-card-actions class='float-right'>
-      <q-btn
-        flat v-close-popup no-caps
-      >close
-      </q-btn>
+    <q-card-actions class="float-right">
+      <q-btn flat v-close-popup no-caps>close </q-btn>
     </q-card-actions>
   </q-card>
 </template>
 
-<script lang='ts'>
-import { computed, defineComponent, onMounted, PropType, reactive, ref, watch } from 'vue';
-import { assignBadge, getBadges } from 'src/api/clubApi';
-import BadgeRenderer from 'components/renderers/BadgeRenderer.vue';
-import ClubButton from 'components/clubpage/ClubButton.vue';
-import { IClubBadge, IMemberBadge } from 'src/models/badgeModels';
+<script lang="ts">
+import {
+  computed,
+  defineComponent,
+  onMounted,
+  PropType,
+  reactive,
+  ref,
+  watch,
+} from 'vue';
+import { assignBadge, getBadges } from '@src/api/clubApi';
+import BadgeRenderer from '@components/renderers/BadgeRenderer.vue';
+import ClubButton from '@components/clubpage/ClubButton.vue';
+import { IClubBadge, IMemberBadge } from '@src/models/badgeModels';
 import fromEntries from 'fromentries';
 import { Notify } from 'quasar';
 
@@ -87,16 +89,16 @@ export default defineComponent({
   props: {
     clubSlug: {
       type: String,
-      required: true
+      required: true,
     },
     userBadges: {
       type: Array as PropType<Array<IMemberBadge>>,
-      default: () => []
+      default: () => [],
     },
     member: {
       type: Object as PropType<{ id: string }>,
-      required: true
-    }
+      required: true,
+    },
   },
   // emits: ['save'],
   setup(props, { emit }) {
@@ -104,9 +106,11 @@ export default defineComponent({
 
     const selectedRoles = reactive<Record<number, boolean>>({});
 
-    const inputs = ref<Array<{
-      value: string
-    }>>([]);
+    const inputs = ref<
+      Array<{
+        value: string;
+      }>
+    >([]);
 
     const onLoad = async () => {
       badges.value = await getBadges({ clubSlug: props.clubSlug });
@@ -118,11 +122,14 @@ export default defineComponent({
     });
     watch(props, onLoad, { deep: true });
 
-    const onAssign = async (badge: IClubBadge, opts: { value: string | number }) => {
+    const onAssign = async (
+      badge: IClubBadge,
+      opts: { value: string | number }
+    ) => {
       const result = await assignBadge({
         clubSlug: props.clubSlug,
         memberId: props.member.id,
-        badge: { id: badge.id, value: Number(opts.value) }
+        badge: { id: badge.id, value: Number(opts.value) },
       });
 
       if (result.isCreated) {
@@ -134,15 +141,17 @@ export default defineComponent({
       emit('save', badge);
     };
 
-    const userBadgesByBadgeId = computed(() => fromEntries(props.userBadges.map(ub => [ub.clubBadge.id, ub])));
+    const userBadgesByBadgeId = computed(() =>
+      fromEntries(props.userBadges.map((ub) => [ub.clubBadge.id, ub]))
+    );
 
     return {
       inputs,
       badges,
       selectedRoles,
       onAssign,
-      userBadgesByBadgeId
+      userBadgesByBadgeId,
     };
-  }
+  },
 });
 </script>

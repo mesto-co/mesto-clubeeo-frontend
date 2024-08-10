@@ -1,30 +1,30 @@
 <template>
   <div
-    v-if='buyLinks.main || buyLinks.opensea || buyLinks.rarible'
-    class='text-center q-pb-md'
+    v-if="buyLinks.main || buyLinks.opensea || buyLinks.rarible"
+    class="text-center q-pb-md"
   >
-    <club-button :href='buyLinks.main || buyLinks.opensea || buyLinks.rarible'>
-      Buy NFT&nbsp;<q-icon name='fa-solid fa-chevron-right' size='xs' />
+    <club-button :href="buyLinks.main || buyLinks.opensea || buyLinks.rarible">
+      Buy NFT&nbsp;<q-icon name="fa-solid fa-chevron-right" size="xs" />
     </club-button>
   </div>
-<!--  <div-->
-<!--    v-else-if='buyLinks.collections'-->
-<!--    class='text-center q-pb-md'-->
-<!--  >-->
-<!--    <club-button-->
-<!--      @click='scrollToCollections'-->
-<!--    >-->
-<!--      Acquire membership&nbsp;<q-icon name='fa-solid fa-angles-down' size='xs' />-->
-<!--    </club-button>-->
-<!--  </div>-->
+  <!--  <div-->
+  <!--    v-else-if='buyLinks.collections'-->
+  <!--    class='text-center q-pb-md'-->
+  <!--  >-->
+  <!--    <club-button-->
+  <!--      @click='scrollToCollections'-->
+  <!--    >-->
+  <!--      Acquire membership&nbsp;<q-icon name='fa-solid fa-angles-down' size='xs' />-->
+  <!--    </club-button>-->
+  <!--  </div>-->
 </template>
 
-<script lang='ts'>
+<script lang="ts">
 import { defineComponent, inject, PropType, Ref } from 'vue';
 import ClubButton from './ClubButton.vue';
-import { IClubBuyLinks } from 'src/api/clubApi';
+import { IClubBuyLinks } from '@src/api/clubApi';
 import { scroll } from 'quasar';
-import { IClubStyle } from 'src/models/clubStyle';
+import { IClubStyle } from '@src/models/clubStyle';
 
 const { getScrollTarget, setVerticalScrollPosition } = scroll;
 
@@ -40,8 +40,8 @@ export default defineComponent({
   components: { ClubButton },
   props: {
     buyLinks: {
-      type: Object as PropType<IClubBuyLinks>
-    }
+      type: Object as PropType<IClubBuyLinks>,
+    },
   },
   setup() {
     const clubStyle = inject('clubStyle') as Ref<IClubStyle>;
@@ -56,8 +56,8 @@ export default defineComponent({
 
     return {
       clubStyle,
-      scrollToCollections
+      scrollToCollections,
     };
-  }
+  },
 });
 </script>

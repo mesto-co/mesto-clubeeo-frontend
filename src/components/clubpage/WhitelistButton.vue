@@ -1,19 +1,19 @@
 <template>
   <club-button
-    @click='onButtonClicked'
-    :icon='applied ? "check" : "fa-solid fa-circle-check"'
-    :label='buttonLabel'
-    class='full-width q-mb-sm'
-    scheme='inverse'
-    :loading='isLoading'
-    :disabled='applied'
+    @click="onButtonClicked"
+    :icon="applied ? 'check' : 'fa-solid fa-circle-check'"
+    :label="buttonLabel"
+    class="full-width q-mb-sm"
+    scheme="inverse"
+    :loading="isLoading"
+    :disabled="applied"
   />
 </template>
 
-<script lang='ts'>
+<script lang="ts">
 import { computed, defineComponent, PropType, ref } from 'vue';
 import ClubButton from './ClubButton.vue';
-import { IClub } from 'src/api/clubApi';
+import { IClub } from '@src/api/clubApi';
 import { api } from 'boot/axios';
 import { Notify } from 'quasar';
 
@@ -22,8 +22,8 @@ export default defineComponent({
   props: {
     club: {
       type: Object as PropType<IClub>,
-      required: true
-    }
+      required: true,
+    },
   },
   setup(props) {
     const applied = ref(false);
@@ -34,13 +34,13 @@ export default defineComponent({
 
       const result = await api.post<{
         clubFormApplication: {
-          id: number,
-          clubId: number,
-          userId: number,
-          formType: string,
-        }
+          id: number;
+          clubId: number;
+          userId: number;
+          formType: string;
+        };
       }>(`/api/club/${props.club.id}/applications`, {
-        formType: 'whitelist-application'
+        formType: 'whitelist-application',
       });
 
       if (result.data.clubFormApplication.id) {
@@ -48,12 +48,12 @@ export default defineComponent({
 
         Notify.create({
           message: 'Your application has been sent. Thank you!',
-          type: 'positive'
+          type: 'positive',
         });
       }
 
       isLoading.value = false;
-    }
+    };
 
     const buttonLabel = computed(() => {
       if (applied.value) return 'Your application is sent';
@@ -65,14 +65,14 @@ export default defineComponent({
 
       // default
       return 'Apply to whitelist';
-    })
+    });
 
     return {
       onButtonClicked,
       applied,
       buttonLabel,
-      isLoading
-    }
-  }
-})
+      isLoading,
+    };
+  },
+});
 </script>

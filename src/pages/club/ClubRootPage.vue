@@ -100,14 +100,14 @@ main.clubeeo-wrapper {
 <script lang="ts">
 import { computed, defineComponent, onMounted, provide, watch } from 'vue';
 import { api } from 'boot/axios';
-import { state } from 'src/state';
-import { IClubStyle, normLandingClubStyle } from 'src/models/clubStyle';
+import { state } from '@src/state';
+import { IClubStyle, normLandingClubStyle } from '@src/models/clubStyle';
 import { useQuasar } from 'quasar';
-import { mapSocialToIcon } from 'src/lib/components/socials';
-import HomePage2 from 'components/clubpage/HomePage2.vue';
-import ClubAsideProxy from 'components/clubpage/clubAside/ClubAsideProxy.vue';
+import { mapSocialToIcon } from '@src/lib/components/socials';
+import HomePage2 from '@components/clubpage/HomePage2.vue';
+import ClubAsideProxy from '@components/clubpage/clubAside/ClubAsideProxy.vue';
 import { useRoute } from 'vue-router';
-import { useSessionStore } from 'stores/sessionStore';
+import { useSessionStore } from '@stores/sessionStore';
 
 const clubWelcomeDefault =
   '<h2>Welcome to the club</h2><p>Please, log in using a wallet with NFT community pass</p>';

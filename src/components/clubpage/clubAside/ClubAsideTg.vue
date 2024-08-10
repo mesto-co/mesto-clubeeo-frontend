@@ -47,12 +47,12 @@ import { RouteParamsRaw, useRouter } from 'vue-router';
 import { LocalStorage } from 'quasar';
 import { computed, onMounted, provide, ref } from 'vue';
 import MetaMaskOnboarding from '@metamask/onboarding';
-import { inBrowser } from 'src/lib/inBrowser';
-import TelegramBotLoginBtn from 'src/components/telegram/TelegramBotLoginBtn.vue';
-import { state } from 'src/state';
-import { useMeInClubStore } from 'src/stores/meInClubStore';
-import { useLogout } from 'src/uses/useLogout';
-import MeInClubWidget from 'src/components/me/MeInClubWidget.vue';
+import { inBrowser } from '@src/lib/inBrowser';
+import TelegramBotLoginBtn from '@src/components/telegram/TelegramBotLoginBtn.vue';
+import { state } from '@src/state';
+import { useMeInClubStore } from '@src/stores/meInClubStore';
+import { useLogout } from '@src/uses/useLogout';
+import MeInClubWidget from '@src/components/me/MeInClubWidget.vue';
 import ClubButton from '../ClubButton.vue';
 
 export default {

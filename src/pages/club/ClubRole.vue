@@ -4,11 +4,9 @@
   {{ club }}
 </template>
 
-<script lang='ts'>
-
-
+<script lang="ts">
 import { defineComponent, onMounted } from 'vue';
-import { state } from 'src/state';
+import { state } from '@src/state';
 
 export default defineComponent({
   setup() {
@@ -23,7 +21,7 @@ export default defineComponent({
     return {
       club: state.$club.club,
       meInClub: state.$club.meInClub,
-    }
-  }
+    };
+  },
 });
 </script>

@@ -1,26 +1,19 @@
 <template>
-  <div class='row q-col-gutter-md'>
-    <div v-for='(group, key) in groups' :key='key' class='col-12'>
-      <prop-list-editor
-        v-if='!key'
-        :props='group'
-        v-model='model'
-      />
+  <div class="row q-col-gutter-md">
+    <div v-for="(group, key) in groups" :key="key" class="col-12">
+      <prop-list-editor v-if="!key" :props="group" v-model="model" />
       <div v-else>
         <q-list>
-          <q-card flat bordered dark class='bg-transparent'>
-           <q-expansion-item>
-            <template v-slot:header>
-              <q-item-section>
-                {{ key }}
-              </q-item-section>
-            </template>
+          <q-card flat bordered dark class="bg-transparent">
+            <q-expansion-item>
+              <template v-slot:header>
+                <q-item-section>
+                  {{ key }}
+                </q-item-section>
+              </template>
 
               <q-card-section>
-                <prop-list-editor
-                  :props='group'
-                  v-model='model'
-                />
+                <prop-list-editor :props="group" v-model="model" />
               </q-card-section>
             </q-expansion-item>
           </q-card>
@@ -30,20 +23,20 @@
   </div>
 </template>
 
-<script lang='ts'>
+<script lang="ts">
 import { computed, defineComponent, PropType } from 'vue';
-import { IProp } from 'src/modules/appManager/shared/IAppConfig';
-import PropListEditor from 'components/dashboard/PropListEditor.vue';
+import { IProp } from '@src/modules/appManager/shared/IAppConfig';
+import PropListEditor from '@components/dashboard/PropListEditor.vue';
 
 export default defineComponent({
   components: { PropListEditor },
   props: {
     modelValue: {
-      type: Object as PropType<Record<string, string>>
+      type: Object as PropType<Record<string, string>>,
     },
     props: {
-      type: Object as PropType<Record<string, IProp>>
-    }
+      type: Object as PropType<Record<string, IProp>>,
+    },
   },
   emits: ['update:modelValue'],
   setup(props, { emit }) {
@@ -51,7 +44,7 @@ export default defineComponent({
       get: () => props.modelValue,
       set: (val) => {
         emit('update:modelValue', val);
-      }
+      },
     });
 
     const groups = computed(() => {
@@ -67,8 +60,8 @@ export default defineComponent({
 
     return {
       model,
-      groups
+      groups,
     };
-  }
+  },
 });
 </script>

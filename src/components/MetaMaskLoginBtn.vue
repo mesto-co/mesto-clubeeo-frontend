@@ -1,24 +1,27 @@
 <template>
   <club-button
-    :label='`${labels.logInWith || "log in with"} MetaMask`'
-    class='full-width'
-    icon='img:/imgs/MetaMask_Fox.svg'
-    scheme='inverse'
-    @click='handleConnectMetamask'
+    :label="`${labels.logInWith || 'log in with'} MetaMask`"
+    class="full-width"
+    icon="img:/imgs/MetaMask_Fox.svg"
+    scheme="inverse"
+    @click="handleConnectMetamask"
   />
 </template>
 
-<script lang='ts'>
+<script lang="ts">
 import { computed, defineComponent, PropType } from 'vue';
 import { useRoute } from 'vue-router';
 import Web3 from 'web3';
 import detectEthereumProvider from '@metamask/detect-provider';
 import { provider } from 'web3-core';
-import { registerNonceApiAdapter, verifyAndLoginApiAdapter } from 'src/services/Web3Login/web3LoginApiAdapters';
-import { personalSignWeb3AdapterFactory } from 'src/services/Web3Login/web3LoginWeb3Adapters';
-import { web3LoginLogic } from 'src/services/Web3Login/web3LoginLogic';
+import {
+  registerNonceApiAdapter,
+  verifyAndLoginApiAdapter,
+} from '@src/services/Web3Login/web3LoginApiAdapters';
+import { personalSignWeb3AdapterFactory } from '@src/services/Web3Login/web3LoginWeb3Adapters';
+import { web3LoginLogic } from '@src/services/Web3Login/web3LoginLogic';
 import { Notify } from 'quasar';
-import ClubButton from 'components/clubpage/ClubButton.vue';
+import ClubButton from '@components/clubpage/ClubButton.vue';
 
 export default defineComponent({
   name: 'meta-mask-login-btn',
@@ -28,11 +31,11 @@ export default defineComponent({
   props: {
     labels: {
       type: Object as PropType<{
-        logInWith?: string
+        logInWith?: string;
       }>,
       default: () => ({}),
     },
-    appData: Object as PropType<{ appId: number, clubId: number }>
+    appData: Object as PropType<{ appId: number; clubId: number }>,
   },
 
   setup(props, { emit }) {
@@ -40,7 +43,7 @@ export default defineComponent({
     const slug = computed<string>(() => String($route.params.slug));
 
     const handleConnectMetamask = async () => {
-      const detectedProvider = await detectEthereumProvider() as provider;
+      const detectedProvider = (await detectEthereumProvider()) as provider;
 
       if (detectedProvider) {
         // connected
@@ -57,11 +60,17 @@ export default defineComponent({
           personalSign: personalSignWeb3AdapterFactory(web3),
           verifyAndLogin: verifyAndLoginApiAdapter,
           onLogInSuccess: () => emit('loggedIn'),
-          onLogInFail: (e) => Notify.create({ type: 'warning', message: e.message }),
-          getData: () => ({appData: {appId: props.appData?.appId, clubId: props.appData?.clubId}}),
+          onLogInFail: (e) =>
+            Notify.create({ type: 'warning', message: e.message }),
+          getData: () => ({
+            appData: {
+              appId: props.appData?.appId,
+              clubId: props.appData?.clubId,
+            },
+          }),
         });
       } else {
-        console.error('Can\'t connect MetaMask');
+        console.error("Can't connect MetaMask");
       }
     };
 
@@ -72,8 +81,8 @@ export default defineComponent({
     return {
       handleConnectMetamask,
       signMessage,
-      slug
+      slug,
     };
-  }
+  },
 });
 </script>

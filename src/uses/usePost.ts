@@ -1,21 +1,21 @@
-import { TUseClub } from 'src/uses/useClub';
+import { TUseClub } from '@src/uses/useClub';
 import { reactive, ref } from 'vue';
-import { IPostView, postPost } from 'src/api/postApi';
-import { TUseClubApp } from 'src/uses/useClubApp';
+import { IPostView, postPost } from '@src/api/postApi';
+import { TUseClubApp } from '@src/uses/useClubApp';
 
 export interface IPostCreateView {
-  title: string
-  text: string
+  title: string;
+  text: string;
 }
 
-export const usePost = (dep: { $club: TUseClub, $clubApp: TUseClubApp}) => {
+export const usePost = (dep: { $club: TUseClub; $clubApp: TUseClubApp }) => {
   const { $club, $clubApp } = dep;
 
   const isCreating = ref(false);
 
   const postInit = {
     title: '',
-    text: ''
+    text: '',
   };
 
   const post = reactive<IPostCreateView>(postInit);
@@ -25,7 +25,7 @@ export const usePost = (dep: { $club: TUseClub, $clubApp: TUseClubApp}) => {
   const postStateReset = () => {
     post.text = '';
     post.title = '';
-  }
+  };
 
   const createPost = async () => {
     isCreating.value = true;

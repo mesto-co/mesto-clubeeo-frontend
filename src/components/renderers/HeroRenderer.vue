@@ -1,40 +1,33 @@
 <template>
-
   <div>
     <q-img
-      v-if='heroImg'
-      :src='heroImg'
-      :style='{
-        ...(maxHeight ? {maxHeight: maxHeight} : {}),
-        ...(minHeight ? {minHeight: minHeight} : {}),
-       }'
+      v-if="heroImg"
+      :src="heroImg"
+      :style="{
+        ...(maxHeight ? { maxHeight: maxHeight } : {}),
+        ...(minHeight ? { minHeight: minHeight } : {}),
+      }"
     />
     <div
       v-else
-      :style='{
-        ...(minHeight ? {minHeight: minHeight} : {}),
+      :style="{
+        ...(minHeight ? { minHeight: minHeight } : {}),
         backgroundColor: (styling || {}).heroColor,
-       }'
-    >
-    </div>
+      }"
+    ></div>
 
-    <div
-      v-if='logoImg'
-      class='heroRenderer_logoWrapper'
-    >
+    <div v-if="logoImg" class="heroRenderer_logoWrapper">
       <avatar
-        :src='logoImg'
-        :name='logoName'
-        :alt='`${logoName} logo`'
-        :class='avatarClass'
+        :src="logoImg"
+        :name="logoName"
+        :alt="`${logoName} logo`"
+        :class="avatarClass"
       />
     </div>
   </div>
-
 </template>
 
-<style lang='scss'>
-
+<style lang="scss">
 div.heroRenderer_logoWrapper {
   display: flex;
   justify-content: center;
@@ -52,43 +45,42 @@ div.heroRenderer_logoWrapper {
     }
   }
 }
-
 </style>
 
-<script lang='ts'>
+<script lang="ts">
 import { computed, defineComponent, PropType } from 'vue';
-import Avatar from 'components/elements/Avatar.vue';
-import { IClubStyle } from 'src/models/clubStyle';
+import Avatar from '@components/elements/Avatar.vue';
+import { IClubStyle } from '@src/models/clubStyle';
 
 export default defineComponent({
   components: { Avatar },
   props: {
     heroImg: {
       type: String,
-      required: false
+      required: false,
     },
     logoImg: {
-      type: String
+      type: String,
     },
     logoMode: {
       type: String,
-      default: 'round'
+      default: 'round',
     },
     maxHeight: {
-      type: String
+      type: String,
     },
     minHeight: {
       type: String,
-      default: '65px'
+      default: '65px',
     },
     showLogo: {
       type: Boolean,
-      default: true
+      default: true,
     },
     styling: {
       type: Object as PropType<IClubStyle>,
-      required: false
-    }
+      required: false,
+    },
   },
   setup(props) {
     return {
@@ -96,9 +88,9 @@ export default defineComponent({
         return {
           avatar: true,
           avatarRound: props.logoMode === 'round',
-        }
+        };
       }),
     };
-  }
+  },
 });
 </script>

@@ -4,31 +4,27 @@
       <q-btn
         unelevated
         no-caps
-        :label='club.name'
-        :to='{name: "club"}'
-        style='border-radius: 8px'
+        :label="club.name"
+        :to="{ name: 'club' }"
+        style="border-radius: 8px"
       ></q-btn>
     </template>
 
     <club-selector />
 
-    <club-menu
-      :club='club'
-    />
-
+    <club-menu :club="club" />
   </layout-layout>
 </template>
 
-<script lang='ts'>
-
+<script lang="ts">
 import { useRoute } from 'vue-router';
 
 import { computed, defineComponent, onMounted, watch } from 'vue';
-import ClubSelector from 'components/clublayout/ClubSelector.vue';
-import ClubMenu from 'components/clublayout/ClubMenu.vue';
-import { useStyleStore } from 'stores/styleStore';
-import LayoutLayout from 'src/backbones/LayoutLayout.vue';
-import { useClubStore } from 'stores/clubStore';
+import ClubSelector from '@components/clublayout/ClubSelector.vue';
+import ClubMenu from '@components/clublayout/ClubMenu.vue';
+import { useStyleStore } from '@stores/styleStore';
+import LayoutLayout from '@src/backbones/LayoutLayout.vue';
+import { useClubStore } from '@stores/clubStore';
 
 export default defineComponent({
   name: 'ClubLayout',
@@ -36,13 +32,15 @@ export default defineComponent({
   components: {
     LayoutLayout,
     ClubMenu,
-    ClubSelector
+    ClubSelector,
   },
 
   setup() {
     const $route = useRoute();
 
-    const slug = computed(() => $route.params.clubSlug ? String($route.params.clubSlug) : null);
+    const slug = computed(() =>
+      $route.params.clubSlug ? String($route.params.clubSlug) : null
+    );
 
     const isCurrentRoute = (routeName: string) => {
       return $route.name === routeName;
@@ -58,20 +56,21 @@ export default defineComponent({
     const load = async () => {
       await clubStore.loadBySlug(slug.value);
       styleStore.patchWith(clubStore.club.style);
-    }
+    };
 
     onMounted(load);
     watch(
-    () => $route.params.clubSlug,
-    async () => {
-      await load();
-    });
+      () => $route.params.clubSlug,
+      async () => {
+        await load();
+      }
+    );
 
     return {
       clubLoaded,
       club: computed(() => clubStore.club),
       isCurrentRoute,
     };
-  }
+  },
 });
 </script>

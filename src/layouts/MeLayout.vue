@@ -1,17 +1,14 @@
 <template>
   <layout-layout>
-
     <club-selector />
-
   </layout-layout>
 </template>
 
-<script lang='ts'>
-
+<script lang="ts">
 import { defineComponent, ref } from 'vue';
-import { useStyleStore } from 'stores/styleStore';
-import LayoutLayout from 'src/backbones/LayoutLayout.vue';
-import ClubSelector from 'components/clublayout/ClubSelector.vue';
+import { useStyleStore } from '@stores/styleStore';
+import LayoutLayout from '@src/backbones/LayoutLayout.vue';
+import ClubSelector from '@components/clublayout/ClubSelector.vue';
 
 export default defineComponent({
   name: 'MainLayout',
@@ -28,8 +25,8 @@ export default defineComponent({
       leftDrawerOpen,
       toggleLeftDrawer() {
         leftDrawerOpen.value = !leftDrawerOpen.value;
-      }
+      },
     };
-  }
+  },
 });
 </script>

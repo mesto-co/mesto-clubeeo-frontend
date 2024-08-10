@@ -1,5 +1,5 @@
-import VueHighlightJS from 'vue3-highlightjs'
-import 'highlight.js/styles/solarized-light.css'
+import VueHighlightJS from 'vue3-highlightjs';
+import 'highlight.js/styles/solarized-light.css';
 import { boot } from 'quasar/wrappers';
 
 export default boot(({ app }) => {

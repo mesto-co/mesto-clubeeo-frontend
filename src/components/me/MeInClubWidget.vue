@@ -1,23 +1,31 @@
 <template>
-  <div
-    v-if='meInClub'
-    class='flex meInClubWidget'
-  >
+  <div v-if="meInClub" class="flex meInClubWidget">
     <q-avatar>
       <q-img
-        style='border-radius: 6px'
-        height='34px'
-        width='34px'
-        :src='`https://ui-avatars.com/api/?name=${meInClub.screenName}&size=128&bold=true&format=svg&background=1c1c1f&color=fff`'
+        style="border-radius: 6px"
+        height="34px"
+        width="34px"
+        :src="`https://ui-avatars.com/api/?name=${meInClub.screenName}&size=128&bold=true&format=svg&background=1c1c1f&color=fff`"
       />
     </q-avatar>
 
-    <div style='padding: 6px 0; height: 36px; flex-grow: 2'>
-      <div style='font-size: 0.75rem; font-weight: bold'>{{ meInClub.screenName }}</div>
-      <div style='font-size: 0.75rem'>{{ shortenAddress(meInClub.mainWallet) }}</div>
+    <div style="padding: 6px 0; height: 36px; flex-grow: 2">
+      <div style="font-size: 0.75rem; font-weight: bold">
+        {{ meInClub.screenName }}
+      </div>
+      <div style="font-size: 0.75rem">
+        {{ shortenAddress(meInClub.mainWallet) }}
+      </div>
     </div>
 
-    <div class='flex q-pa-xs' style='flex-direction: column; justify-content: center; padding-right: 6px'>
+    <div
+      class="flex q-pa-xs"
+      style="
+        flex-direction: column;
+        justify-content: center;
+        padding-right: 6px;
+      "
+    >
       <div>
         <slot />
       </div>
@@ -25,7 +33,7 @@
   </div>
 </template>
 
-<style lang='scss' scoped>
+<style lang="scss" scoped>
 .meInClubWidget {
   height: 48px;
   width: 223px;
@@ -35,20 +43,20 @@
 }
 </style>
 
-<script lang='ts'>
+<script lang="ts">
 import { defineComponent, PropType } from 'vue';
-import { shortenAddress } from 'src/lib/components/chains';
+import { shortenAddress } from '@src/lib/components/chains';
 
 interface IMeInClub {
-  loggedIn: boolean
-  isMember: boolean
-  isAdmin: boolean
-  isPlatformAdmin: boolean
-  screenName: string
+  loggedIn: boolean;
+  isMember: boolean;
+  isAdmin: boolean;
+  isPlatformAdmin: boolean;
+  screenName: string;
   mainWallet: {
-    address: string
-    chain: string
-  }
+    address: string;
+    chain: string;
+  };
 }
 
 export default defineComponent({
@@ -59,14 +67,14 @@ export default defineComponent({
   props: {
     meInClub: {
       type: Object as PropType<IMeInClub>,
-      required: true
-    }
+      required: true,
+    },
   },
 
   setup() {
     return {
-      shortenAddress
+      shortenAddress,
     };
-  }
+  },
 });
 </script>

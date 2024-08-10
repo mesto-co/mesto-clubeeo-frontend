@@ -1,60 +1,58 @@
 <template>
-  <club-page
-    header='home'
-    :loading='!club'
-    sticky='bottom'
-  >
+  <club-page header="home" :loading="!club" sticky="bottom">
     <template v-slot:buttons>
-      <div v-if='club.meInClub.isAdmin'>
+      <div v-if="club.meInClub.isAdmin">
         <club-button
-          class='clubButtonActive q-px-md q-mr-sm'
-          :to='{name: "club-home-roadmap-edit"}'
+          class="clubButtonActive q-px-md q-mr-sm"
+          :to="{ name: 'club-home-roadmap-edit' }"
           dense
-        >roadmap</club-button>
+          >roadmap</club-button
+        >
 
         <club-button
-          class='clubButtonActive q-px-md'
-          :to='{name: "club-home-edit"}'
+          class="clubButtonActive q-px-md"
+          :to="{ name: 'club-home-edit' }"
           dense
-        >club profile</club-button>
+          >club profile</club-button
+        >
       </div>
     </template>
 
-    <home-page2
-      :show-powered-by='false'
-    />
-
+    <home-page2 :show-powered-by="false" />
   </club-page>
 </template>
 
-<script lang='ts'>
-
+<script lang="ts">
 import { computed, defineComponent, onMounted, ref, watch } from 'vue';
 import { api } from '../../boot/axios';
 import { useRoute } from 'vue-router';
-import { clubSocialLinksPartial, clubStylePartial, clubRoadmapPartial } from 'src/lib/api/graphqlPartials';
-import HomePage2 from 'components/clubpage/HomePage2.vue';
-import ClubButton from 'components/clubpage/ClubButton.vue';
-import ClubPage from 'components/clublayout/ClubPage.vue';
-import { useStyleStore } from 'stores/styleStore';
-import { IClubRoadmap } from 'src/api/clubApi';
+import {
+  clubSocialLinksPartial,
+  clubStylePartial,
+  clubRoadmapPartial,
+} from '@src/lib/api/graphqlPartials';
+import HomePage2 from '@components/clubpage/HomePage2.vue';
+import ClubButton from '@components/clubpage/ClubButton.vue';
+import ClubPage from '@components/clublayout/ClubPage.vue';
+import { useStyleStore } from '@stores/styleStore';
+import { IClubRoadmap } from '@src/api/clubApi';
 
 interface ILoadedClub {
-  id: number
-  name: string
-  description: string
-  slug: string
+  id: number;
+  name: string;
+  description: string;
+  slug: string;
   style: {
-    logoImg?: string
-    heroImg?: string
-  }
-  roadmap: IClubRoadmap
+    logoImg?: string;
+    heroImg?: string;
+  };
+  roadmap: IClubRoadmap;
   meInClub: {
-    loggedIn: boolean
-    isMember: boolean
-    isAdmin: boolean
-    isPlatformAdmin: boolean
-  }
+    loggedIn: boolean;
+    isMember: boolean;
+    isAdmin: boolean;
+    isPlatformAdmin: boolean;
+  };
 }
 
 export default defineComponent({
@@ -64,7 +62,9 @@ export default defineComponent({
 
     const club = ref<ILoadedClub | null>(null);
 
-    const slug = computed(() => $route.params.clubSlug ? String($route.params.clubSlug) : null);
+    const slug = computed(() =>
+      $route.params.clubSlug ? String($route.params.clubSlug) : null
+    );
 
     const styleStore = useStyleStore();
 
@@ -73,8 +73,8 @@ export default defineComponent({
 
       const result = await api.post<{
         data: {
-          club: ILoadedClub
-        }
+          club: ILoadedClub;
+        };
       }>('/graphql', {
         query: `{
           club(slug: "${slug.value}") {
@@ -92,13 +92,13 @@ export default defineComponent({
               isPlatformAdmin
             }
           }
-        }`
+        }`,
       });
 
       club.value = result.data.data.club;
 
       styleStore.patchWith(club.value.style);
-    }
+    };
 
     onMounted(load);
     watch($route, load);
@@ -123,8 +123,8 @@ export default defineComponent({
     // ));
 
     return {
-      club
+      club,
     };
-  }
+  },
 });
 </script>

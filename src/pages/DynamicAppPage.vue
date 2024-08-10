@@ -1,15 +1,15 @@
 <template>
   <dynamic-app-component
-    :club-slug='clubSlug'
-    :app-slug='appSlug'
-    :app-page='appPage'
+    :club-slug="clubSlug"
+    :app-slug="appSlug"
+    :app-page="appPage"
   />
 </template>
 
-<script lang='ts'>
+<script lang="ts">
 import { computed, defineComponent } from 'vue';
 import { useRoute } from 'vue-router';
-import DynamicAppComponent from 'components/DynamicAppComponent.vue';
+import DynamicAppComponent from '@components/DynamicAppComponent.vue';
 
 const routeParamToString = (param: string | string[]): string => {
   if (Array.isArray(param)) return param[0] || ''; //take first if multiple
@@ -27,6 +27,6 @@ export default defineComponent({
       appSlug: computed(() => routeParamToString($route.params.appSlug)),
       appPage: computed(() => routeParamToString($route.params.appPage)),
     };
-  }
+  },
 });
 </script>

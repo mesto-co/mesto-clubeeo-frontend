@@ -1,6 +1,5 @@
 import { ref } from 'vue';
-import { getClubs, IIndexedClub } from 'src/api/clubsApi';
-
+import { getClubs, IIndexedClub } from '@src/api/clubsApi';
 
 export type TUseClubs = ReturnType<typeof useClubs>;
 
@@ -18,7 +17,7 @@ export const useClubs = () => {
     isOnceLoaded.value = true;
 
     isLoading.value = false;
-  }
+  };
 
   return {
     clubs,
@@ -27,5 +26,5 @@ export const useClubs = () => {
 
     getClubs,
     loadClubs,
-  }
-}
+  };
+};

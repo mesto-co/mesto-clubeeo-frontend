@@ -1,9 +1,9 @@
 import { defineStore } from 'pinia';
-import { getDefaultClub } from 'src/models/clubModel';
-import { IClub } from 'src/api/clubApi';
+import { getDefaultClub } from '@src/models/clubModel';
+import { IClub } from '@src/api/clubApi';
 import { computed, provide } from 'vue';
-import { getClubGraphql } from 'src/api/clubGraphql';
-import { useStyleStore } from 'stores/styleStore';
+import { getClubGraphql } from '@src/api/clubGraphql';
+import { useStyleStore } from '@stores/styleStore';
 
 const styleStore = useStyleStore();
 

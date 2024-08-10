@@ -1,12 +1,11 @@
 <template>
-
-  <div class='row q-col-gutter-md'>
-    <div class='col-sm col-12'>
+  <div class="row q-col-gutter-md">
+    <div class="col-sm col-12">
       <c-select
-        :label='appSelectLabel'
-        v-model='selectedAppModel'
-        :options='clubAppOptions'
-        :show-image='true'
+        :label="appSelectLabel"
+        v-model="selectedAppModel"
+        :options="clubAppOptions"
+        :show-image="true"
       />
       <!--          </div>-->
       <!--          <div class='col-auto q-pl-sm flex flex-center' style='flex-direction: column'>-->
@@ -17,68 +16,68 @@
       <!--              class='clubButtonGrey'-->
       <!--            />-->
       <!--          </div>-->
-
     </div>
 
-    <div class='col-sm col-12'>
+    <div class="col-sm col-12">
       <c-select
-        :label='mode'
-        v-model='selectedBindingModel'
-        :disable='clubAppBindingOptions.length === 0'
-        :options='clubAppBindingOptions'
+        :label="mode"
+        v-model="selectedBindingModel"
+        :disable="clubAppBindingOptions.length === 0"
+        :options="clubAppBindingOptions"
       />
     </div>
 
-    <div class='col-12' v-if='clubAppBinding'>
+    <div class="col-12" v-if="clubAppBinding">
       <div>
         <app-binding-card
-          show-keys flat class='q-pb-md'
-          :binding='clubAppBinding'
+          show-keys
+          flat
+          class="q-pb-md"
+          :binding="clubAppBinding"
         />
       </div>
 
-      <trigger-prop-groups
-        :props='clubAppBinding.props'
-        v-model='propsModel'
-      />
+      <trigger-prop-groups :props="clubAppBinding.props" v-model="propsModel" />
     </div>
-
   </div>
-
 </template>
 
-<script lang='ts'>
+<script lang="ts">
 import { computed, defineComponent, PropType, ref, watch } from 'vue';
 
-import { useAppTriggerStore } from 'src/modules/automation/useAppTriggerStore';
-import { useLoadIndex } from 'src/uses/useLoaders';
+import { useAppTriggerStore } from '@src/modules/automation/useAppTriggerStore';
+import { useLoadIndex } from '@src/uses/useLoaders';
 import { api } from 'boot/axios';
-import { IClubApp, IAppEvent, IAppAction } from 'src/modules/appManager/shared/IAppConfig';
+import {
+  IClubApp,
+  IAppEvent,
+  IAppAction,
+} from '@src/modules/appManager/shared/IAppConfig';
 
-import AppBindingCard from 'src/modules/automation/components/AppBindingCard.vue';
-import CSelect from 'src/components/elements/CSelect.vue';
-import TriggerPropGroups from 'src/modules/automation/components/TriggerPropGroups.vue';
+import AppBindingCard from '@src/modules/automation/components/AppBindingCard.vue';
+import CSelect from '@src/components/elements/CSelect.vue';
+import TriggerPropGroups from '@src/modules/automation/components/TriggerPropGroups.vue';
 
 interface IOption {
-  label: string,
-  value: string,
-  caption: string,
-  img?: string,
-  children?: Array<IOption>
+  label: string;
+  value: string;
+  caption: string;
+  img?: string;
+  children?: Array<IOption>;
 }
 
 interface IClubAppsItem {
-  id: number,
-  title: string,
-  appSlug: string,
+  id: number;
+  title: string;
+  appSlug: string;
   app: {
-    key: string,
-    description: string
-    coverImg: string,
-    name: string,
-    version: string,
-    tags: string,
-  }
+    key: string;
+    description: string;
+    coverImg: string;
+    name: string;
+    version: string;
+    tags: string;
+  };
 }
 
 export default defineComponent({
@@ -90,7 +89,7 @@ export default defineComponent({
     },
     clubSlug: {
       type: String,
-      required: true
+      required: true,
     },
     selectedApp: {
       type: Object as PropType<IOption | null>,
@@ -101,8 +100,8 @@ export default defineComponent({
       default: null,
     },
     props: {
-      type: Object as PropType<Record<string, string>>
-    }
+      type: Object as PropType<Record<string, string>>,
+    },
   },
   emits: ['update:selectedApp', 'update:selectedBinding', 'update:props'],
   setup(props, { emit }) {
@@ -112,40 +111,46 @@ export default defineComponent({
       get: () => props.selectedApp,
       set: (val) => {
         emit('update:selectedApp', val);
-      }
+      },
     });
 
     const selectedBindingModel = computed<IOption | null>({
       get: () => props.selectedBinding || null,
       set: (val) => {
         emit('update:selectedBinding', val);
-      }
+      },
     });
 
     const propsModel = computed({
       get: () => props.props || {},
       set: (val) => {
         emit('update:props', val);
-      }
+      },
     });
 
     const clubApp = ref<IClubApp | null>(null);
 
-    const { data: appList, isLoading: isAppListLoading } = useLoadIndex<IClubAppsItem, 'clubApps'>({
-      url: () => `/api/club/${props.clubSlug}/app/club-apps?filterMode=${props.mode}`,
-      key: 'clubApps'
+    const { data: appList, isLoading: isAppListLoading } = useLoadIndex<
+      IClubAppsItem,
+      'clubApps'
+    >({
+      url: () =>
+        `/api/club/${props.clubSlug}/app/club-apps?filterMode=${props.mode}`,
+      key: 'clubApps',
     });
     const clubAppOptions = computed<IOption[]>(() => {
-      return appList.value.map(appItem => ({
+      return appList.value.map((appItem) => ({
         label: appItem.title,
         value: String(appItem.id),
         caption: appItem.app?.description || '',
-        img: appItem.app?.coverImg
+        img: appItem.app?.coverImg,
       }));
     });
     watch(clubAppOptions, () => {
       if (selectedAppModel.value) {
-        const selectedValue = clubAppOptions.value.filter(v => v.value == selectedAppModel.value?.value)[0];
+        const selectedValue = clubAppOptions.value.filter(
+          (v) => v.value == selectedAppModel.value?.value
+        )[0];
         if (selectedValue) selectedAppModel.value = selectedValue;
       }
     });
@@ -162,7 +167,7 @@ export default defineComponent({
       }
 
       const result = await api.get<{
-        clubApp: IClubApp,
+        clubApp: IClubApp;
       }>(`/api/club/${props.clubSlug}/app/club-apps/clubAppId:${appId}`);
 
       clubApp.value = result.data.clubApp;
@@ -170,15 +175,19 @@ export default defineComponent({
     });
 
     const clubAppBindingOptions = computed<IOption[]>(() => {
-      return Object.values(clubApp.value?.app?.[`${props.mode}s`] || {}).map((bindingItem: IAppEvent | IAppAction) => ({
-        label: bindingItem.name,
-        value: bindingItem.key,
-        caption: bindingItem.description
-      }));
+      return Object.values(clubApp.value?.app?.[`${props.mode}s`] || {}).map(
+        (bindingItem: IAppEvent | IAppAction) => ({
+          label: bindingItem.name,
+          value: bindingItem.key,
+          caption: bindingItem.description,
+        })
+      );
     });
     watch(clubAppBindingOptions, () => {
       if (selectedBindingModel.value) {
-        const selectedValue = clubAppBindingOptions.value.filter(v => v.value == selectedBindingModel.value?.value)[0];
+        const selectedValue = clubAppBindingOptions.value.filter(
+          (v) => v.value == selectedBindingModel.value?.value
+        )[0];
         if (selectedValue) selectedBindingModel.value = selectedValue;
       }
     });
@@ -223,10 +232,12 @@ export default defineComponent({
 
       value,
 
-      appSelectLabel: computed(() => props.mode == 'event' ? 'source app' : 'target app'),
+      appSelectLabel: computed(() =>
+        props.mode == 'event' ? 'source app' : 'target app'
+      ),
 
-      isCodeHelpShown: ref(false)
+      isCodeHelpShown: ref(false),
     };
-  }
+  },
 });
 </script>

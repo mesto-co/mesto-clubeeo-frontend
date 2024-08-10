@@ -45,12 +45,12 @@
 
 <script lang="ts">
 import { defineComponent, onMounted } from 'vue';
-import SocialLinksSnippet from 'components/snippets/SocialLinksSnippet.vue';
-import { formUrl } from 'src/models/snippetData/links';
-import { useGlobalConfigStore } from 'stores/globalConfigStore';
+import SocialLinksSnippet from '@components/snippets/SocialLinksSnippet.vue';
+import { formUrl } from '@src/models/snippetData/links';
+import { useGlobalConfigStore } from '@stores/globalConfigStore';
 import { useRouter } from 'vue-router';
-import ScreenPageSnippet from 'src/components/snippets/ScreenPageSnippet.vue';
-import { styleDark } from 'src/models/snippetData/indexPageData';
+import ScreenPageSnippet from '@src/components/snippets/ScreenPageSnippet.vue';
+import { styleDark } from '@src/models/snippetData/indexPageData';
 
 export default defineComponent({
   name: 'PageIndex',

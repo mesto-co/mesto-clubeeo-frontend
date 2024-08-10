@@ -2,10 +2,10 @@ import {
   clubSocialLinksPartial,
   clubStylePartial,
   IClubSocialLinks,
-} from 'src/lib/api/graphqlPartials';
+} from '@src/lib/api/graphqlPartials';
 import { api } from 'boot/axios';
-import { IClubStyle } from 'src/models/clubStyle';
-import { IMeInClub, meInClubPartial } from 'src/models/meInClub';
+import { IClubStyle } from '@src/models/clubStyle';
+import { IMeInClub, meInClubPartial } from '@src/models/meInClub';
 
 export interface IClubSettings {
   isPremium: boolean;

@@ -1,10 +1,10 @@
 <template>
   <q-btn
     :type="href ? 'a' : null"
-    :target='href ? "_blank" : null'
-    :href='href'
+    :target="href ? '_blank' : null"
+    :href="href"
     :style="primaryButtonStyle"
-    :class='(clubStyle || {}).buttonClass'
+    :class="(clubStyle || {}).buttonClass"
     no-caps
     unelevated
   >
@@ -12,24 +12,22 @@
   </q-btn>
 </template>
 
-<style>
+<style></style>
 
-</style>
-
-<script lang='ts'>
+<script lang="ts">
 import { computed, defineComponent, inject, Ref } from 'vue';
-import { IClubStyle } from 'src/models/clubStyle';
+import { IClubStyle } from '@src/models/clubStyle';
 
 export default defineComponent({
   props: {
     href: {
       type: String,
-      required: false
+      required: false,
     },
     scheme: {
       type: String,
-      default: 'primary'
-    }
+      default: 'primary',
+    },
   },
   setup(props) {
     const clubStyle = inject('clubStyle') as Ref<IClubStyle>;
@@ -41,21 +39,21 @@ export default defineComponent({
         return {
           backgroundColor: style.color,
           color: style.textColor,
-          borderRadius: '8px'
-        }
+          borderRadius: '8px',
+        };
       }
 
       return {
         backgroundColor: style.primaryColor,
         color: style.primaryTextColor,
-        borderRadius: '8px'
-      }
+        borderRadius: '8px',
+      };
     });
 
     return {
       clubStyle,
       primaryButtonStyle,
     };
-  }
+  },
 });
 </script>

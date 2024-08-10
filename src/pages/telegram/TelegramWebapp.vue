@@ -331,11 +331,11 @@
 import { computed, defineComponent, onMounted, ref } from 'vue';
 import { api } from 'boot/axios';
 import { useRoute } from 'vue-router';
-import { IClub } from 'src/api/clubApi';
-import ClubPage from 'components/clublayout/ClubPage.vue';
-import DynamicAppComponent from 'components/DynamicAppComponent.vue';
-import SocialLinksSnippet from 'components/snippets/SocialLinksSnippet.vue';
-import Avatar from 'components/elements/Avatar.vue';
+import { IClub } from '@src/api/clubApi';
+import ClubPage from '@components/clublayout/ClubPage.vue';
+import DynamicAppComponent from '@components/DynamicAppComponent.vue';
+import SocialLinksSnippet from '@components/snippets/SocialLinksSnippet.vue';
+import Avatar from '@components/elements/Avatar.vue';
 import { colors } from 'quasar';
 const { blend, changeAlpha } = colors;
 

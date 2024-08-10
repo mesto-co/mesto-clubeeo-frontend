@@ -1,41 +1,33 @@
 <template>
-
   <div>
     <q-img
-      v-if='style.heroImg'
-      :src='style.heroImg'
-      :style='{
-        ...(maxHeight ? {maxHeight: maxHeight} : {}),
-        ...(minHeight ? {minHeight: minHeight} : {}),
-       }'
+      v-if="style.heroImg"
+      :src="style.heroImg"
+      :style="{
+        ...(maxHeight ? { maxHeight: maxHeight } : {}),
+        ...(minHeight ? { minHeight: minHeight } : {}),
+      }"
     />
     <div
       v-else
-      :style='{
-        ...(minHeight ? {minHeight: minHeight} : {}),
+      :style="{
+        ...(minHeight ? { minHeight: minHeight } : {}),
         backgroundColor: style.heroColor,
-       }'
-    >
+      }"
+    ></div>
 
-    </div>
-
-    <div
-      v-if='showLogo && style.logoImg'
-      class='clubHero_logoWrapper'
-    >
+    <div v-if="showLogo && style.logoImg" class="clubHero_logoWrapper">
       <avatar
-        :src='style.logoImg'
-        :name='club.name'
-        :alt='`${club.name} logo`'
-        class='avatar'
+        :src="style.logoImg"
+        :name="club.name"
+        :alt="`${club.name} logo`"
+        class="avatar"
       />
     </div>
   </div>
-
 </template>
 
-<style lang='scss'>
-
+<style lang="scss">
 div.clubHero_logoWrapper {
   display: flex;
   justify-content: center;
@@ -50,33 +42,32 @@ div.clubHero_logoWrapper {
     border-radius: min(60px, 25vw);
   }
 }
-
 </style>
 
-<script lang='ts'>
+<script lang="ts">
 import { defineComponent, inject, PropType } from 'vue';
-import { state } from 'src/state';
-import Avatar from 'components/elements/Avatar.vue';
-import { IClubStyle } from 'src/models/clubStyle';
+import { state } from '@src/state';
+import Avatar from '@components/elements/Avatar.vue';
+import { IClubStyle } from '@src/models/clubStyle';
 
 export default defineComponent({
   components: { Avatar },
   props: {
     maxHeight: {
-      type: String
+      type: String,
     },
     minHeight: {
       type: String,
-      default: '65px'
+      default: '65px',
     },
     showLogo: {
       type: Boolean,
-      default: true
+      default: true,
     },
     clubStyle: {
       type: Object as PropType<IClubStyle>,
-      required: false
-    }
+      required: false,
+    },
   },
   setup(props) {
     const style = props.clubStyle || inject<IClubStyle>('clubStyle');
@@ -85,6 +76,6 @@ export default defineComponent({
       club: state.$club.club,
       style,
     };
-  }
+  },
 });
 </script>
