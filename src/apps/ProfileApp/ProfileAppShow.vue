@@ -1,5 +1,5 @@
 <template>
-  <club-page header="Профиль" sticky="bottom" :loading="false">
+  <club-page header="Профиль" sticky="bottom" :loading="$profile.isLoading">
     <template v-slot:buttons>
       <div>
         <club-button
@@ -20,38 +20,52 @@
       <!-- Profile Header -->
       <div class="q-gutter-md q-pa-md row no-wrap items-center">
         <q-avatar size="100px">
-          <img :src="`https://api.multiavatar.com/${name}.svg`" />
+          <img
+            :src="`https://api.multiavatar.com/${$profile.name || 'Pro'}.svg`"
+          />
         </q-avatar>
         <div>
-          <div class="text-h5">{{ name }}</div>
-          <div class="text-subtitle1">{{ description }}</div>
-          <div>
+          <div class="text-h5">{{ $profile.name }}</div>
+          <div class="text-subtitle1">{{ $profile.description }}</div>
+          <div class="text-caption">{{ $profile.whoami }}</div>
+          <!-- <div>
             <q-chip label="CEO Kutikuli" color="primary" text-color="white" />
             <q-chip
               label="Разработчик TypeScript"
               color="primary"
               text-color="white"
             />
-          </div>
+          </div> -->
         </div>
       </div>
 
       <!-- Tags/Skills Section -->
       <div class="q-pa-md row">
         <div class="col">
-          <q-expansion-item icon="work" label="Профессия" default-opened>
+          <q-expansion-item
+            icon="fa-solid fa-briefcase"
+            label="Профессия"
+            default-opened
+          >
             <q-chip
-              v-for="profession in professions"
+              v-for="profession in $profile.professions"
               :key="profession"
               :label="profession"
               class="q-mb-xs"
             />
           </q-expansion-item>
         </div>
+      </div>
+
+      <div class="q-pa-md row">
         <div class="col">
-          <q-expansion-item icon="business" label="Индустрия" default-opened>
+          <q-expansion-item
+            icon="fa-solid fa-industry"
+            label="Индустрия"
+            default-opened
+          >
             <q-chip
-              v-for="industry in industries"
+              v-for="industry in $profile.industries"
               :key="industry"
               :label="industry"
               class="q-mb-xs"
@@ -62,9 +76,13 @@
 
       <div class="q-pa-md row">
         <div class="col">
-          <q-expansion-item icon="school" label="Навыки" default-opened>
+          <q-expansion-item
+            icon="fa-solid fa-star"
+            label="Навыки"
+            default-opened
+          >
             <q-chip
-              v-for="skill in skills"
+              v-for="skill in $profile.skills"
               :key="skill"
               :label="skill"
               class="q-mb-xs"
@@ -76,25 +94,31 @@
       <!-- Experience Section -->
       <div class="q-pa-md row">
         <div class="col">
-          <q-expansion-item icon="work_outline" label="Работа" default-opened>
+          <q-expansion-item
+            icon="fa-solid fa-briefcase"
+            label="Работа"
+            default-opened
+          >
             <q-chip
-              v-for="workplace in workplaces"
+              v-for="workplace in $profile.workplaces"
               :key="workplace"
               :label="workplace"
               class="q-mb-xs"
             />
           </q-expansion-item>
         </div>
+      </div>
+      <div class="q-pa-md row">
         <div class="col">
           <q-expansion-item
-            icon="school_outline"
+            icon="fa-solid fa-graduation-cap"
             label="Образование"
             default-opened
           >
             <q-chip
-              v-for="education in educationList"
-              :key="education"
-              :label="education"
+              v-for="educationItem in $profile.education"
+              :key="educationItem"
+              :label="educationItem"
               class="q-mb-xs"
             />
           </q-expansion-item>
@@ -103,35 +127,39 @@
 
       <!-- About Me Section -->
       <div class="q-pa-md">
-        <q-card dark>
+        <q-card dark class="clubCard" flat>
           <q-card-section>
             <div class="text-h6">Обо мне:</div>
-            <div>{{ aboutMe }}</div>
+            <div v-html="sanitizeHtmlAddBr($profile.aboutMe)" />
           </q-card-section>
         </q-card>
       </div>
 
       <!-- Project Section -->
-      <div class="q-pa-md">
-        <q-card dark>
+      <div class="q-pa-md" v-if="$profile.project">
+        <q-card dark class="clubCard" flat>
           <q-card-section>
             <div class="text-h6">О проекте:</div>
-            <div><strong>Название:</strong> {{ project.name }}</div>
             <div>
-              <strong>Ссылки:</strong>
-              <a :href="project.link" target="_blank">{{ project.link }}</a>
+              <strong>Название:</strong>&nbsp; {{ $profile.project.name }}
+            </div>
+            <div>
+              <strong>Ссылки:</strong>&nbsp;
+              <a :href="$profile.project.link" target="_blank">{{
+                $profile.project.link
+              }}</a>
             </div>
             <div>
               <strong>Статус:</strong>
-              <q-chip color="orange">{{ project.status }}</q-chip>
-              <q-chip color="yellow">{{ project.cofounderStatus }}</q-chip>
+              <template
+                v-for="status in $profile.project.statuses"
+                :key="status"
+              >
+                <q-chip color="orange">{{ status }}</q-chip>
+              </template>
             </div>
             <div><strong>Описание:</strong></div>
-            <ul>
-              <li v-for="point in project.description" :key="point">
-                {{ point }}
-              </li>
-            </ul>
+            <div v-html="sanitizeHtmlAddBr($profile.project.description)" />
           </q-card-section>
         </q-card>
       </div>
@@ -178,89 +206,26 @@
 </template>
 
 <script setup>
-import { defineComponent, ref } from 'vue';
+import { defineComponent, onMounted } from 'vue';
 import ClubPage from '@components/clublayout/ClubPage.vue';
 import ClubButton from '@components/clubpage/ClubButton.vue';
 import { appProps } from '@apps/_common/appProps';
+import { useProfileStore } from './profileStore';
+import { sanitizeHtmlTelegram } from 'src/utils/sanitizeHtml';
 
 defineComponent({
   components: { ClubPage, ClubButton },
   props: appProps,
 });
 
-// const socialsList = {
-//   tiktok: 'tiktok',
-//   telegram: 'telegram',
-//   discord: 'discord',
-//   instagram: 'instagram',
-//   twitter: 'twitter',
-//   reddit: 'reddit',
-//   facebook: 'facebook',
-//   linkedin: 'linkedin',
-//   youtube: 'youtube',
-//   web: 'web',
-// };
+const $profile = useProfileStore();
 
-// const socialToIconMap = {
-//   tiktok: 'fa-brands fa-tiktok',
-//   twitter: 'fa-brands fa-twitter',
-//   instagram: 'fa-brands fa-instagram',
-//   discord: 'fa-brands fa-discord',
-//   telegram: 'fa-brands fa-telegram',
-//   reddit: 'fa-brands fa-reddit',
-//   facebook: 'fa-brands fa-facebook',
-//   linkedin: 'fa-brands fa-linkedin',
-//   youtube: 'fa-brands fa-youtube',
-//   web: 'fa-solid fa-globe',
-// };
-
-// const mapSocialToIcon = (code) => {
-//   return socialToIconMap[code];
-// };
-
-// const socialLinks = ref({
-//   tiktok: '',
-//   telegram: '',
-//   discord: '',
-//   instagram: '',
-//   twitter: '',
-//   reddit: '',
-//   facebook: '',
-//   linkedin: '',
-//   youtube: '',
-//   web: '',
-// });
-
-const name = ref('Иван Иванов | строю платформы с нуля');
-const description = ref('CEO Kutikuli | Разработчик TypeScript');
-// const socialLinks = ref('ссылки на личные и публичные страницы');
-const professions = ref(['Разработчик', 'Тимлид', 'Продавец']);
-const industries = ref(['HoReCa', 'Space', 'FoodTech']);
-const skills = ref([
-  'менеджмент',
-  'команды',
-  'JavaScript',
-  'TypeScript',
-  'Agile',
-  'OKR',
-]);
-const workplaces = ref(['Facebook', 'Yandex', 'Stripe', 'Kutikuli']);
-const educationList = ref(['МГУ', 'Stanford']);
-const aboutMe =
-  ref(`Делал карьеру в HoReCa - продавал туры в отели в Кемере для состоятельных людей 
-                в Сибири. Потом понял, что не мое и решил переквалифицироваться в разработчики. 
-                Тут затянуло и помимо разработки на компанию - делаю свой супертехнологичный проект 
-                дешевых туров в дорогие отели, чтобы каждый мог прикоснуться к роскоши, тк все это заслужили и иное несправедливо. 
-                Ищу в сообществе единомышленников и помощь с развитием проекта. Мне очень нужна команда.`);
-const project = ref({
-  name: 'Kutikuli',
-  link: 'www.kutikuli.com',
-  status: 'MVP',
-  cofounderStatus: 'ищу кофаундера',
-  description: [
-    'Что из себя представляет - производство товаров, приложение, агентство и тд',
-    'Какую проблему решает Ваш продукт;',
-    'Кто является целевой аудиторией/кому он будет полезен/для кого сделан;',
-  ],
+// Fetch profile data when the component is mounted
+onMounted(async () => {
+  await $profile.fetchProfile();
 });
+
+const sanitizeHtmlAddBr = (messageText) => {
+  return sanitizeHtmlTelegram(messageText).replace(/\n/g, '<br>');
+};
 </script>

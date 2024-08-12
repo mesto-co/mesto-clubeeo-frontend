@@ -17,12 +17,7 @@
         <club-button
           class="clubButtonActive q-px-md q-mr-sm"
           dense
-          @click="
-            $router.push({
-              name: 'club-dynamic-app',
-              params: { appPage: '' },
-            })
-          "
+          @click="onSaveProfile"
           >Сохранить</club-button
         >
       </div>
@@ -30,19 +25,30 @@
 
     <div class="q-pa-md q-mb-md q-border-radius-md">
       <!-- Profile Header -->
-      <div class="q-gutter-md q-pa-md row no-wrap items-center">
-        <q-avatar size="100px">
-          <img :src="`https://api.multiavatar.com/${name}.svg`" />
+      <div class="q-gutter-md q-px-md q-pb-md row no-wrap items-top">
+        <q-avatar size="100px" class="q-py-md">
+          <img
+            :src="`https://api.multiavatar.com/${$profile.name || 'Pro'}.svg`"
+          />
         </q-avatar>
-        <div>
-          <div class="text-h5">{{ name }}</div>
-          <div class="text-subtitle1">{{ description }}</div>
-          <div>
-            <q-chip label="CEO Kutikuli" color="primary" text-color="white" />
-            <q-chip
-              label="Разработчик TypeScript"
-              color="primary"
-              text-color="white"
+        <div class="row q-gutter-md">
+          <div class="col-12">
+            <q-input outlined dark v-model="$profile.name" label="Имя" />
+          </div>
+          <div class="col-12">
+            <q-input
+              outlined
+              dark
+              v-model="$profile.description"
+              label="Описание"
+            />
+          </div>
+          <div class="col-12">
+            <q-input
+              outlined
+              dark
+              v-model="$profile.whoami"
+              label="Самоидентификация"
             />
           </div>
         </div>
@@ -51,105 +57,158 @@
       <!-- Tags/Skills Section -->
       <div class="q-pa-md row">
         <div class="col">
-          <q-expansion-item icon="work" label="Профессия" default-opened>
-            <q-chip
-              v-for="profession in professions"
-              :key="profession"
-              :label="profession"
-              class="q-mb-xs"
-            />
-          </q-expansion-item>
-        </div>
-        <div class="col">
-          <q-expansion-item icon="business" label="Индустрия" default-opened>
-            <q-chip
-              v-for="industry in industries"
-              :key="industry"
-              :label="industry"
-              class="q-mb-xs"
-            />
-          </q-expansion-item>
+          <q-select
+            label="Профессия"
+            outlined
+            dark
+            v-model="$profile.professions"
+            use-input
+            use-chips
+            multiple
+            hide-dropdown-icon
+            input-debounce="0"
+            new-value-mode="add-unique"
+            :options="['Разработчик', 'Тимлид', 'Продавец']"
+          />
         </div>
       </div>
 
       <div class="q-pa-md row">
         <div class="col">
-          <q-expansion-item icon="school" label="Навыки" default-opened>
-            <q-chip
-              v-for="skill in skills"
-              :key="skill"
-              :label="skill"
-              class="q-mb-xs"
-            />
-          </q-expansion-item>
+          <q-select
+            label="Индустрия"
+            outlined
+            dark
+            v-model="$profile.industries"
+            use-input
+            use-chips
+            multiple
+            hide-dropdown-icon
+            input-debounce="0"
+            new-value-mode="add-unique"
+            :options="[]"
+          />
+        </div>
+      </div>
+
+      <div class="q-pa-md row">
+        <div class="col">
+          <q-select
+            label="Навыки"
+            outlined
+            dark
+            v-model="$profile.skills"
+            use-input
+            use-chips
+            multiple
+            hide-dropdown-icon
+            input-debounce="0"
+            new-value-mode="add-unique"
+            :options="[]"
+          />
         </div>
       </div>
 
       <!-- Experience Section -->
       <div class="q-pa-md row">
         <div class="col">
-          <q-expansion-item icon="work_outline" label="Работа" default-opened>
-            <q-chip
-              v-for="workplace in workplaces"
-              :key="workplace"
-              :label="workplace"
-              class="q-mb-xs"
-            />
-          </q-expansion-item>
+          <q-select
+            label="Работа"
+            outlined
+            dark
+            v-model="$profile.workplaces"
+            use-input
+            use-chips
+            multiple
+            hide-dropdown-icon
+            input-debounce="0"
+            new-value-mode="add-unique"
+            :options="[]"
+          />
         </div>
+      </div>
+      <div class="q-pa-md row">
         <div class="col">
-          <q-expansion-item
-            icon="school_outline"
+          <q-select
             label="Образование"
-            default-opened
-          >
-            <q-chip
-              v-for="education in educationList"
-              :key="education"
-              :label="education"
-              class="q-mb-xs"
-            />
-          </q-expansion-item>
+            outlined
+            dark
+            v-model="$profile.education"
+            use-input
+            use-chips
+            multiple
+            hide-dropdown-icon
+            input-debounce="0"
+            new-value-mode="add-unique"
+            :options="[]"
+          />
         </div>
       </div>
 
       <!-- About Me Section -->
       <div class="q-pa-md">
-        <q-card dark>
+        <q-card dark class="clubCard" flat>
           <q-card-section>
             <div class="text-h6">Обо мне:</div>
-            <div>{{ aboutMe }}</div>
+            <q-input
+              type="textarea"
+              outlined
+              dark
+              v-model="$profile.aboutMe"
+              label="Описание"
+              rows="5"
+            />
           </q-card-section>
         </q-card>
       </div>
 
       <!-- Project Section -->
-      <div class="q-pa-md">
-        <q-card dark>
+      <div class="q-pa-md" v-if="$profile.project">
+        <q-card dark class="clubCard" flat>
           <q-card-section>
             <div class="text-h6">О проекте:</div>
-            <div><strong>Название:</strong> {{ project.name }}</div>
-            <div>
-              <strong>Ссылки:</strong>
-              <a :href="project.link" target="_blank">{{ project.link }}</a>
-            </div>
-            <div>
-              <strong>Статус:</strong>
-              <q-chip color="orange">{{ project.status }}</q-chip>
-              <q-chip color="yellow">{{ project.cofounderStatus }}</q-chip>
-            </div>
-            <div><strong>Описание:</strong></div>
-            <ul>
-              <li v-for="point in project.description" :key="point">
-                {{ point }}
-              </li>
-            </ul>
+            <q-input
+              outlined
+              dark
+              v-model="$profile.project.name"
+              label="Название"
+              class="q-mb-md"
+            />
+            <q-input
+              outlined
+              dark
+              v-model="$profile.project.link"
+              label="Ссылка на проект"
+              class="q-mb-md"
+            />
+            <q-select
+              outlined
+              dark
+              v-model="$profile.project.statuses"
+              use-input
+              use-chips
+              multiple
+              hide-dropdown-icon
+              input-debounce="0"
+              new-value-mode="add-unique"
+              :options="['MVP', 'Ищу кофаундера', 'Ищу инвестиции']"
+              label="Статус"
+              class="q-mb-md"
+            />
+            <q-input
+              type="textarea"
+              outlined
+              dark
+              v-model="$profile.project.description"
+              label="Описание"
+              rows="5"
+            />
           </q-card-section>
         </q-card>
       </div>
 
       <!-- Social Media Links -->
-      <div class="q-pa-md">
+      <div class="q-pa-md" style="display: none">
         <template
           v-for="socCode in Object.keys(socialsList)"
           v-bind:key="socCode"
@@ -190,40 +249,66 @@
 </template>
 
 <script setup>
-import { defineComponent, ref } from 'vue';
+import { defineComponent, onMounted, ref } from 'vue';
+import { useRouter } from 'vue-router';
+import { useQuasar } from 'quasar';
 import ClubPage from '@components/clublayout/ClubPage.vue';
 import ClubButton from '@components/clubpage/ClubButton.vue';
 import { appProps } from '@apps/_common/appProps';
+import { useProfileStore } from './profileStore';
+// import CSelect from '@components/elements/CSelect.vue';
 
 defineComponent({
-  components: { ClubPage, ClubButton },
   props: appProps,
 });
 
+const $profile = useProfileStore();
+const $router = useRouter();
+const $q = useQuasar();
+
+// Fetch profile data when the component is mounted
+onMounted(async () => {
+  await $profile.fetchProfile();
+});
+
+const onSaveProfile = async () => {
+  await $profile.saveProfile();
+
+  $q.notify({
+    message: 'Профиль успешно сохранен',
+    color: 'positive',
+  });
+
+  $router.push({
+    name: 'club-dynamic-app',
+    params: { appPage: '' },
+  });
+};
+
 const socialsList = {
-  tiktok: 'tiktok',
+  web: 'web',
   telegram: 'telegram',
+  linkedin: 'linkedin',
+  twitter: 'twitter',
+  youtube: 'youtube',
+  facebook: 'facebook',
+  tiktok: 'tiktok',
   discord: 'discord',
   instagram: 'instagram',
-  twitter: 'twitter',
   reddit: 'reddit',
-  facebook: 'facebook',
-  linkedin: 'linkedin',
-  youtube: 'youtube',
-  web: 'web',
 };
 
 const socialToIconMap = {
-  tiktok: 'fa-brands fa-tiktok',
+  web: 'fa-solid fa-globe',
+  telegram: 'fa-brands fa-telegram',
+  linkedin: 'fa-brands fa-linkedin',
   twitter: 'fa-brands fa-twitter',
+  youtube: 'fa-brands fa-youtube',
+  facebook: 'fa-brands fa-facebook',
+  tiktok: 'fa-brands fa-tiktok',
   instagram: 'fa-brands fa-instagram',
   discord: 'fa-brands fa-discord',
-  telegram: 'fa-brands fa-telegram',
   reddit: 'fa-brands fa-reddit',
-  facebook: 'fa-brands fa-facebook',
-  linkedin: 'fa-brands fa-linkedin',
-  youtube: 'fa-brands fa-youtube',
-  web: 'fa-solid fa-globe',
 };
 
 const mapSocialToIcon = (code) => {
@@ -231,77 +316,15 @@ const mapSocialToIcon = (code) => {
 };
 
 const socialLinks = ref({
-  tiktok: '',
+  web: '',
   telegram: '',
+  linkedin: '',
+  twitter: '',
+  youtube: '',
+  facebook: '',
+  tiktok: '',
   discord: '',
   instagram: '',
-  twitter: '',
   reddit: '',
-  facebook: '',
-  linkedin: '',
-  youtube: '',
-  web: '',
-});
-
-const name = ref('Иван Иванов | строю платформы с нуля');
-const description = ref('CEO Kutikuli | Разработчик TypeScript');
-// const socialLinks = ref('ссылки на личные и публичные страницы');
-const professions = ref(['Разработчик', 'Тимлид', 'Продавец']);
-const industries = ref(['HoReCa', 'Space', 'FoodTech']);
-const skills = ref([
-  'менеджмент',
-  'команды',
-  'JavaScript',
-  'TypeScript',
-  'Agile',
-  'OKR',
-]);
-const workplaces = ref(['Facebook', 'Yandex', 'Stripe', 'Kutikuli']);
-const educationList = ref(['МГУ', 'Stanford']);
-const aboutMe =
-  ref(`Делал карьеру в HoReCa - продавал туры в отели в Кемере для состоятельных людей 
-                в Сибири. Потом понял, что не мое и решил переквалифицироваться в разработчики. 
-                Тут затянуло и помимо разработки на компанию - делаю свой супертехнологичный проект 
-                дешевых туров в дорогие отели, чтобы каждый мог прикоснуться к роскоши, тк все это заслужили и иное несправедливо. 
-                Ищу в сообществе единомышленников и помощь с развитием проекта. Мне очень нужна команда.`);
-const project = ref({
-  name: 'Kutikuli',
-  link: 'www.kutikuli.com',
-  status: 'MVP',
-  cofounderStatus: 'ищу кофаундера',
-  description: [
-    'Что из себя представляет - производство товаров, приложение, агентство и тд',
-    'Какую проблему решает Ваш продукт;',
-    'Кто является целевой аудиторией/кому он будет полезен/для кого сделан;',
-  ],
 });
 </script>
-
-<style>
-/* Add custom styles here */
-</style>
-
-<!-- <template>
-  <club-page header="Demo profile" sticky="bottom" :loading="false">
-    Here's the profile page.
-
-    {{ profileData }}
-  </club-page>
-</template>
-
-<script setup>
-import { defineComponent, ref } from 'vue';
-import ClubPage from '@components/clublayout/ClubPage.vue';
-import { appProps } from '@apps/_common/appProps';
-
-defineComponent({
-  components: { ClubPage },
-  props: appProps,
-});
-
-const profileData = ref({
-  name: 'Иван Иванов',
-  caption: 'Строю платформы'
-  aboutMe: 'I am a software engineer.',
-});
-</script> -->

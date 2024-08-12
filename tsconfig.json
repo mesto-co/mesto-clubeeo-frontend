@@ -27,6 +27,7 @@
       "assets/*": ["src/assets/*"],
       "boot/*": ["src/boot/*"],
       "stores/*": ["src/stores/*"],
+      "utils/*": ["src/utils/*"],
 
       "@src/models/*": ["node_modules/clubeeo-front/src/models/*"],
       "@src/api/*": ["node_modules/clubeeo-front/src/api/*"],
