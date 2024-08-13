@@ -272,16 +272,24 @@ onMounted(async () => {
 });
 
 const onSaveProfile = async () => {
-  await $profile.saveProfile();
+  await $profile.saveProfile({
+    onSuccess() {
+      $q.notify({
+        message: 'Профиль успешно сохранен',
+        color: 'positive',
+      });
 
-  $q.notify({
-    message: 'Профиль успешно сохранен',
-    color: 'positive',
-  });
-
-  $router.push({
-    name: 'club-dynamic-app',
-    params: { appPage: '' },
+      $router.push({
+        name: 'club-dynamic-app',
+        params: { appPage: '' },
+      });
+    },
+    onError(error) {
+      $q.notify({
+        message: error.message,
+        color: 'negative',
+      });
+    },
   });
 };
 

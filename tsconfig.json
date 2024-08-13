@@ -17,6 +17,7 @@
     "lib": ["esnext", "dom"],
     "isolatedModules": true,
     "skipLibCheck": true,
+    "noImplicitAny": false,
 
     "paths": {
       "src/*": ["src/*"],

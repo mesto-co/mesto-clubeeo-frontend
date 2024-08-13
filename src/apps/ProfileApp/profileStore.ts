@@ -22,9 +22,9 @@ interface IProfileData {
 export const useProfileStore = defineStore('profile', {
   state: () => ({
     isLoading: true,
-    name: '',
-    description: '',
-    whoami: '',
+    name: 'Иван Иванов',
+    description: 'CEO Kutikuli',
+    whoami: 'человек с проектом',
     socialLinks: {
       tiktok: '',
       telegram: '',
@@ -39,14 +39,7 @@ export const useProfileStore = defineStore('profile', {
     } as Record<string, string>,
     professions: ['Разработчик', 'Тимлид', 'Продавец'] as string[],
     industries: ['HoReCa', 'Space', 'FoodTech'] as string[],
-    skills: [
-      'менеджмент',
-      'команды',
-      'JavaScript',
-      'TypeScript',
-      'Agile',
-      'OKR',
-    ] as string[],
+    skills: ['менеджмент', 'команды', 'JavaScript', 'TypeScript', 'Agile', 'OKR'] as string[],
     workplaces: ['Facebook', 'Yandex', 'Stripe', 'Kutikuli'] as string[],
     education: ['МГУ', 'Stanford'] as string[],
     aboutMe: `Делал карьеру в HoReCa - продавал туры в отели в Кемере для состоятельных людей 
@@ -68,19 +61,14 @@ export const useProfileStore = defineStore('profile', {
   }),
 
   getters: {
-    // Example getter to return a formatted project link
     projectLink: (state) => `https://${state.project.link}`,
-    // Add more getters as needed
   },
 
   actions: {
     async fetchProfile() {
       this.isLoading = true;
       try {
-        const result = await api.get<{ data: IProfileData }>(
-          '/api/club/1/apps/1/mesto-profile/my-profile',
-        );
-
+        const result = await api.get<{ data: IProfileData }>('/api/club/1/apps/1/mesto-profile/my-profile');
         const profileData = result.data.data;
         this.name = profileData.name;
         this.description = profileData.description;
@@ -104,11 +92,11 @@ export const useProfileStore = defineStore('profile', {
         this.isLoading = false;
       }
     },
-    async saveProfile() {
+    async saveProfile({ onSuccess, onError }: { onSuccess: () => void; onError: (error) => void }) {
       try {
         this.isLoading = true;
 
-        await api.post('/api/club/1/apps/1/mesto-profile/my-profile', {
+        await api.patch('/api/club/1/apps/1/mesto-profile/my-profile', {
           name: this.name,
           whoami: this.whoami,
           description: this.description,
@@ -124,8 +112,15 @@ export const useProfileStore = defineStore('profile', {
           projectAbout: this.project.description,
           socialLinks: this.socialLinks,
         });
+
+        onSuccess();
       } catch (error) {
-        console.error(error);
+        const errorMessage = (error as Record<string, any>)?.response?.data?.error;
+        if (errorMessage) {
+          onError({ message: errorMessage });
+        } else {
+          onError(error);
+        }
       } finally {
         this.isLoading = false;
       }
