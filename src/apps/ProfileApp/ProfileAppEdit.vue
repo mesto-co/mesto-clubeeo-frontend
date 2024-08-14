@@ -14,48 +14,33 @@
           >Отменить</club-button
         >
 
-        <club-button
-          class="clubButtonActive q-px-md q-mr-sm"
-          dense
-          @click="onSaveProfile"
-          >Сохранить</club-button
-        >
+        <club-button class="clubButtonActive q-px-md q-mr-sm" dense @click="onSaveProfile">Сохранить</club-button>
       </div>
     </template>
 
-    <div class="q-pa-md q-mb-md q-border-radius-md">
+    <div class="q-pa-sm q-border-radius-md">
       <!-- Profile Header -->
-      <div class="q-gutter-md q-px-md q-pb-md row no-wrap items-top">
-        <q-avatar size="100px" class="q-py-md">
+      <div class="q-pb-md row no-wrap items-top">
+        <!-- <q-avatar size="100px" class="q-py-md">
           <img
             :src="`https://api.multiavatar.com/${$profile.name || 'Pro'}.svg`"
           />
-        </q-avatar>
+        </q-avatar> -->
         <div class="row q-gutter-md">
           <div class="col-12">
             <q-input outlined dark v-model="$profile.name" label="Имя" />
           </div>
           <div class="col-12">
-            <q-input
-              outlined
-              dark
-              v-model="$profile.description"
-              label="Описание"
-            />
+            <q-input outlined dark v-model="$profile.description" label="Описание" />
           </div>
           <div class="col-12">
-            <q-input
-              outlined
-              dark
-              v-model="$profile.whoami"
-              label="Самоидентификация"
-            />
+            <q-input outlined dark v-model="$profile.whoami" label="Самоидентификация" />
           </div>
         </div>
       </div>
 
       <!-- Tags/Skills Section -->
-      <div class="q-pa-md row">
+      <div class="q-pb-md row">
         <div class="col">
           <q-select
             label="Профессия"
@@ -73,7 +58,7 @@
         </div>
       </div>
 
-      <div class="q-pa-md row">
+      <div class="q-pb-md row">
         <div class="col">
           <q-select
             label="Индустрия"
@@ -91,7 +76,7 @@
         </div>
       </div>
 
-      <div class="q-pa-md row">
+      <div class="q-pb-md row">
         <div class="col">
           <q-select
             label="Навыки"
@@ -110,7 +95,7 @@
       </div>
 
       <!-- Experience Section -->
-      <div class="q-pa-md row">
+      <div class="q-pb-md row">
         <div class="col">
           <q-select
             label="Работа"
@@ -127,7 +112,7 @@
           />
         </div>
       </div>
-      <div class="q-pa-md row">
+      <div class="q-pb-md row">
         <div class="col">
           <q-select
             label="Образование"
@@ -146,41 +131,22 @@
       </div>
 
       <!-- About Me Section -->
-      <div class="q-pa-md">
+      <div class="q-py-md">
         <q-card dark class="clubCard" flat>
           <q-card-section>
             <div class="text-h6">Обо мне:</div>
-            <q-input
-              type="textarea"
-              outlined
-              dark
-              v-model="$profile.aboutMe"
-              label="Описание"
-              rows="5"
-            />
+            <q-input type="textarea" outlined dark v-model="$profile.aboutMe" label="Описание" rows="5" />
           </q-card-section>
         </q-card>
       </div>
 
       <!-- Project Section -->
-      <div class="q-pa-md" v-if="$profile.project">
+      <div class="q-py-md" v-if="$profile.project">
         <q-card dark class="clubCard" flat>
           <q-card-section>
             <div class="text-h6">О проекте:</div>
-            <q-input
-              outlined
-              dark
-              v-model="$profile.project.name"
-              label="Название"
-              class="q-mb-md"
-            />
-            <q-input
-              outlined
-              dark
-              v-model="$profile.project.link"
-              label="Ссылка на проект"
-              class="q-mb-md"
-            />
+            <q-input outlined dark v-model="$profile.project.name" label="Название" class="q-mb-md" />
+            <q-input outlined dark v-model="$profile.project.link" label="Ссылка на проект" class="q-mb-md" />
             <q-select
               outlined
               dark
@@ -195,24 +161,14 @@
               label="Статус"
               class="q-mb-md"
             />
-            <q-input
-              type="textarea"
-              outlined
-              dark
-              v-model="$profile.project.description"
-              label="Описание"
-              rows="5"
-            />
+            <q-input type="textarea" outlined dark v-model="$profile.project.description" label="Описание" rows="5" />
           </q-card-section>
         </q-card>
       </div>
 
       <!-- Social Media Links -->
-      <div class="q-pa-md" style="display: none">
-        <template
-          v-for="socCode in Object.keys(socialsList)"
-          v-bind:key="socCode"
-        >
+      <div class="q-py-md" style="display: none">
+        <template v-for="socCode in Object.keys(socialsList)" v-bind:key="socCode">
           <div class="q-pb-sm flex flex-center">
             <q-input
               :label="socCode"
@@ -220,12 +176,7 @@
               outlined
               style="width: 550px"
               v-model="socialLinks[socCode]"
-              :rules="[
-                (val) =>
-                  !val ||
-                  val.startsWith('https://') ||
-                  'Should start with https://',
-              ]"
+              :rules="[(val) => !val || val.startsWith('https://') || 'Should start with https://']"
             >
               <template v-slot:append>
                 <q-avatar>

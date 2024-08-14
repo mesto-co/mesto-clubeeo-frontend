@@ -38,18 +38,10 @@
       "@src/lib/api/*": ["node_modules/clubeeo-front/src/lib/api/*"],
       "@src/boot/axios": ["src/boot/axios.ts"],
       "@src/state": ["node_modules/clubeeo-front/src/state"],
-      "@modules/appManager/appManagerRoutes": [
-        "node_modules/clubeeo-front/src/modules/appManager/appManagerRoutes.ts"
-      ],
-      "@modules/automation/automationRoutes": [
-        "node_modules/clubeeo-front/src/modules/automation/automationRoutes.ts"
-      ],
-      "@apps/_common/appProps": [
-        "node_modules/clubeeo-front/src/apps/_common/appProps.ts"
-      ],
-      "@apps/_common/appInterfaces": [
-        "node_modules/clubeeo-front/src/apps/_common/appInterfaces.ts"
-      ]
+      "@modules/appManager/appManagerRoutes": ["node_modules/clubeeo-front/src/modules/appManager/appManagerRoutes.ts"],
+      "@modules/automation/automationRoutes": ["node_modules/clubeeo-front/src/modules/automation/automationRoutes.ts"],
+      "@apps/_common/appProps": ["node_modules/clubeeo-front/src/apps/_common/appProps.ts"],
+      "@apps/_common/appInterfaces": ["node_modules/clubeeo-front/src/apps/_common/appInterfaces.ts"]
     }
   },
   "exclude": [

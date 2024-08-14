@@ -19,12 +19,12 @@
     <div class="q-pa-md q-mb-md q-border-radius-md">
       <!-- Profile Header -->
       <div class="q-gutter-md q-pa-md row no-wrap items-center">
-        <q-avatar size="100px">
+        <!-- <q-avatar size="100px">
           <img
             :src="`https://api.multiavatar.com/${$profile.name || 'Pro'}.svg`"
           />
-        </q-avatar>
-        <div>
+        </q-avatar> -->
+        <div class="q-pl-md">
           <div class="text-h5">{{ $profile.name }}</div>
           <div class="text-subtitle1">{{ $profile.description }}</div>
           <div class="text-caption">{{ $profile.whoami }}</div>
@@ -42,51 +42,24 @@
       <!-- Tags/Skills Section -->
       <div class="q-pa-md row">
         <div class="col">
-          <q-expansion-item
-            icon="fa-solid fa-briefcase"
-            label="Профессия"
-            default-opened
-          >
-            <q-chip
-              v-for="profession in $profile.professions"
-              :key="profession"
-              :label="profession"
-              class="q-mb-xs"
-            />
+          <q-expansion-item icon="fa-solid fa-briefcase" label="Профессия" default-opened>
+            <q-chip v-for="profession in $profile.professions" :key="profession" :label="profession" class="q-mb-xs" />
           </q-expansion-item>
         </div>
       </div>
 
       <div class="q-pa-md row">
         <div class="col">
-          <q-expansion-item
-            icon="fa-solid fa-industry"
-            label="Индустрия"
-            default-opened
-          >
-            <q-chip
-              v-for="industry in $profile.industries"
-              :key="industry"
-              :label="industry"
-              class="q-mb-xs"
-            />
+          <q-expansion-item icon="fa-solid fa-industry" label="Индустрия" default-opened>
+            <q-chip v-for="industry in $profile.industries" :key="industry" :label="industry" class="q-mb-xs" />
           </q-expansion-item>
         </div>
       </div>
 
       <div class="q-pa-md row">
         <div class="col">
-          <q-expansion-item
-            icon="fa-solid fa-star"
-            label="Навыки"
-            default-opened
-          >
-            <q-chip
-              v-for="skill in $profile.skills"
-              :key="skill"
-              :label="skill"
-              class="q-mb-xs"
-            />
+          <q-expansion-item icon="fa-solid fa-star" label="Навыки" default-opened>
+            <q-chip v-for="skill in $profile.skills" :key="skill" :label="skill" class="q-mb-xs" />
           </q-expansion-item>
         </div>
       </div>
@@ -94,27 +67,14 @@
       <!-- Experience Section -->
       <div class="q-pa-md row">
         <div class="col">
-          <q-expansion-item
-            icon="fa-solid fa-briefcase"
-            label="Работа"
-            default-opened
-          >
-            <q-chip
-              v-for="workplace in $profile.workplaces"
-              :key="workplace"
-              :label="workplace"
-              class="q-mb-xs"
-            />
+          <q-expansion-item icon="fa-solid fa-briefcase" label="Работа" default-opened>
+            <q-chip v-for="workplace in $profile.workplaces" :key="workplace" :label="workplace" class="q-mb-xs" />
           </q-expansion-item>
         </div>
       </div>
       <div class="q-pa-md row">
         <div class="col">
-          <q-expansion-item
-            icon="fa-solid fa-graduation-cap"
-            label="Образование"
-            default-opened
-          >
+          <q-expansion-item icon="fa-solid fa-graduation-cap" label="Образование" default-opened>
             <q-chip
               v-for="educationItem in $profile.education"
               :key="educationItem"
@@ -140,21 +100,14 @@
         <q-card dark class="clubCard" flat>
           <q-card-section>
             <div class="text-h6">О проекте:</div>
-            <div>
-              <strong>Название:</strong>&nbsp; {{ $profile.project.name }}
-            </div>
+            <div><strong>Название:</strong>&nbsp; {{ $profile.project.name }}</div>
             <div>
               <strong>Ссылки:</strong>&nbsp;
-              <a :href="$profile.project.link" target="_blank">{{
-                $profile.project.link
-              }}</a>
+              <a :href="$profile.project.link" target="_blank">{{ $profile.project.link }}</a>
             </div>
             <div>
               <strong>Статус:</strong>
-              <template
-                v-for="status in $profile.project.statuses"
-                :key="status"
-              >
+              <template v-for="status in $profile.project.statuses" :key="status">
                 <q-chip color="orange">{{ status }}</q-chip>
               </template>
             </div>
