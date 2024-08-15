@@ -1,5 +1,5 @@
 <template>
-  <club-page header="Профиль" sticky="bottom" :loading="false">
+  <club-page sticky="bottom" :loading="$profile.isLoading">
     <template v-slot:buttons>
       <div>
         <club-button
@@ -14,7 +14,12 @@
           >Отменить</club-button
         >
 
-        <club-button class="clubButtonActive q-px-md q-mr-sm" dense @click="onSaveProfile">Сохранить</club-button>
+        <template v-if="!$profile.roles.applicant && !$profile.roles.member && !$profile.roles.rejected">
+          <club-button class="clubButtonActive q-px-md q-mr-sm" dense @click="onApply">Отправить заявку</club-button>
+        </template>
+        <template v-else>
+          <club-button class="clubButtonActive q-px-md q-mr-sm" dense @click="onSaveProfile">Сохранить</club-button>
+        </template>
       </div>
     </template>
 
@@ -207,7 +212,6 @@ import ClubPage from '@components/clublayout/ClubPage.vue';
 import ClubButton from '@components/clubpage/ClubButton.vue';
 import { appProps } from '@apps/_common/appProps';
 import { useProfileStore } from './profileStore';
-// import CSelect from '@components/elements/CSelect.vue';
 
 defineComponent({
   props: appProps,
@@ -222,25 +226,45 @@ onMounted(async () => {
   await $profile.fetchProfile();
 });
 
+const onError = (error) => {
+  $q.notify({
+    message: error.message,
+    color: 'negative',
+  });
+};
+
+const pushSuccessAndNotify = (message) => {
+  $q.notify({
+    message,
+    color: 'positive',
+  });
+
+  $router.push({
+    name: 'club-dynamic-app',
+    params: { appPage: '' },
+  });
+};
+
+const onApply = async () => {
+  await $profile.saveProfile({
+    onSuccess() {
+      $profile.apply({
+        onSuccess() {
+          pushSuccessAndNotify('Заявка успешно отправлена');
+        },
+        onError,
+      });
+    },
+    onError,
+  });
+};
+
 const onSaveProfile = async () => {
   await $profile.saveProfile({
     onSuccess() {
-      $q.notify({
-        message: 'Профиль успешно сохранен',
-        color: 'positive',
-      });
-
-      $router.push({
-        name: 'club-dynamic-app',
-        params: { appPage: '' },
-      });
+      pushSuccessAndNotify('Профиль успешно сохранен');
     },
-    onError(error) {
-      $q.notify({
-        message: error.message,
-        color: 'negative',
-      });
-    },
+    onError,
   });
 };
 

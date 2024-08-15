@@ -19,6 +19,13 @@ interface IProfileData {
   education: Array<string>;
 }
 
+interface IProfileRoles {
+  applicant: boolean;
+  member: boolean;
+  guest: boolean;
+  rejected: boolean;
+}
+
 export const useProfileStore = defineStore('profile', {
   state: () => ({
     isLoading: true,
@@ -58,6 +65,12 @@ export const useProfileStore = defineStore('profile', {
       statuses: string[];
       description: string;
     },
+    roles: {
+      applicant: false,
+      member: false,
+      guest: false,
+      rejected: false,
+    } as IProfileRoles,
   }),
 
   getters: {
@@ -68,8 +81,12 @@ export const useProfileStore = defineStore('profile', {
     async fetchProfile() {
       this.isLoading = true;
       try {
-        const result = await api.get<{ data: IProfileData }>('/api/club/1/apps/1/mesto-profile/my-profile');
+        const result = await api.get<{ data: IProfileData; roles: IProfileRoles }>(
+          '/api/club/1/apps/profile/mesto-profile/my-profile',
+        );
         const profileData = result.data.data;
+        const roles = result.data.roles;
+
         this.name = profileData.name;
         this.description = profileData.description;
         this.professions = profileData.professions;
@@ -86,6 +103,8 @@ export const useProfileStore = defineStore('profile', {
         };
         this.socialLinks = profileData.socialLinks;
         this.whoami = profileData.whoami;
+
+        this.roles = roles;
       } catch (error) {
         console.error(error);
       } finally {
@@ -96,7 +115,7 @@ export const useProfileStore = defineStore('profile', {
       try {
         this.isLoading = true;
 
-        await api.patch('/api/club/1/apps/1/mesto-profile/my-profile', {
+        await api.patch('/api/club/1/apps/profile/mesto-profile/my-profile', {
           name: this.name,
           whoami: this.whoami,
           description: this.description,
@@ -112,6 +131,28 @@ export const useProfileStore = defineStore('profile', {
           projectAbout: this.project.description,
           socialLinks: this.socialLinks,
         });
+
+        onSuccess();
+      } catch (error) {
+        const errorMessage = (error as Record<string, any>)?.response?.data?.error;
+        if (errorMessage) {
+          onError({ message: errorMessage });
+        } else {
+          onError(error);
+        }
+      } finally {
+        this.isLoading = false;
+      }
+    },
+    async apply({ onSuccess, onError }: { onSuccess: () => void; onError: (error) => void }) {
+      try {
+        this.isLoading = true;
+
+        const result = await api.post<{
+          roles: IProfileRoles;
+        }>('/api/club/1/apps/profile/mesto-profile/my-profile/apply');
+
+        this.roles = result.data.roles;
 
         onSuccess();
       } catch (error) {
