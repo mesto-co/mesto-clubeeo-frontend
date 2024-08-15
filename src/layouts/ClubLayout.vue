@@ -4,7 +4,7 @@
       <q-btn unelevated no-caps :label="club.name" :to="{ name: 'club' }" style="border-radius: 8px"></q-btn>
     </template>
 
-    <club-selector />
+    <!-- <club-selector /> -->
 
     <club-menu :club="club" />
   </layout-layout>
@@ -14,7 +14,7 @@
 import { useRoute } from 'vue-router';
 
 import { computed, defineComponent, onMounted, ref, watch } from 'vue';
-import ClubSelector from '@components/clublayout/ClubSelector.vue';
+// import ClubSelector from '@components/clublayout/ClubSelector.vue';
 import ClubMenu from '@components/clublayout/ClubMenu.vue';
 import { useStyleStore } from '@stores/styleStore';
 import LayoutLayout from '@src/backbones/LayoutLayout.vue';
@@ -27,7 +27,7 @@ export default defineComponent({
   components: {
     LayoutLayout,
     ClubMenu,
-    ClubSelector,
+    // ClubSelector,
   },
 
   setup() {

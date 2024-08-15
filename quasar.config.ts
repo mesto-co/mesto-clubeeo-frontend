@@ -106,6 +106,7 @@ export default configure((ctx) => {
         '@components/DynamicAppComponent.vue': path.join(__dirname, './src/components/DynamicAppComponent.vue'),
         '@pages/club/ClubRootPage.vue': path.resolve('./src/pages/club/ClubRootPage.vue'),
         '@layouts/ClubLayout.vue': path.resolve('./src/layouts/ClubLayout.vue'),
+        '@components/clublayout/ClubMenu.vue': path.resolve('./src/components/clublayout/ClubMenu.vue'),
 
         '@assets': corePath('assets'),
         '@src': corePath('.'),
