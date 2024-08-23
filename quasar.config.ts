@@ -102,6 +102,7 @@ export default configure((ctx) => {
         components: path.join(__dirname, './src/components'),
         layouts: path.join(__dirname, './src/layouts'),
         pages: path.join(__dirname, './src/pages'),
+        engines: path.join(__dirname, './src/engines'),
 
         '@components/DynamicAppComponent.vue': path.join(__dirname, './src/components/DynamicAppComponent.vue'),
         '@pages/club/ClubRootPage.vue': path.resolve('./src/pages/club/ClubRootPage.vue'),

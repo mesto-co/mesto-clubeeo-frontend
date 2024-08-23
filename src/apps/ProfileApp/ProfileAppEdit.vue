@@ -47,37 +47,13 @@
       <!-- Tags/Skills Section -->
       <div class="q-pb-md row">
         <div class="col">
-          <q-select
-            label="Профессия"
-            outlined
-            dark
-            v-model="$profile.professions"
-            use-input
-            use-chips
-            multiple
-            hide-dropdown-icon
-            input-debounce="0"
-            new-value-mode="add-unique"
-            :options="['Разработчик', 'Тимлид', 'Продавец']"
-          />
+          <ListsEngineSelect listType="professions" label="Профессия" v-model="$profile.professions" />
         </div>
       </div>
 
       <div class="q-pb-md row">
         <div class="col">
-          <q-select
-            label="Индустрия"
-            outlined
-            dark
-            v-model="$profile.industries"
-            use-input
-            use-chips
-            multiple
-            hide-dropdown-icon
-            input-debounce="0"
-            new-value-mode="add-unique"
-            :options="[]"
-          />
+          <ListsEngineSelect listType="activity-spheres" label="Индустрия" v-model="$profile.industries" />
         </div>
       </div>
 
@@ -212,6 +188,7 @@ import ClubPage from '@components/clublayout/ClubPage.vue';
 import ClubButton from '@components/clubpage/ClubButton.vue';
 import { appProps } from '@apps/_common/appProps';
 import { useProfileStore } from './profileStore';
+import ListsEngineSelect from 'engines/lists/ListsEngineSelect.vue';
 
 defineComponent({
   props: appProps,
