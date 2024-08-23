@@ -2,7 +2,7 @@
   "name": "mesto-clubeeo-front",
   "version": "0.0.1",
   "description": "A Quasar Project",
-  "productName": "MyEngine",
+  "productName": "Mesto",
   "author": "Roman Ekzempliarov <r.exemplarov@gmail.com>",
   "type": "module",
   "private": true,
