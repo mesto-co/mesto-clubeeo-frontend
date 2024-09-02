@@ -1,3 +1,9 @@
 // app global css in SCSS form
 
 @import 'node_modules/clubeeo-front/src/css/app.scss';
+
+.q-menu {
+  background-color: rgb(29 29 39);
+  box-shadow: none;
+  border: 2px solid #2b2e3b;
+}
