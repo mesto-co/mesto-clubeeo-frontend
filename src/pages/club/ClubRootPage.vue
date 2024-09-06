@@ -11,12 +11,7 @@
   >
     <section class="main-content-section">
       <div class="content-wrapper">
-        <home-page2
-          heroMinHeight="115px"
-          :showSocialLinks="
-            club && club.settings && !club.settings.hideSocialLinks
-          "
-        />
+        <home-page2 heroMinHeight="115px" :showSocialLinks="club && club.settings && !club.settings.hideSocialLinks" />
       </div>
     </section>
 
@@ -105,10 +100,7 @@ main.clubeeo-wrapper {
 import { computed, defineComponent, onMounted, provide, watch } from 'vue';
 import { api } from 'boot/axios';
 import { state } from 'clubeeo-front/src/state';
-import {
-  IClubStyle,
-  normLandingClubStyle,
-} from 'clubeeo-front/src/models/clubStyle';
+import { IClubStyle, normLandingClubStyle } from 'clubeeo-front/src/models/clubStyle';
 import { useQuasar } from 'quasar';
 import { mapSocialToIcon } from 'clubeeo-front/src/lib/components/socials';
 import HomePage2 from '@components/clubpage/HomePage2.vue';
@@ -116,8 +108,7 @@ import ClubAsideTg from 'src/components/ClubAsideTg.vue';
 import { useRoute } from 'vue-router';
 import { useSessionStore } from 'clubeeo-front/src/stores/sessionStore';
 
-const clubWelcomeDefault =
-  '<h2>Welcome to the club</h2><p>Please, log in using a wallet with NFT community pass</p>';
+const clubWelcomeDefault = '<h2>Welcome to the club</h2><p>Please, log in using a wallet with NFT community pass</p>';
 
 interface ITelegramUser {
   auth_date: number;
@@ -155,10 +146,7 @@ export default defineComponent({
     });
 
     const telegramAuthCallback = async (user: ITelegramUser) => {
-      const result = await api.post<{ ok: boolean }>(
-        '/api/telegram/auth/login',
-        user,
-      );
+      const result = await api.post<{ ok: boolean }>('/api/telegram/auth/login', user);
 
       if (result.data.ok) {
         await state.$club.loadClub();
@@ -199,21 +187,12 @@ export default defineComponent({
       color: clubStyle.value.primaryTextColor || '#ffffff',
     }));
 
-    const meInClub = state.$club.meInClub;
-
-    const isLoggedIn = computed(() => {
-      if (meInClub.wallets.eth?.loggedIn) return true;
-      if (meInClub.wallets.near?.loggedIn) return true;
-      return false;
-    });
-
     return {
       club: state.$club.club,
       meInClub: state.$club.meInClub,
       isClubLoading: state.$club.isLoading,
       telegramAuthCallback,
       onLoggedIn,
-      isLoggedIn,
       clubWelcomeDefault,
       clubStyle,
       showMetaMask,
