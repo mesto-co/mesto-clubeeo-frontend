@@ -2,6 +2,7 @@
   <template v-if="!dynamicApp.isLoading">
     <profile-app v-if="dynamicApp.appName === 'profile'" :app-data="dynamicApp" />
     <applicants-app v-else-if="dynamicApp.appName === 'applicants'" :app-data="dynamicApp" />
+    <lists-app v-else-if="dynamicApp.appName === 'lists'" :app-data="dynamicApp" />
     <feed-app v-else-if="dynamicApp.appName === 'feed'" :app-data="dynamicApp" />
     <leaderboard-app v-else-if="dynamicApp.appName === 'leaderboard'" :app-data="dynamicApp" />
     <page-app v-else-if="dynamicApp.appName === 'page'" :app-data="dynamicApp" />
@@ -26,6 +27,7 @@ import PageApp from '@apps/PageApp/PageApp.vue';
 import LeaderboardApp from '@apps/LeaderboardApp/LeaderboardApp.vue';
 import FeedApp from '@apps/FeedApp/FeedApp.vue';
 import TelegramApp from '@apps/TelegramApp/TelegramApp.vue';
+import ListsApp from 'src/apps/ListsApp/ListsApp.vue';
 
 const routeParamToString = (param) => {
   if (Array.isArray(param)) return param[0] || ''; //take first if multiple
@@ -35,6 +37,7 @@ const routeParamToString = (param) => {
 export default defineComponent({
   name: 'DynamicAppComponent',
   components: {
+    ListsApp,
     ApplicantsApp,
     ProfileApp,
     FeedApp,
