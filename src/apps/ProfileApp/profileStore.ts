@@ -1,10 +1,25 @@
 import { defineStore } from 'pinia';
 import { api } from 'src/boot/axios';
 
+interface IWorkplace {
+  organization: string;
+  position: string;
+  startDate: string;
+  endDate: string;
+  current: boolean;
+  skills: string[];
+}
+
+interface IEducation {
+  institution: string;
+  degree: string;
+  startYear: string;
+  endYear: string;
+}
+
 interface IProfileData {
   name: string;
   description: string;
-  whoami: string;
   aboutMe: string;
   location: string;
   projectName: string;
@@ -15,8 +30,9 @@ interface IProfileData {
   professions: Array<string>;
   industries: Array<string>;
   skills: Array<string>;
-  workplaces: Array<string>;
-  education: Array<string>;
+  workplaces: Array<IWorkplace>;
+  education: Array<IEducation>;
+  projects: Array<IProject>;
 }
 
 interface IProfileRoles {
@@ -26,12 +42,18 @@ interface IProfileRoles {
   rejected: boolean;
 }
 
+interface IProject {
+  name: string;
+  link: string;
+  description: string;
+  statuses: string[];
+}
+
 export const useProfileStore = defineStore('profile', {
   state: () => ({
     isLoading: true,
     name: 'Иван Иванов',
     description: 'CEO Kutikuli',
-    whoami: 'человек с проектом',
     socialLinks: {
       tiktok: '',
       telegram: '',
@@ -47,24 +69,37 @@ export const useProfileStore = defineStore('profile', {
     professions: ['Разработчик', 'Тимлид', 'Продавец'] as string[],
     industries: ['HoReCa', 'Space', 'FoodTech'] as string[],
     skills: ['менеджмент', 'команды', 'JavaScript', 'TypeScript', 'Agile', 'OKR'] as string[],
-    workplaces: ['Facebook', 'Yandex', 'Stripe', 'Kutikuli'] as string[],
-    education: ['МГУ', 'Stanford'] as string[],
-    aboutMe: `Делал карьеру в HoReCa - продавал туры в отели в Кемере для состоятельных людей 
-                  в Сибири. Потом понял, что не мое и решил переквалифицироваться в разработчики. 
-                  Тут затянуло и помимо разработки на компанию - делаю свой супертехнологичный проект 
-                  дешевых туров в дорогие отели, чтобы каждый мог прикоснуться к роскоши, тк все это заслужили и иное несправедливо. 
+    workplaces: [
+      {
+        organization: 'Kutikuli',
+        position: 'CEO',
+        startDate: '2023-01-01',
+        endDate: '',
+        current: true,
+        skills: ['менеджмент', 'JavaScript'],
+      },
+    ] as IWorkplace[],
+    education: [
+      {
+        institution: 'МГУ',
+        degree: 'Информатика',
+        startYear: '2018',
+        endYear: '2022',
+      },
+    ] as IEducation[],
+    aboutMe: `Делал карьеру в HoReCa - продавал туры в отели в Кемере для состоятельных людей
+                  в Сибири. Потом понял, что не мое и решил переквалифицироваться в разработчики.
+                  Тут затянуло и помимо разработки на компанию - делаю свой супертехнологичный проект
+                  дешевых туров в дорогие отели, чтобы каждый мог прикоснуться к роскоши, тк все это заслужили и иное несправедливо.
                   Ищу в сообществе единомышленников и помощь с развитием проекта. Мне очень нужна команда.`,
-    project: {
-      name: 'Kutikuli',
-      link: 'www.kutikuli.com',
-      statuses: ['MVP', 'ищу кофаундера'],
-      description: '',
-    } as {
-      name: string;
-      link: string;
-      statuses: string[];
-      description: string;
-    },
+    projects: [
+      {
+        name: 'Kutikuli',
+        link: 'www.kutikuli.com',
+        statuses: ['MVP', 'ищу кофаундера'],
+        description: '',
+      },
+    ] as IProject[],
     roles: {
       applicant: false,
       member: false,
@@ -74,7 +109,8 @@ export const useProfileStore = defineStore('profile', {
   }),
 
   getters: {
-    projectLink: (state) => `https://${state.project.link}`,
+    projectLinks: (state) =>
+      state.projects.map((project) => (project.link.startsWith('http') ? project.link : `https://${project.link}`)),
   },
 
   actions: {
@@ -95,15 +131,8 @@ export const useProfileStore = defineStore('profile', {
         this.workplaces = profileData.workplaces;
         this.education = profileData.education;
         this.aboutMe = profileData.aboutMe;
-        this.project = {
-          name: profileData.projectName,
-          link: profileData.projectUrl,
-          statuses: profileData.projectStatuses,
-          description: profileData.projectAbout,
-        };
+        this.projects = profileData.projects;
         this.socialLinks = profileData.socialLinks;
-        this.whoami = profileData.whoami;
-
         this.roles = roles;
       } catch (error) {
         console.error(error);
@@ -111,13 +140,12 @@ export const useProfileStore = defineStore('profile', {
         this.isLoading = false;
       }
     },
-    async saveProfile({ onSuccess, onError }: { onSuccess: () => void; onError: (error) => void }) {
+    async saveProfile({ onSuccess, onError }: { onSuccess: () => void; onError: (error: any) => void }) {
       try {
         this.isLoading = true;
 
         await api.patch('/api/club/1/apps/profile/mesto-profile/my-profile', {
           name: this.name,
-          whoami: this.whoami,
           description: this.description,
           professions: this.professions,
           industries: this.industries,
@@ -125,10 +153,7 @@ export const useProfileStore = defineStore('profile', {
           workplaces: this.workplaces,
           education: this.education,
           aboutMe: this.aboutMe,
-          projectName: this.project.name,
-          projectUrl: this.project.link,
-          projectStatuses: this.project.statuses,
-          projectAbout: this.project.description,
+          projects: this.projects,
           socialLinks: this.socialLinks,
         });
 

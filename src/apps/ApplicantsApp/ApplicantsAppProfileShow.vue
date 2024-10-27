@@ -5,7 +5,6 @@
       <div class="q-pl-md">
         <div class="text-h5">{{ profile.name }}</div>
         <div class="text-subtitle1">{{ profile.description }}</div>
-        <div class="text-caption">{{ profile.whoami }}</div>
       </div>
     </div>
 
