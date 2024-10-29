@@ -9,125 +9,133 @@
     </div>
 
     <!-- About Me Section -->
-    <div class="q-pa-md">
-      <div class="text-right q-pb-md">
-        Обо мне
-        <q-icon name="fa-solid fa-user" class="q-px-sm" />
+    <template v-if="showAboutMe">
+      <div class="q-pa-md">
+        <div class="text-right q-pb-md">
+          Обо мне
+          <q-icon name="fa-solid fa-user" class="q-px-sm" />
+        </div>
+        <div v-html="sanitizeHtmlAddBr(profile.aboutMe)" />
       </div>
-      <div v-html="sanitizeHtmlAddBr(profile.aboutMe)" />
-    </div>
-
-    <q-separator dark inset />
+      <q-separator dark inset />
+    </template>
 
     <!-- Tags/Skills Section -->
-    <div class="q-pa-md row">
-      <profile-section label="Профессия" icon="fa-solid fa-briefcase" :items="profile.professions" class="col" />
-    </div>
+    <template v-if="showProfessions">
+      <div class="q-pa-md row">
+        <profile-section label="Профессия" icon="fa-solid fa-briefcase" :items="profile.professions" class="col" />
+      </div>
+      <q-separator dark inset />
+    </template>
 
-    <q-separator dark inset />
+    <template v-if="showIndustries">
+      <div class="q-pa-md row">
+        <profile-section label="Индустрия" icon="fa-solid fa-industry" :items="profile.industries" class="col" />
+      </div>
+      <q-separator dark inset />
+    </template>
 
-    <div class="q-pa-md row">
-      <profile-section label="Индустрия" icon="fa-solid fa-industry" :items="profile.industries" class="col" />
-    </div>
-
-    <q-separator dark inset />
-
-    <div class="q-pa-md row">
-      <profile-section label="Навыки" icon="fa-solid fa-star" :items="profile.skills" class="col" />
-    </div>
-
-    <q-separator dark inset />
+    <template v-if="showSkills">
+      <div class="q-pa-md row">
+        <profile-section label="Навыки" icon="fa-solid fa-star" :items="profile.skills" class="col" />
+      </div>
+      <q-separator dark inset />
+    </template>
 
     <!-- Experience Section -->
-    <div class="q-pa-md">
-      <div class="text-right q-pb-md">
-        Опыт работы
-        <q-icon name="fa-solid fa-briefcase" class="q-px-sm" />
-      </div>
+    <template v-if="showExperience">
+      <div class="q-pa-md">
+        <div class="text-right q-pb-md">
+          Опыт работы
+          <q-icon name="fa-solid fa-briefcase" class="q-px-sm" />
+        </div>
 
-      <div v-for="(workplace, index) in profile.workplaces" :key="index" class="q-mb-md">
-        <q-card dark class="clubCard" flat>
-          <q-card-section>
-            <div class="row q-col-gutter-md">
-              <div class="col-12">
-                <div class="text-h6">{{ workplace.position }}</div>
-                <div class="text-subtitle1">{{ workplace.organization }}</div>
-                <div class="text-caption">
-                  {{ formatDate(workplace.startDate) }} -
-                  {{ workplace.current ? 'По настоящее время' : formatDate(workplace.endDate) }}
-                </div>
+        <div v-for="(workplace, index) in profile.workplaces" :key="index" class="q-mb-md">
+          <q-card dark class="clubCard" flat>
+            <q-card-section>
+              <div class="row q-col-gutter-md">
+                <div class="col-12">
+                  <div class="text-h6">{{ workplace.position }}</div>
+                  <div class="text-subtitle1">{{ workplace.organization }}</div>
+                  <div class="text-caption">
+                    {{ formatDate(workplace.startDate) }} -
+                    {{ workplace.current ? 'По настоящее время' : formatDate(workplace.endDate) }}
+                  </div>
 
-                <div class="q-mt-sm" v-if="workplace.skills?.length">
-                  <q-chip
-                    v-for="skill in workplace.skills"
-                    :key="skill"
-                    dense
-                    color="primary"
-                    text-color="white"
-                    class="q-ma-xs"
-                  >
-                    {{ skill }}
-                  </q-chip>
+                  <div class="q-mt-sm" v-if="workplace.skills?.length">
+                    <q-chip
+                      v-for="skill in workplace.skills"
+                      :key="skill"
+                      dense
+                      color="primary"
+                      text-color="white"
+                      class="q-ma-xs"
+                    >
+                      {{ skill }}
+                    </q-chip>
+                  </div>
                 </div>
               </div>
-            </div>
-          </q-card-section>
-        </q-card>
+            </q-card-section>
+          </q-card>
+        </div>
       </div>
-    </div>
-
-    <q-separator dark inset />
+      <q-separator dark inset />
+    </template>
 
     <!-- Education Section -->
-    <div class="q-pa-md">
-      <div class="text-right q-pb-md">
-        Образование
-        <q-icon name="fa-solid fa-graduation-cap" class="q-px-sm" />
-      </div>
+    <template v-if="showEducation">
+      <div class="q-pa-md">
+        <div class="text-right q-pb-md">
+          Образование
+          <q-icon name="fa-solid fa-graduation-cap" class="q-px-sm" />
+        </div>
 
-      <div v-for="(edu, index) in profile.education" :key="index" class="q-mb-md">
-        <q-card dark class="clubCard" flat>
-          <q-card-section>
-            <div class="row q-col-gutter-md">
-              <div class="col-12">
-                <div class="text-h6">{{ edu.institution }}</div>
-                <div class="text-subtitle1">{{ edu.degree }}</div>
-                <div class="text-caption">{{ edu.startYear }} - {{ edu.endYear }}</div>
+        <div v-for="(edu, index) in profile.education" :key="index" class="q-mb-md">
+          <q-card dark class="clubCard" flat>
+            <q-card-section>
+              <div class="row q-col-gutter-md">
+                <div class="col-12">
+                  <div class="text-h6">{{ edu.institution }}</div>
+                  <div class="text-subtitle1">{{ edu.degree }}</div>
+                  <div class="text-caption">{{ edu.startYear }} - {{ edu.endYear }}</div>
+                </div>
               </div>
-            </div>
-          </q-card-section>
-        </q-card>
+            </q-card-section>
+          </q-card>
+        </div>
       </div>
-    </div>
-
-    <q-separator dark inset />
+      <q-separator dark inset />
+    </template>
 
     <!-- Project Section -->
-    <div class="q-pa-md" v-if="profile.projects?.length">
-      <div class="text-right q-pb-md">
-        О проектах
-        <q-icon name="fa-solid fa-project-diagram" class="q-px-sm" />
+    <template v-if="showProjects && profile.projects?.length">
+      <div class="q-pa-md">
+        <div class="text-right q-pb-md">
+          О проектах
+          <q-icon name="fa-solid fa-project-diagram" class="q-px-sm" />
+        </div>
+
+        <div v-for="(project, index) in profile.projects" :key="index" class="q-mb-md">
+          <q-card dark class="clubCard" flat>
+            <q-card-section>
+              <div class="text-h6">{{ project.name }}</div>
+              <div v-if="project.link">
+                <a :href="project.link" target="_blank">{{ project.link }}</a>
+              </div>
+
+              <div class="q-py-md" v-html="sanitizeHtmlAddBr(project.description)" />
+
+              <div>
+                <template v-for="status in project.statuses" :key="status">
+                  <q-chip color="orange" dense class="q-px-sm">{{ status }}</q-chip>
+                </template>
+              </div>
+            </q-card-section>
+          </q-card>
+        </div>
       </div>
-
-      <div v-for="(project, index) in profile.projects" :key="index" class="q-mb-md">
-        <q-card dark class="clubCard" flat>
-          <q-card-section>
-            <div class="text-h6">{{ project.name }}</div>
-            <div v-if="project.link">
-              <a :href="project.link" target="_blank">{{ project.link }}</a>
-            </div>
-
-            <div class="q-py-md" v-html="sanitizeHtmlAddBr(project.description)" />
-
-            <div>
-              <template v-for="status in project.statuses" :key="status">
-                <q-chip color="orange" dense class="q-px-sm">{{ status }}</q-chip>
-              </template>
-            </div>
-          </q-card-section>
-        </q-card>
-      </div>
-    </div>
+    </template>
   </div>
 </template>
 
@@ -144,6 +152,34 @@ defineProps({
   profile: {
     type: Object,
     required: true,
+  },
+  showAboutMe: {
+    type: Boolean,
+    default: true,
+  },
+  showProfessions: {
+    type: Boolean,
+    default: true,
+  },
+  showIndustries: {
+    type: Boolean,
+    default: true,
+  },
+  showSkills: {
+    type: Boolean,
+    default: true,
+  },
+  showExperience: {
+    type: Boolean,
+    default: true,
+  },
+  showEducation: {
+    type: Boolean,
+    default: true,
+  },
+  showProjects: {
+    type: Boolean,
+    default: true,
   },
 });
 

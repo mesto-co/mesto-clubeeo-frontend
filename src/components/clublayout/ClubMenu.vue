@@ -99,7 +99,16 @@
         style="cursor: pointer"
         @click="$router.push({ name: 'club-me' })"
       >
-        <q-btn icon="fa-solid fa-user" size="sm" dense flat />
+        <q-btn icon="fa-solid fa-caret-up" size="sm" dense flat>
+          <q-menu v-model="meInClubMenuShowing">
+            <q-list dense style="min-width: 100px" dark>
+              <q-item clickable v-close-popup>
+                <q-item-section @click="onLogOut">Log out</q-item-section>
+              </q-item>
+            </q-list>
+          </q-menu>
+        </q-btn>
+        <!-- <q-btn icon="fa-solid fa-user" size="sm" dense flat /> -->
       </me-in-club-widget>
     </div>
   </div>
@@ -145,10 +154,12 @@
 import { useRoute, useRouter } from 'vue-router';
 import { computed, defineComponent, onMounted, PropType, ref, watch } from 'vue';
 import { state } from '@src/state';
+
 import { IClubSocialLinks } from '@src/lib/api/graphqlPartials';
 import MeInClubWidget from 'components/me/MeInClubWidget.vue';
 import isEqual from 'lodash-es/isEqual';
 import { useClubMenuStore } from '@stores/clubMenuStore';
+import { useMeInClubStore } from '@src/stores/meInClubStore';
 
 interface ILoadedClub {
   id: number;
@@ -203,6 +214,7 @@ export default defineComponent({
     const $route = useRoute();
     const $router = useRouter();
     const clubLoaded = ref(true);
+    const meInClubStore = useMeInClubStore();
 
     const load = async () => {
       await state.$club.loadClub();
@@ -248,8 +260,19 @@ export default defineComponent({
       }
     };
 
+    const meInClubMenuShowing = ref(false);
+
+    const onLogOut = async () => {
+      await meInClubStore.logout();
+      await meInClubStore.loadByRoute();
+      await $router.push({ name: 'club' });
+    };
+
     return {
       menu: $menu,
+
+      meInClubMenuShowing,
+      onLogOut,
 
       isCurrentRoute,
       linksList,

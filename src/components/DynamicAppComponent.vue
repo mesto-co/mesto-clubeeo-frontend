@@ -2,6 +2,7 @@
   <template v-if="!dynamicApp.isLoading">
     <profile-app v-if="dynamicApp.appName === 'profile'" :app-data="dynamicApp" />
     <applicants-app v-else-if="dynamicApp.appName === 'applicants'" :app-data="dynamicApp" />
+    <member-profiles-app v-else-if="dynamicApp.appName === 'member-profiles'" :app-data="dynamicApp" />
     <feed-app v-else-if="dynamicApp.appName === 'feed'" :app-data="dynamicApp" />
     <leaderboard-app v-else-if="dynamicApp.appName === 'leaderboard'" :app-data="dynamicApp" />
     <page-app v-else-if="dynamicApp.appName === 'page'" :app-data="dynamicApp" />
@@ -20,6 +21,7 @@ import { defineComponent, onMounted, watch } from 'vue';
 import { useDynamicAppStore } from '@stores/dynamicAppStore';
 import ProfileApp from 'apps/ProfileApp/ProfileApp.vue';
 import ApplicantsApp from 'apps/ApplicantsApp/ApplicantsApp.vue';
+import MemberProfilesApp from 'apps/MemberProfilesApp/MemberProfilesApp.vue';
 import ClubPage from '@components/clublayout/ClubPage.vue';
 import PlatformClubsApp from '@apps/PlatformClubsApp/PlatformClubsApp.vue';
 import PageApp from '@apps/PageApp/PageApp.vue';
@@ -36,6 +38,7 @@ export default defineComponent({
   name: 'DynamicAppComponent',
   components: {
     ApplicantsApp,
+    MemberProfilesApp,
     ProfileApp,
     FeedApp,
     LeaderboardApp,
