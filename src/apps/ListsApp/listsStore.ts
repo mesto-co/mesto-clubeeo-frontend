@@ -51,8 +51,7 @@ export const useListsStore = defineStore('lists', {
     },
     async getListsTypes() {
       try {
-        // const response = await api.get('/api/club/1/apps/lists/mesto-lists/lists-types');
-        const response = await api.get('/api/lists/lists-types');
+        const response = await api.get('/api/club/1/apps/lists/mesto-lists/lists-types');
         this.listTypes = response.data.data.listsTypes;
       } catch (error) {
         console.error(error);
