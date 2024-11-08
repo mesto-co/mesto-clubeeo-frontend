@@ -1,11 +1,13 @@
 <template>
   <div class="q-mb-md q-border-radius-md">
     <!-- Profile Header -->
-    <div class="q-gutter-md q-pa-sm q-pt-md row no-wrap items-center">
-      <div class="q-pl-md">
-        <div class="text-h5">{{ profile.name }}</div>
-        <div class="text-subtitle1">{{ profile.description }}</div>
-      </div>
+    <div>
+      <component :is="to ? 'router-link' : 'div'" :to="to" class="profile-header q-py-sm row no-wrap items-center">
+        <div class="q-pl-md">
+          <div class="text-h5">{{ profile.name }}</div>
+          <div class="text-subtitle1">{{ profile.description }}</div>
+        </div>
+      </component>
     </div>
 
     <!-- About Me Section -->
@@ -153,6 +155,10 @@ defineProps({
     type: Object,
     required: true,
   },
+  to: {
+    type: [String, Object],
+    default: null,
+  },
   showAboutMe: {
     type: Boolean,
     default: true,
@@ -203,6 +209,17 @@ const sanitizeHtmlAddBr = (messageText) => {
 </script>
 
 <style scoped>
+.profile-header {
+  text-decoration: none;
+  color: inherit;
+  transition: background-color 0.3s;
+}
+
+.profile-header:hover {
+  background-color: rgba(255, 255, 255, 0.07);
+  cursor: pointer;
+}
+
 .text-h6 {
   font-size: 1.1rem;
   font-weight: 500;

@@ -1,18 +1,29 @@
 <template>
-  <club-page header="Поиск участников" sticky="bottom" :loading="isLoading">
+  <club-page header="Местные" sticky="bottom" :loading="store.isLoading">
     <!-- Search Input -->
     <div class="q-pa-md">
-      <q-input v-model="searchQuery" filled dark label="Поиск по имени или описанию" @keyup.enter="searchProfiles">
+      <q-input
+        v-model="store.searchQuery"
+        filled
+        dark
+        label="Поиск по имени или описанию"
+        @keyup.enter="store.searchProfiles"
+      >
         <template v-slot:append>
-          <q-icon name="search" class="cursor-pointer" @click="searchProfiles" />
+          <q-icon name="search" class="cursor-pointer" @click="store.searchProfiles" />
         </template>
       </q-input>
     </div>
 
     <!-- Results -->
-    <div v-if="profiles.length" class="q-pa-md">
-      <div v-for="(profile, index) in profiles" :key="index" class="q-mb-lg">
+    <div v-if="store.profiles.length" class="q-pa-md">
+      <div v-for="(profile, index) in store.profiles" :key="index" class="q-mb-lg">
         <profile-view
+          :to="{
+            name: 'club-dynamic-app-page',
+            params: { appSlug: appData.appSlug, appPage: 'show' },
+            query: { profileId: profile.id },
+          }"
           :profile="profile"
           :show-about-me="true"
           :show-professions="true"
@@ -27,42 +38,24 @@
     </div>
 
     <!-- No Results Message -->
-    <div v-else-if="!isLoading && searchQuery && hasSearched" class="q-pa-md text-center">Ничего не найдено</div>
+    <div v-else-if="!store.isLoading && store.searchQuery && store.hasSearched" class="q-pa-md text-center">
+      Ничего не найдено
+    </div>
   </club-page>
 </template>
 
 <script setup>
-import { ref } from 'vue';
-import { api } from 'src/boot/axios';
-// import { useDebounceFn } from '@vueuse/core';
 import ClubPage from '@components/clublayout/ClubPage.vue';
 import ProfileView from '../ProfileApp/components/ProfileView.vue';
+import { appProps } from '@apps/_common/appProps';
+import { useMemberProfileSearchStore } from './memberProfileSearch';
+import { onMounted } from 'vue';
 
-const searchQuery = ref('');
-const profiles = ref([]);
-const isLoading = ref(false);
-const hasSearched = ref(false);
+defineProps(appProps);
 
-const searchProfiles = async () => {
-  if (!searchQuery.value) {
-    profiles.value = [];
-    return;
-  }
+onMounted(async () => {
+  await store.searchProfiles();
+});
 
-  isLoading.value = true;
-  hasSearched.value = true;
-  try {
-    const result = await api.get('/api/club/1/apps/member-profiles/member-profiles/search', {
-      params: { q: searchQuery.value },
-    });
-    profiles.value = result.data.data;
-  } catch (error) {
-    console.error(error);
-    profiles.value = [];
-  } finally {
-    isLoading.value = false;
-  }
-};
-
-// const debouncedSearch = useDebounceFn(searchProfiles, 300);
+const store = useMemberProfileSearchStore();
 </script>

@@ -1,5 +1,10 @@
 <template>
-  <club-page header="Профиль участника" sticky="bottom" :loading="isLoading">
+  <club-page
+    sticky="bottom"
+    :loading="isLoading"
+    :back-link="{ name: 'club-dynamic-app', params: { appSlug: appData.appSlug } }"
+  >
+    <template #header>Местные <q-icon name="chevron_right" /> {{ profile?.name }}</template>
     <!-- Profile Content -->
     <div v-if="profile" class="q-pa-md">
       <profile-view :profile="profile" />
@@ -16,6 +21,9 @@ import { useRoute } from 'vue-router';
 import { api } from 'src/boot/axios';
 import ClubPage from '@components/clublayout/ClubPage.vue';
 import ProfileView from '../ProfileApp/components/ProfileView.vue';
+import { appProps } from '@apps/_common/appProps';
+
+defineProps(appProps);
 
 const route = useRoute();
 const profile = ref(null);
