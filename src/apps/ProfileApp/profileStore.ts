@@ -17,15 +17,27 @@ interface IEducation {
   endYear: string;
 }
 
+interface IProject {
+  name: string;
+  logo?: string;
+  website?: string;
+  description: string;
+  stage: 'idea' | 'mvp' | 'first_sales' | 'invested' | 'operating_business';
+  status: 'active' | 'paused' | 'closed' | 'available';
+  pitchDeck?: string;
+  videoPitch?: string;
+  category: string;
+  tags: string[];
+  market: string;
+  needs: string[];
+}
+
 interface IProfileData {
   name: string;
-  description: string;
+  headline: string;
   aboutMe: string;
   location: string;
-  projectName: string;
-  projectAbout: string;
-  projectUrl: string;
-  projectStatuses: Array<string>;
+  communityGoals: string[];
   socialLinks: Record<string, string>;
   professions: Array<string>;
   industries: Array<string>;
@@ -42,18 +54,13 @@ interface IProfileRoles {
   rejected: boolean;
 }
 
-interface IProject {
-  name: string;
-  link: string;
-  description: string;
-  statuses: string[];
-}
-
 export const useProfileStore = defineStore('profile', {
   state: () => ({
     isLoading: true,
-    name: 'Иван Иванов',
-    description: 'CEO Kutikuli',
+    name: '',
+    headline: '',
+    location: '',
+    communityGoals: [] as string[],
     socialLinks: {
       tiktok: '',
       telegram: '',
@@ -66,40 +73,13 @@ export const useProfileStore = defineStore('profile', {
       youtube: '',
       web: '',
     } as Record<string, string>,
-    professions: ['Разработчик', 'Тимлид', 'Продавец'] as string[],
-    industries: ['HoReCa', 'Space', 'FoodTech'] as string[],
-    skills: ['менеджмент', 'команды', 'JavaScript', 'TypeScript', 'Agile', 'OKR'] as string[],
-    workplaces: [
-      {
-        organization: 'Kutikuli',
-        position: 'CEO',
-        startDate: '2023-01-01',
-        endDate: '',
-        current: true,
-        skills: ['менеджмент', 'JavaScript'],
-      },
-    ] as IWorkplace[],
-    education: [
-      {
-        institution: 'МГУ',
-        degree: 'Информатика',
-        startYear: '2018',
-        endYear: '2022',
-      },
-    ] as IEducation[],
-    aboutMe: `Делал карьеру в HoReCa - продавал туры в отели в Кемере для состоятельных людей
-                  в Сибири. Потом понял, что не мое и решил переквалифицироваться в разработчики.
-                  Тут затянуло и помимо разработки на компанию - делаю свой супертехнологичный проект
-                  дешевых туров в дорогие отели, чтобы каждый мог прикоснуться к роскоши, тк все это заслужили и иное несправедливо.
-                  Ищу в сообществе единомышленников и помощь с развитием проекта. Мне очень нужна команда.`,
-    projects: [
-      {
-        name: 'Kutikuli',
-        link: 'www.kutikuli.com',
-        statuses: ['MVP', 'ищу кофаундера'],
-        description: '',
-      },
-    ] as IProject[],
+    professions: [] as string[],
+    industries: [] as string[],
+    skills: [] as string[],
+    workplaces: [] as IWorkplace[],
+    education: [] as IEducation[],
+    aboutMe: '',
+    projects: [] as IProject[],
     roles: {
       applicant: false,
       member: false,
@@ -110,7 +90,7 @@ export const useProfileStore = defineStore('profile', {
 
   getters: {
     projectLinks: (state) =>
-      state.projects.map((project) => (project.link.startsWith('http') ? project.link : `https://${project.link}`)),
+      state.projects.map((project) => (project.website ? project.website : `https://${project.website}`)),
   },
 
   actions: {
@@ -124,7 +104,9 @@ export const useProfileStore = defineStore('profile', {
         const roles = result.data.roles;
 
         this.name = profileData.name;
-        this.description = profileData.description;
+        this.headline = profileData.headline;
+        this.location = profileData.location;
+        this.communityGoals = profileData.communityGoals;
         this.professions = profileData.professions;
         this.industries = profileData.industries;
         this.skills = profileData.skills;
@@ -146,7 +128,9 @@ export const useProfileStore = defineStore('profile', {
 
         await api.patch('/api/club/1/apps/profile/mesto-profile/my-profile', {
           name: this.name,
-          description: this.description,
+          headline: this.headline,
+          location: this.location,
+          communityGoals: this.communityGoals,
           professions: this.professions,
           industries: this.industries,
           skills: this.skills,
@@ -193,3 +177,42 @@ export const useProfileStore = defineStore('profile', {
     },
   },
 });
+
+export const COMMUNITY_GOALS = [
+  'Хочу развивать свой проект',
+  'Хочу вырасти как специалист',
+  'Хочу инвестировать в команды и проекты',
+  'Хочу вырастить личный бренд',
+  'Хочу быть ментором или эдвайзером команд',
+];
+
+export const PROJECT_CATEGORIES = [
+  'AI ML',
+  'Квантовые вычисления',
+  'Biotech и генетика',
+  'Возобновляемые источники энергии и экотехнологии',
+  'SpaceTech и колонизация других планет',
+  'Нанотехнологии',
+  'Цифровые экономики и Blockchain',
+  'Кибербезопасность и защита данных',
+  'VR AR',
+  'Урбанистика и умные города',
+  'другое',
+];
+
+export const PROJECT_NEEDS = ['инвестиции', 'кофаундер', 'команда'];
+
+export const PROJECT_STAGES = {
+  idea: 'Идея',
+  mvp: 'MVP',
+  first_sales: 'Есть первые продажи',
+  invested: 'Получил инвестиции',
+  operating_business: 'Действующий бизнес',
+};
+
+export const PROJECT_STATUSES = {
+  active: 'Работает',
+  paused: 'На паузе',
+  closed: 'Закрыт',
+  available: 'Отдам в добрые руки',
+};

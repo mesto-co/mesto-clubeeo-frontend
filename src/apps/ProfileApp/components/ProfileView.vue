@@ -5,7 +5,10 @@
       <component :is="to ? 'router-link' : 'div'" :to="to" class="profile-header q-py-sm row no-wrap items-center">
         <div class="q-pl-md">
           <div class="text-h5">{{ profile.name }}</div>
-          <div class="text-subtitle1">{{ profile.description }}</div>
+          <div class="text-subtitle1">{{ profile.headline }}</div>
+          <div class="text-caption" v-if="profile.location">
+            <q-icon name="fa-solid fa-location-dot" /> {{ profile.location }}
+          </div>
         </div>
       </component>
     </div>
@@ -110,28 +113,92 @@
       <q-separator dark inset />
     </template>
 
-    <!-- Project Section -->
+    <!-- Community Goals Section -->
+    <template v-if="showCommunityGoals && profile.communityGoals?.length">
+      <div class="q-pa-md">
+        <div class="text-right q-pb-md">
+          Цель в сообществе
+          <q-icon name="fa-solid fa-bullseye" class="q-px-sm" />
+        </div>
+        <div class="row q-gutter-sm">
+          <q-chip v-for="goal in profile.communityGoals" :key="goal" color="primary" text-color="white">
+            {{ goal }}
+          </q-chip>
+        </div>
+      </div>
+      <q-separator dark inset />
+    </template>
+
+    <!-- Update Project Section -->
     <template v-if="showProjects && profile.projects?.length">
       <div class="q-pa-md">
         <div class="text-right q-pb-md">
-          О проектах
+          Проекты
           <q-icon name="fa-solid fa-project-diagram" class="q-px-sm" />
         </div>
 
         <div v-for="(project, index) in profile.projects" :key="index" class="q-mb-md">
           <q-card dark class="clubCard" flat>
             <q-card-section>
-              <div class="text-h6">{{ project.name }}</div>
-              <div v-if="project.link">
-                <a :href="project.link" target="_blank">{{ project.link }}</a>
+              <div class="row items-center q-mb-md">
+                <div class="col-auto" v-if="project.logo">
+                  <q-img :src="project.logo" width="50px" height="50px" />
+                </div>
+                <div class="col q-ml-md">
+                  <div class="text-h6">{{ project.name }}</div>
+                  <div class="text-caption">
+                    Стадия: {{ projectStageLabel[project.stage] }} | Статус: {{ projectStatusLabel[project.status] }}
+                  </div>
+                </div>
               </div>
 
-              <div class="q-py-md" v-html="sanitizeHtmlAddBr(project.description)" />
+              <div v-if="project.website">
+                <div class="text-caption">Сайт:</div>
+                <a :href="project.website" target="_blank">{{ project.website }}</a>
+              </div>
 
-              <div>
-                <template v-for="status in project.statuses" :key="status">
-                  <q-chip color="orange" dense class="q-px-sm">{{ status }}</q-chip>
-                </template>
+              <div class="q-py-md">
+                <div class="text-caption">Идея проекта:</div>
+                <div v-html="sanitizeHtmlAddBr(project.description)" />
+              </div>
+
+              <template v-if="project.pitchDeck || project.videoPitch">
+                <div class="q-py-sm">
+                  <template v-if="project.pitchDeck">
+                    <div class="text-caption">Pitch Deck:</div>
+                    <a :href="project.pitchDeck" target="_blank">Презентация проекта</a>
+                  </template>
+                  <template v-if="project.videoPitch">
+                    <div class="text-caption">Video Pitch:</div>
+                    <div class="video-container">
+                      <!-- Add video embed component here -->
+                    </div>
+                  </template>
+                </div>
+              </template>
+
+              <div class="q-py-sm">
+                <div class="text-caption">Категория:</div>
+                <q-chip color="primary" dense>{{ project.category }}</q-chip>
+              </div>
+
+              <div class="q-py-sm" v-if="project.tags?.length">
+                <div class="text-caption">Тэги:</div>
+                <q-chip v-for="tag in project.tags" :key="tag" color="secondary" dense>
+                  {{ tag }}
+                </q-chip>
+              </div>
+
+              <div class="q-py-sm" v-if="project.market">
+                <div class="text-caption">Рынок:</div>
+                {{ project.market }}
+              </div>
+
+              <div class="q-py-sm" v-if="project.needs?.length">
+                <div class="text-caption">Запрос:</div>
+                <q-chip v-for="need in project.needs" :key="need" color="orange" dense>
+                  {{ need }}
+                </q-chip>
               </div>
             </q-card-section>
           </q-card>
@@ -187,6 +254,10 @@ defineProps({
     type: Boolean,
     default: true,
   },
+  showCommunityGoals: {
+    type: Boolean,
+    default: true,
+  },
 });
 
 const formatDate = (dateString) => {
@@ -205,6 +276,21 @@ const formatDate = (dateString) => {
 
 const sanitizeHtmlAddBr = (messageText) => {
   return sanitizeHtmlTelegram(messageText).replace(/\n/g, '<br>');
+};
+
+const projectStageLabel = {
+  idea: 'Идея',
+  mvp: 'MVP',
+  first_sales: 'Есть первые продажи',
+  invested: 'Получил инвестиции',
+  operating_business: 'Действующий бизнес',
+};
+
+const projectStatusLabel = {
+  active: 'Работает',
+  paused: 'На паузе',
+  closed: 'Закрыт',
+  available: 'Отдам в добрые руки',
 };
 </script>
 

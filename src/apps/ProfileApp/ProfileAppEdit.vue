@@ -33,9 +33,32 @@
         </div>
         <div class="row">
           <div class="col-12">
-            <q-input outlined dark v-model="$profile.description" label="Описание" />
+            <q-input outlined dark v-model="$profile.headline" label="Заголовок" />
           </div>
         </div>
+        <div class="row">
+          <div class="col-12">
+            <q-input outlined dark v-model="$profile.location" label="Город" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Community Goals Section -->
+      <div class="q-pb-md">
+        <q-card dark class="clubCard" flat>
+          <q-card-section>
+            <div class="text-h6">Цель в сообществе:</div>
+            <q-select
+              outlined
+              dark
+              v-model="$profile.communityGoals"
+              :options="COMMUNITY_GOALS"
+              multiple
+              label="Выберите цели"
+              use-chips
+            />
+          </q-card-section>
+        </q-card>
       </div>
 
       <!-- About Me Section -->
@@ -211,7 +234,7 @@
         </q-card>
       </div>
 
-      <!-- Project Section -->
+      <!-- Updated Project Section -->
       <div class="q-py-md">
         <q-card dark class="clubCard" flat>
           <q-card-section>
@@ -221,26 +244,94 @@
                 <div class="col-12">
                   <q-input outlined dark v-model="project.name" label="Название" />
                 </div>
-                <div class="col-12">
-                  <q-input outlined dark v-model="project.link" label="Ссылка на проект" />
+
+                <div class="col-12 col-md-6">
+                  <q-input outlined dark v-model="project.logo" label="Ссылка на логотип" />
                 </div>
+
+                <div class="col-12 col-md-6">
+                  <q-input outlined dark v-model="project.website" label="Сайт проекта" />
+                </div>
+
+                <div class="col-12 col-md-6">
+                  <q-select
+                    outlined
+                    dark
+                    v-model="project.stage"
+                    :options="
+                      Object.entries(PROJECT_STAGES).map(([value, label]) => ({
+                        value,
+                        label,
+                      }))
+                    "
+                    label="Стадия"
+                    emit-value
+                    map-options
+                  />
+                </div>
+
+                <div class="col-12 col-md-6">
+                  <q-select
+                    outlined
+                    dark
+                    v-model="project.status"
+                    :options="
+                      Object.entries(PROJECT_STATUSES).map(([value, label]) => ({
+                        value,
+                        label,
+                      }))
+                    "
+                    label="Статус"
+                    emit-value
+                    map-options
+                  />
+                </div>
+
+                <div class="col-12">
+                  <q-input type="textarea" outlined dark v-model="project.description" label="Идея проекта" rows="5" />
+                </div>
+
+                <div class="col-12 col-md-6">
+                  <q-input outlined dark v-model="project.pitchDeck" label="Ссылка на Pitch Deck" />
+                </div>
+
+                <div class="col-12 col-md-6">
+                  <q-input outlined dark v-model="project.videoPitch" label="Ссылка на Video Pitch" />
+                </div>
+
+                <div class="col-12">
+                  <q-select outlined dark v-model="project.category" :options="PROJECT_CATEGORIES" label="Категория" />
+                </div>
+
                 <div class="col-12">
                   <q-select
                     outlined
                     dark
-                    v-model="project.statuses"
+                    v-model="project.tags"
                     use-input
                     use-chips
                     multiple
                     hide-dropdown-icon
                     input-debounce="0"
                     new-value-mode="add-unique"
-                    :options="['MVP', 'Ищу кофаундера', 'Ищу инвестиции']"
-                    label="Статус"
+                    label="Тэги"
                   />
                 </div>
+
                 <div class="col-12">
-                  <q-input type="textarea" outlined dark v-model="project.description" label="Описание" rows="5" />
+                  <q-input outlined dark v-model="project.market" label="Рынок" />
+                </div>
+
+                <div class="col-12">
+                  <q-select
+                    outlined
+                    dark
+                    v-model="project.needs"
+                    :options="PROJECT_NEEDS"
+                    multiple
+                    label="Запрос"
+                    use-chips
+                  />
                 </div>
               </div>
               <q-btn flat color="negative" @click="removeProject(index)" label="Удалить" class="q-mt-sm" />
@@ -292,6 +383,7 @@ import ClubButton from '@components/clubpage/ClubButton.vue';
 import { appProps } from '@apps/_common/appProps';
 import { useProfileStore } from './profileStore';
 import ListsEngineSelect from 'engines/lists/ListsEngineSelect.vue';
+import { COMMUNITY_GOALS, PROJECT_CATEGORIES, PROJECT_NEEDS, PROJECT_STAGES, PROJECT_STATUSES } from './profileStore';
 
 defineComponent({
   props: appProps,
@@ -442,9 +534,17 @@ const addProject = () => {
   }
   $profile.projects.push({
     name: '',
-    link: '',
+    logo: '',
+    website: '',
     description: '',
-    statuses: [],
+    stage: 'idea',
+    status: 'active',
+    pitchDeck: '',
+    videoPitch: '',
+    category: '',
+    tags: [],
+    market: '',
+    needs: [],
   });
 };
 
