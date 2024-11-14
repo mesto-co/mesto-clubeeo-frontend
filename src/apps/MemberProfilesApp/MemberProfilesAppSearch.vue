@@ -35,6 +35,16 @@
         />
         <q-separator dark class="q-my-md" />
       </div>
+
+      <!-- Load More Button -->
+      <div v-if="store.hasMore" class="text-center q-mt-md">
+        <q-btn
+          color="primary"
+          :loading="store.isLoading"
+          @click="() => store.searchProfiles(true)"
+          label="Загрузить еще"
+        />
+      </div>
     </div>
 
     <!-- No Results Message -->
@@ -49,13 +59,22 @@ import ClubPage from '@components/clublayout/ClubPage.vue';
 import ProfileView from '../ProfileApp/components/ProfileView.vue';
 import { appProps } from '@apps/_common/appProps';
 import { useMemberProfileSearchStore } from './memberProfileSearch';
-import { onMounted } from 'vue';
+import { onMounted, ref } from 'vue';
+import { useIntersectionObserver } from '@vueuse/core';
 
 defineProps(appProps);
+
+const store = useMemberProfileSearchStore();
+
+// Optional: Implement infinite scroll instead of "Load More" button
+const target = ref(null);
+useIntersectionObserver(target, ([{ isIntersecting }]) => {
+  if (isIntersecting && store.hasMore && !store.isLoading) {
+    store.searchProfiles(true);
+  }
+});
 
 onMounted(async () => {
   await store.searchProfiles();
 });
-
-const store = useMemberProfileSearchStore();
 </script>

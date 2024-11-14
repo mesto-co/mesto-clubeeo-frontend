@@ -298,10 +298,14 @@ const projectStatusLabel = {
 .profile-header {
   text-decoration: none;
   color: inherit;
+}
+
+/* Only apply hover effects when it's a router-link */
+a.profile-header {
   transition: background-color 0.3s;
 }
 
-.profile-header:hover {
+a.profile-header:hover {
   background-color: rgba(255, 255, 255, 0.07);
   cursor: pointer;
 }
