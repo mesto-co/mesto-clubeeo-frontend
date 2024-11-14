@@ -1,5 +1,7 @@
 import { defineStore } from 'pinia';
-import { api } from 'src/boot/axios';
+import axios from 'axios';
+import gql from 'graphql-tag';
+import { print } from 'graphql';
 
 interface IWorkplace {
   organization: string;
@@ -32,20 +34,20 @@ interface IProject {
   needs: string[];
 }
 
-interface IProfileData {
-  name: string;
-  headline: string;
-  aboutMe: string;
-  location: string;
-  communityGoals: string[];
-  socialLinks: Record<string, string>;
-  professions: Array<string>;
-  industries: Array<string>;
-  skills: Array<string>;
-  workplaces: Array<IWorkplace>;
-  education: Array<IEducation>;
-  projects: Array<IProject>;
-}
+// interface IProfileData {
+//   name: string;
+//   headline: string;
+//   aboutMe: string;
+//   location: string;
+//   communityGoals: string[];
+//   socialLinks: Record<string, string>;
+//   professions: Array<string>;
+//   industries: Array<string>;
+//   skills: Array<string>;
+//   workplaces: Array<IWorkplace>;
+//   education: Array<IEducation>;
+//   projects: Array<IProject>;
+// }
 
 interface IProfileRoles {
   applicant: boolean;
@@ -53,6 +55,108 @@ interface IProfileRoles {
   guest: boolean;
   rejected: boolean;
 }
+
+const MY_PROFILE_QUERY = gql`
+  query MyProfile {
+    club(slug: "mesto") {
+      memberProfileGet(profileId: "my") {
+        id
+        name
+        headline
+        aboutMe
+        location
+        communityGoals
+        socialLinks
+        professions
+        industries
+        skills
+        workplaces {
+          organization
+          position
+          startDate
+          endDate
+          current
+          skills
+        }
+        education {
+          institution
+          degree
+          startYear
+          endYear
+        }
+        projects {
+          name
+          logo
+          website
+          description
+          stage
+          status
+          pitchDeck
+          videoPitch
+          category
+          tags
+          market
+          needs
+        }
+      }
+      memberRoles
+    }
+  }
+`;
+
+const UPDATE_PROFILE_MUTATION = gql`
+  mutation UpdateProfile($input: ProfileUpdateInput!) {
+    memberProfileUpdate(input: $input) {
+      id
+      name
+      headline
+      aboutMe
+      location
+      projects {
+        name
+        link
+        description
+        stage
+        status
+        logo
+        pitchDeck
+        videoPitch
+        website
+        category
+        tags
+        market
+        needs
+      }
+      socialLinks
+      professions
+      industries
+      skills
+      workplaces {
+        organization
+        position
+        startDate
+        endDate
+        current
+        skills
+      }
+      education {
+        institution
+        degree
+        startYear
+        endYear
+      }
+      communityGoals
+      createdAt
+      updatedAt
+    }
+  }
+`;
+
+const APPLY_PROFILE_MUTATION = gql`
+  mutation ApplyProfile {
+    memberProfileApply
+  }
+`;
 
 export const useProfileStore = defineStore('profile', {
   state: () => ({
@@ -97,11 +201,12 @@ export const useProfileStore = defineStore('profile', {
     async fetchProfile() {
       this.isLoading = true;
       try {
-        const result = await api.get<{ data: IProfileData; roles: IProfileRoles }>(
-          '/api/club/1/apps/profile/mesto-profile/my-profile',
-        );
-        const profileData = result.data.data;
-        const roles = result.data.roles;
+        const { data } = await axios.post('/graphql', {
+          query: print(MY_PROFILE_QUERY),
+        });
+
+        const profileData = data.data.club.memberProfileGet;
+        const roles = data.data.club.memberRoles;
 
         this.name = profileData.name;
         this.headline = profileData.headline;
@@ -122,11 +227,12 @@ export const useProfileStore = defineStore('profile', {
         this.isLoading = false;
       }
     },
+
     async saveProfile({ onSuccess, onError }: { onSuccess: () => void; onError: (error: any) => void }) {
       try {
         this.isLoading = true;
 
-        await api.patch('/api/club/1/apps/profile/mesto-profile/my-profile', {
+        const input = {
           name: this.name,
           headline: this.headline,
           location: this.location,
@@ -139,38 +245,40 @@ export const useProfileStore = defineStore('profile', {
           aboutMe: this.aboutMe,
           projects: this.projects,
           socialLinks: this.socialLinks,
+        };
+
+        const { data } = await axios.post('/graphql', {
+          query: print(UPDATE_PROFILE_MUTATION),
+          variables: { input },
         });
+
+        if (data.errors) {
+          throw new Error(data.errors[0].message);
+        }
 
         onSuccess();
       } catch (error) {
-        const errorMessage = (error as Record<string, any>)?.response?.data?.error;
-        if (errorMessage) {
-          onError({ message: errorMessage });
-        } else {
-          onError(error);
-        }
+        onError(error);
       } finally {
         this.isLoading = false;
       }
     },
-    async apply({ onSuccess, onError }: { onSuccess: () => void; onError: (error) => void }) {
+
+    async apply({ onSuccess, onError }: { onSuccess: () => void; onError: (error: any) => void }) {
       try {
         this.isLoading = true;
 
-        const result = await api.post<{
-          roles: IProfileRoles;
-        }>('/api/club/1/apps/profile/mesto-profile/my-profile/apply');
+        const { data } = await axios.post('/graphql', {
+          query: print(APPLY_PROFILE_MUTATION),
+        });
 
-        this.roles = result.data.roles;
+        if (data.errors) {
+          throw new Error(data.errors[0].message);
+        }
 
         onSuccess();
       } catch (error) {
-        const errorMessage = (error as Record<string, any>)?.response?.data?.error;
-        if (errorMessage) {
-          onError({ message: errorMessage });
-        } else {
-          onError(error);
-        }
+        onError(error);
       } finally {
         this.isLoading = false;
       }
