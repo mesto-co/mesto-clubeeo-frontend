@@ -74,14 +74,14 @@
   </club-page>
 
   <q-dialog v-model="isDialogOpen">
-    <q-card dark class="clubCard" flat style="min-width: min(90vh, 960px)">
-      <q-card-section style="max-height: 85vh" class="scroll">
+    <q-card dark class="clubCard" flat style="width: 100%; max-width: 960px">
+      <q-card-section style="max-height: 80vh; padding: 16px" class="scroll">
         <applicants-app-profile-show :profile="selectedMember.profile" />
       </q-card-section>
 
       <q-separator />
 
-      <q-card-actions align="right" class="q-px-md" style="border-top: 1px solid rgba(0, 0, 0, 0.2)">
+      <q-card-actions align="right" class="q-px-md q-py-sm" style="border-top: 1px solid rgba(0, 0, 0, 0.2)">
         <q-btn label="Отмена" flat no-caps v-close-popup />
         <q-space />
         <q-btn
