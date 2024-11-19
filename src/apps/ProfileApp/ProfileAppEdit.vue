@@ -33,11 +33,6 @@
         </div>
         <div class="row">
           <div class="col-12">
-            <q-input outlined dark v-model="$profile.headline" label="Заголовок" />
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-12">
             <q-input outlined dark v-model="$profile.location" label="Город" />
           </div>
         </div>
@@ -66,7 +61,15 @@
         <q-card dark class="clubCard" flat>
           <q-card-section>
             <div class="text-h6">Обо мне:</div>
-            <q-input type="textarea" outlined dark v-model="$profile.aboutMe" label="Описание" rows="5" />
+
+            <div class="row q-col-gutter-md">
+              <div class="col-12">
+                <q-input outlined dark v-model="$profile.headline" label="Кратко" />
+              </div>
+              <div class="col-12">
+                <q-input type="textarea" outlined dark v-model="$profile.aboutMe" label="Длинно" rows="5" />
+              </div>
+            </div>
           </q-card-section>
         </q-card>
       </div>
