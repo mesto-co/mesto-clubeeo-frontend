@@ -32,6 +32,7 @@
           :show-experience="false"
           :show-education="false"
           :show-projects="false"
+          :show-social-links="true"
         />
         <q-separator dark class="q-my-md" />
       </div>

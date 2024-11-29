@@ -13,6 +13,10 @@
       </component>
     </div>
 
+    <template v-if="showSocialLinks">
+      <profile-social-links :social-links="profile.socialLinks" />
+    </template>
+
     <!-- About Me Section -->
     <template v-if="showAboutMe">
       <div class="q-pa-md">
@@ -212,9 +216,13 @@
 import { defineComponent } from 'vue';
 import { sanitizeHtmlTelegram } from 'src/utils/sanitizeHtml';
 import ProfileSection from '../ProfileSection.vue';
+import ProfileSocialLinks from './ProfileSocialLinks.vue';
 
 defineComponent({
-  components: { ProfileSection },
+  components: {
+    ProfileSection,
+    ProfileSocialLinks,
+  },
 });
 
 defineProps({
@@ -255,6 +263,10 @@ defineProps({
     default: true,
   },
   showCommunityGoals: {
+    type: Boolean,
+    default: true,
+  },
+  showSocialLinks: {
     type: Boolean,
     default: true,
   },

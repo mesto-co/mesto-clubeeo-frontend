@@ -23,6 +23,7 @@ export const useMemberProfileSearchStore = defineStore('memberProfileSearch', ()
             headline
             aboutMe
             location
+            socialLinks
             professions
             industries
             skills

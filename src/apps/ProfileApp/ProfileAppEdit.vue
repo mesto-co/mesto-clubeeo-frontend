@@ -345,40 +345,38 @@
       </div>
 
       <!-- Social Media Links -->
-      <div class="q-py-md" style="display: none">
-        <template v-for="socCode in Object.keys(socialsList)" v-bind:key="socCode">
-          <div class="q-pb-sm flex flex-center">
-            <q-input
-              :label="socCode"
-              dark
-              outlined
-              style="width: 550px"
-              v-model="socialLinks[socCode]"
-              :rules="[(val) => !val || val.startsWith('https://') || 'Should start with https://']"
-            >
-              <template v-slot:append>
-                <q-avatar>
-                  <q-icon :name="mapSocialToIcon(socCode)" size="sm" />
-                </q-avatar>
-              </template>
-            </q-input>
-          </div>
-        </template>
-
-        <!-- <div class="text-caption">Соц.сети:</div>
-        <q-input
-          filled
-          dark
-          v-model="socialLinks"
-          placeholder="Ссылки на личные и публичные страницы"
-        /> -->
+      <div class="q-py-md">
+        <q-card dark class="clubCard" flat>
+          <q-card-section>
+            <div class="text-h6">Соцсети</div>
+            <template v-for="socCode in Object.keys(socialsList)" v-bind:key="socCode">
+              <div class="q-pb-xs flex flex-center">
+                <q-input
+                  :label="socCode"
+                  dark
+                  dense
+                  outlined
+                  style="width: 550px"
+                  v-model="$profile.socialLinks[socCode]"
+                  :rules="[(val) => !val || val.startsWith('https://') || 'Должно начинаться с https://']"
+                >
+                  <template v-slot:append>
+                    <q-avatar square>
+                      <q-icon :name="mapSocialToIcon(socCode)" size="sm" />
+                    </q-avatar>
+                  </template>
+                </q-input>
+              </div>
+            </template>
+          </q-card-section>
+        </q-card>
       </div>
     </div>
   </club-page>
 </template>
 
 <script setup>
-import { defineComponent, onMounted, ref, computed } from 'vue';
+import { defineComponent, onMounted, computed } from 'vue';
 import { useRouter } from 'vue-router';
 import { useQuasar } from 'quasar';
 import ClubPage from '@components/clublayout/ClubPage.vue';
@@ -472,19 +470,6 @@ const socialToIconMap = {
 const mapSocialToIcon = (code) => {
   return socialToIconMap[code];
 };
-
-const socialLinks = ref({
-  web: '',
-  telegram: '',
-  linkedin: '',
-  twitter: '',
-  youtube: '',
-  facebook: '',
-  tiktok: '',
-  discord: '',
-  instagram: '',
-  reddit: '',
-});
 
 const allSkills = computed(() => {
   const workplaceSkills = $profile.workplaces?.flatMap((w) => w.skills || []) || [];
