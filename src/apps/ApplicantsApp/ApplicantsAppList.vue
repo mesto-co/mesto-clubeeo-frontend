@@ -76,6 +76,21 @@
   <q-dialog v-model="isDialogOpen">
     <q-card dark class="clubCard" flat style="width: 100%; max-width: 960px">
       <q-card-section style="max-height: 80vh; padding: 16px" class="scroll">
+        <div class="row justify-end">
+          <div v-for="userExt in selectedMember.userExts" v-bind:key="userExt.id">
+            <template v-if="userExt.service === 'tg'">
+              <q-btn
+                color="primary"
+                no-caps
+                dense
+                :label="`@${userExt.username}`"
+                :href="`https://t.me/${userExt.username}`"
+                target="_blank"
+              />
+            </template>
+          </div>
+        </div>
+        <q-separator />
         <applicants-app-profile-show :profile="selectedMember.profile" />
       </q-card-section>
 
