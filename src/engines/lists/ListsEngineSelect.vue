@@ -1,5 +1,6 @@
 <template>
   <q-select
+    ref="selectRef"
     outlined
     dark
     use-input
@@ -10,6 +11,9 @@
     new-value-mode="add-unique"
     :options="options"
     @filter="fetchOptions"
+    v-model="selected"
+    v-model:input-value="inputValue"
+    @update:model-value="handleSelection"
   />
 </template>
 
@@ -29,10 +33,15 @@ const props = defineProps({
   },
 });
 
+const selectRef = ref(null);
 const options = ref([]);
+const inputValue = ref('');
+const selected = ref([]);
 
 // Method to fetch options from the backend based on user input
 const fetchOptions = async (val, update, abort) => {
+  inputValue.value = val;
+
   // If no input, reset options
   if (!val) {
     options.value = [];
@@ -61,7 +70,13 @@ const fetchOptions = async (val, update, abort) => {
     });
 
     // Update options based on response
-    options.value = response.data.data.map((item) => item.name); // Adjust this according to your API response structure
+    options.value = response.data.data.map((item) => item.name);
+
+    // If no matches found, add the user input as an option
+    if (options.value.length === 0) {
+      options.value = [val];
+    }
+
     update(() => {
       options.value = options.value;
     });
@@ -73,5 +88,23 @@ const fetchOptions = async (val, update, abort) => {
       abort();
     }
   }
+};
+
+// Handle selection changes
+const handleSelection = () => {
+  // Force close the dropdown
+  selectRef.value.hidePopup();
+
+  // Get the input element
+  const inputEl = selectRef.value.$el.querySelector('input');
+  // Blur and clear the native input
+  inputEl.blur();
+  inputEl.value = '';
+
+  // Dispatch an input event to sync the component
+  inputEl.dispatchEvent(new Event('input'));
+
+  // Also clear the reactive ref
+  inputValue.value = '';
 };
 </script>
