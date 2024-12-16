@@ -9,6 +9,7 @@
     <page-app v-else-if="dynamicApp.appName === 'page'" :app-data="dynamicApp" />
     <platform-clubs-app v-else-if="dynamicApp.appName === 'platform-clubs'" :app-data="dynamicApp" />
     <telegram-app v-else-if="dynamicApp.appName === 'telegram'" :app-data="dynamicApp" />
+    <frame-app v-else-if="dynamicApp.appName === 'frame'" :app-data="dynamicApp" />
     <club-page v-else :header="dynamicApp.appSlug" class="text-center">
       application "{{ dynamicApp.appName }}" is unknown
     </club-page>
@@ -30,6 +31,7 @@ import LeaderboardApp from '@apps/LeaderboardApp/LeaderboardApp.vue';
 import FeedApp from '@apps/FeedApp/FeedApp.vue';
 import TelegramApp from '@apps/TelegramApp/TelegramApp.vue';
 import ListsApp from 'src/apps/ListsApp/ListsApp.vue';
+import FrameApp from 'src/apps/FrameApp/FrameApp.vue';
 
 const routeParamToString = (param) => {
   if (Array.isArray(param)) return param[0] || ''; //take first if multiple
@@ -49,6 +51,7 @@ export default defineComponent({
     PlatformClubsApp,
     TelegramApp,
     ClubPage,
+    FrameApp,
   },
   props: {
     clubSlug: {
