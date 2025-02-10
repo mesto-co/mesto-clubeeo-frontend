@@ -1,15 +1,6 @@
 <template>
   <template v-if="!dynamicApp.isLoading">
-    <profile-app v-if="dynamicApp.appName === 'profile'" :app-data="dynamicApp" />
-    <applicants-app v-else-if="dynamicApp.appName === 'applicants'" :app-data="dynamicApp" />
-    <member-profiles-app v-else-if="dynamicApp.appName === 'member-profiles'" :app-data="dynamicApp" />
-    <lists-app v-else-if="dynamicApp.appName === 'lists'" :app-data="dynamicApp" />
-    <feed-app v-else-if="dynamicApp.appName === 'feed'" :app-data="dynamicApp" />
-    <leaderboard-app v-else-if="dynamicApp.appName === 'leaderboard'" :app-data="dynamicApp" />
-    <page-app v-else-if="dynamicApp.appName === 'page'" :app-data="dynamicApp" />
-    <platform-clubs-app v-else-if="dynamicApp.appName === 'platform-clubs'" :app-data="dynamicApp" />
-    <telegram-app v-else-if="dynamicApp.appName === 'telegram'" :app-data="dynamicApp" />
-    <frame-app v-else-if="dynamicApp.appName === 'frame'" :app-data="dynamicApp" />
+    <component :is="currentApp" v-if="currentApp" :app-data="dynamicApp" :key="dynamicApp.appName" />
     <club-page v-else :header="dynamicApp.appSlug" class="text-center">
       application "{{ dynamicApp.appName }}" is unknown
     </club-page>
@@ -19,12 +10,14 @@
 </template>
 
 <script>
-import { defineComponent, onMounted, watch } from 'vue';
+import { defineComponent, onMounted, watch, computed } from 'vue';
 import { useDynamicAppStore } from '@stores/dynamicAppStore';
+import ClubPage from '@components/clublayout/ClubPage.vue';
+
+// Static imports to avoid Vite/Quasar issues with dynamic imports
 import ProfileApp from 'apps/ProfileApp/ProfileApp.vue';
 import ApplicantsApp from 'apps/ApplicantsApp/ApplicantsApp.vue';
 import MemberProfilesApp from 'apps/MemberProfilesApp/MemberProfilesApp.vue';
-import ClubPage from '@components/clublayout/ClubPage.vue';
 import PlatformClubsApp from '@apps/PlatformClubsApp/PlatformClubsApp.vue';
 import PageApp from '@apps/PageApp/PageApp.vue';
 import LeaderboardApp from '@apps/LeaderboardApp/LeaderboardApp.vue';
@@ -32,6 +25,19 @@ import FeedApp from '@apps/FeedApp/FeedApp.vue';
 import TelegramApp from '@apps/TelegramApp/TelegramApp.vue';
 import ListsApp from 'src/apps/ListsApp/ListsApp.vue';
 import FrameApp from 'src/apps/FrameApp/FrameApp.vue';
+
+const APP_COMPONENTS = {
+  profile: ProfileApp,
+  applicants: ApplicantsApp,
+  'member-profiles': MemberProfilesApp,
+  lists: ListsApp,
+  feed: FeedApp,
+  leaderboard: LeaderboardApp,
+  page: PageApp,
+  'platform-clubs': PlatformClubsApp,
+  telegram: TelegramApp,
+  frame: FrameApp,
+};
 
 const routeParamToString = (param) => {
   if (Array.isArray(param)) return param[0] || ''; //take first if multiple
@@ -41,17 +47,7 @@ const routeParamToString = (param) => {
 export default defineComponent({
   name: 'DynamicAppComponent',
   components: {
-    ListsApp,
-    ApplicantsApp,
-    MemberProfilesApp,
-    ProfileApp,
-    FeedApp,
-    LeaderboardApp,
-    PageApp,
-    PlatformClubsApp,
-    TelegramApp,
     ClubPage,
-    FrameApp,
   },
   props: {
     clubSlug: {
@@ -70,6 +66,8 @@ export default defineComponent({
   setup(props) {
     const $dynamicApp = useDynamicAppStore();
 
+    const currentApp = computed(() => APP_COMPONENTS[$dynamicApp.appName] || null);
+
     const init = async () => {
       await $dynamicApp.load({
         clubSlug: routeParamToString(props.clubSlug),
@@ -83,6 +81,7 @@ export default defineComponent({
 
     return {
       dynamicApp: $dynamicApp,
+      currentApp,
     };
   },
 });
