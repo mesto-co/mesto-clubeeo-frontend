@@ -25,6 +25,7 @@ import FeedApp from '@apps/FeedApp/FeedApp.vue';
 import TelegramApp from '@apps/TelegramApp/TelegramApp.vue';
 import ListsApp from 'src/apps/ListsApp/ListsApp.vue';
 import FrameApp from 'src/apps/FrameApp/FrameApp.vue';
+import UniApp from 'src/apps/UniApp/UniApp.vue';
 
 const APP_COMPONENTS = {
   profile: ProfileApp,
@@ -37,6 +38,7 @@ const APP_COMPONENTS = {
   'platform-clubs': PlatformClubsApp,
   telegram: TelegramApp,
   frame: FrameApp,
+  uni: UniApp,
 };
 
 const routeParamToString = (param) => {

@@ -11,6 +11,7 @@ export const useMemberProfileSearchStore = defineStore('memberProfileSearch', ()
   const hasSearched = ref(false);
   const currentPage = ref(1);
   const hasMore = ref(false);
+  const defaultPageSize = 20;
 
   const SEARCH_PROFILES = gql`
     query SearchProfiles($slug: String!, $query: String!, $pagination: PaginationInput) {
@@ -37,8 +38,9 @@ export const useMemberProfileSearchStore = defineStore('memberProfileSearch', ()
     }
   `;
 
-  const searchProfiles = async (loadMore = false) => {
-    loadMore = false;
+  const searchProfiles = async (loadMore = false, options = {}) => {
+    const { pageSize = defaultPageSize } = options;
+
     if (loadMore) {
       currentPage.value++;
     } else {
@@ -57,7 +59,7 @@ export const useMemberProfileSearchStore = defineStore('memberProfileSearch', ()
           query: searchQuery.value,
           pagination: {
             page: currentPage.value,
-            pageSize: 20,
+            pageSize,
           },
         },
       });
