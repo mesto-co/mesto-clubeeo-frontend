@@ -123,8 +123,8 @@ const projects = [
   },
   {
     id: 4,
-    name: 'Доска вакансий',
-    description: 'Поиск специалистов и проектов',
+    name: 'Job board',
+    description: 'Местные специалисты и вакансии',
     status: ['разработка', 'сбор команды'],
     team: [
       {
@@ -139,7 +139,7 @@ const projects = [
   {
     id: 5,
     name: 'Стартапы',
-    description: 'База данных стартапов и инвесторов',
+    description: 'Детища местных',
     status: ['сбор команды'],
     team: [],
     openRoles: [{ title: 'лидер проекта' }, { title: 'продуктолог' }, { title: 'программист' }],
