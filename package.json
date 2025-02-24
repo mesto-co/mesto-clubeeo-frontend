@@ -25,6 +25,8 @@
     "@types/sanitize-html": "^2.11.0",
     "axios": "^1.2.1",
     "clubeeo-front": "https://github.com/clubeeo/clubeeo-frontend",
+    "date-fns": "^4.1.0",
+    "date-fns-tz": "^3.2.0",
     "graphql": "^16.9.0",
     "graphql-tag": "^2.12.6",
     "lodash": "^4.17.21",

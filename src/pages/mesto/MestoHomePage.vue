@@ -17,21 +17,7 @@
 
     <section class="content-section">
       <!-- Events -->
-      <!-- <div class="section-container">
-        <h2 class="text-h5 q-mb-md">Ближайшие мероприятия</h2>
-        <div class="row no-wrap q-gutter-md scroll">
-          <q-card v-for="event in events" :key="event.id" dark class="event-card clubCard">
-            <q-card-section>
-              <div class="q-mb-sm">
-                <div class="text-subtitle1 text-weight-bold">{{ event.date.month }} {{ event.date.day }}</div>
-                <div class="text-subtitle2">{{ event.time }}</div>
-              </div>
-              <div class="text-h6">{{ event.title }}</div>
-            </q-card-section>
-          </q-card>
-        </div>
-        <q-btn flat color="grey" class="q-mt-sm" label="посмотреть в Календаре" />
-      </div> -->
+      <events-widget />
 
       <!-- Members -->
       <div class="section-container">
@@ -114,6 +100,7 @@
 // import { ref } from 'vue';
 import MemberProfilesWidget from 'apps/MemberProfilesApp/MemberProfilesWidget.vue';
 import ProjectsWidget from 'apps/ProjectsApp/ProjectsWidget.vue';
+import EventsWidget from 'apps/EventsApp/EventsWidget.vue';
 
 // Categories
 // const categories = [
@@ -128,30 +115,6 @@ import ProjectsWidget from 'apps/ProjectsApp/ProjectsWidget.vue';
 //   'Инвестиции',
 //   'Коммьюнити',
 // ];
-
-// const events = ref([]);
-
-// Demo data for events
-// const events = Array.from({ length: 10 }, (_, i) => ({
-//   id: i + 1,
-//   date: {
-//     month: ['ДЕК', 'ЯНВ', 'ФЕВ'][i % 3],
-//     day: Math.floor(Math.random() * 28) + 1,
-//   },
-//   title: [
-//     'Питч-сессия стартапов',
-//     'Мастер-класс по AI',
-//     'Нетворкинг-встреча',
-//     'Demo Day',
-//     'Хакатон Web3',
-//     'Круглый стол инвесторов',
-//     'Workshop: Product Market Fit',
-//     'Презентация новых проектов',
-//     'Встреча с экспертами',
-//     'Стартап завтрак',
-//   ][i],
-//   time: `${18 + (i % 3)}:00 МСК`,
-// }));
 
 // Demo data for startups
 // const startups = Array.from({ length: 10 }, (_, i) => ({
