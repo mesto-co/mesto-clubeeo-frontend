@@ -38,6 +38,9 @@
         <member-profiles-widget />
       </div>
 
+      <!-- Projects -->
+      <projects-widget />
+
       <!-- Startups -->
       <!-- <div class="section-container">
         <h2 class="text-h5 q-mb-md">Новые стартапы</h2>
@@ -110,6 +113,7 @@
 <script setup>
 // import { ref } from 'vue';
 import MemberProfilesWidget from 'apps/MemberProfilesApp/MemberProfilesWidget.vue';
+import ProjectsWidget from 'apps/ProjectsApp/ProjectsWidget.vue';
 
 // Categories
 // const categories = [

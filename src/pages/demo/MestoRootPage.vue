@@ -50,6 +50,61 @@
         <q-btn flat color="grey" class="q-mt-sm" label="все участники сообщества" />
       </div>
 
+      <!-- Projects -->
+      <div class="section-container">
+        <h2 class="text-h5 q-mb-md">Проекты</h2>
+        <div class="row no-wrap q-gutter-md scroll">
+          <q-card v-for="project in projects" :key="project.id" dark class="project-card">
+            <q-card-section>
+              <div class="text-h6">{{ project.name }}</div>
+              <div class="text-caption q-mb-sm">{{ project.description }}</div>
+
+              <div class="text-caption q-mb-sm">
+                <q-chip size="sm" color="primary" text-color="white">
+                  {{ getMainStatus(project.status) }} {{ getStatusEmoji(getMainStatus(project.status)) }}
+                </q-chip>
+                <q-chip v-if="getSecondaryStatus(project.status)" size="sm" color="primary" text-color="white">
+                  {{ getSecondaryStatus(project.status) }} {{ getStatusEmoji(getSecondaryStatus(project.status)) }}
+                </q-chip>
+              </div>
+
+              <div v-if="project.team.length > 0" class="q-mb-sm">
+                <div class="text-caption text-grey q-mb-xs">Команда:</div>
+                <div v-for="member in project.team" :key="member.name" class="row items-start q-gutter-x-sm q-mb-sm">
+                  <q-avatar size="32px">
+                    <img :src="member.avatar" />
+                  </q-avatar>
+                  <div class="column">
+                    <div class="text-caption">
+                      {{ member.name }}
+                      <a class="text-primary" :href="'https://t.me/' + member.telegram.slice(1)">{{
+                        member.telegram
+                      }}</a>
+                    </div>
+                    <div>
+                      <q-chip dense size="sm" color="grey-9" text-color="grey"
+                        >{{ member.role }} {{ getRoleEmoji(member.role) }}</q-chip
+                      >
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div v-if="project.openRoles.length > 0">
+                <div class="text-caption text-grey q-mb-xs">Ищем:</div>
+                <div v-for="role in project.openRoles" :key="role.title" class="text-caption">
+                  <q-chip dense size="sm" color="grey-9" text-color="grey" class="q-mb-xs"
+                    >{{ role.title }} {{ getRoleEmoji(role.title) }}</q-chip
+                  >
+                  {{ role.description }}
+                </div>
+              </div>
+            </q-card-section>
+          </q-card>
+        </div>
+        <q-btn flat color="grey" class="q-mt-sm" label="все проекты" />
+      </div>
+
       <!-- Startups -->
       <div class="section-container">
         <h2 class="text-h5 q-mb-md">Новые стартапы</h2>
@@ -327,6 +382,104 @@ const channelPosts = Array.from({ length: 10 }, (_, i) => ({
     'Эксклюзивное интервью с CEO...',
   ][i],
 }));
+
+// Helper functions for status
+const getMainStatus = (status) => {
+  return status.split(' / ')[0];
+};
+
+const getSecondaryStatus = (status) => {
+  const parts = status.split(' / ');
+  return parts.length > 1 ? parts[1] : null;
+};
+
+const getStatusEmoji = (status) => {
+  if (status.includes('бета-тест')) return '🧪';
+  if (status.includes('разработка')) return '🛠️';
+  if (status.includes('сбор команды')) return '👥';
+  return '📋';
+};
+
+const getRoleEmoji = (role) => {
+  if (role.includes('программист')) return '👨‍💻';
+  if (role.includes('продуктолог')) return '🎯';
+  return '👤';
+};
+
+// Demo data for projects
+const projects = [
+  {
+    id: 1,
+    name: 'Ядро',
+    description: 'Платформа и интеграция с Telegram-ботом',
+    status: 'бета-тест',
+    team: [
+      {
+        name: 'Роман Экземпляров',
+        telegram: '@exemplarov',
+        role: 'программист',
+        avatar: 'https://i.pravatar.cc/150?img=1',
+      },
+    ],
+    openRoles: [],
+  },
+  {
+    id: 2,
+    name: 'Профиль и поиск',
+    description: 'Наша уютная соц.сеть',
+    status: 'бета-тест / сбор команды',
+    team: [
+      {
+        name: 'Роман Экземпляров',
+        telegram: '@exemplarov',
+        role: 'программист',
+        avatar: 'https://i.pravatar.cc/150?img=1',
+      },
+    ],
+    openRoles: [
+      { title: 'продуктолог', description: 'улучшение UI/UX, расширение функциональности' },
+      { title: 'программист', description: 'улучшение UI/UX, расширение функциональности' },
+    ],
+  },
+  {
+    id: 3,
+    name: 'Календарь',
+    description: 'Мероприятия и вебинары',
+    status: 'разработка / сбор команды',
+    team: [
+      {
+        name: 'Артём Гошовский',
+        telegram: '@goshovskiy',
+        role: 'программист',
+        avatar: 'https://i.pravatar.cc/150?img=2',
+      },
+    ],
+    openRoles: [],
+  },
+  {
+    id: 4,
+    name: 'Доска вакансий',
+    description: 'Поиск специалистов и проектов',
+    status: 'разработка / сбор команды',
+    team: [
+      {
+        name: 'Иван Пода',
+        telegram: '@ipoda',
+        role: 'программист',
+        avatar: 'https://i.pravatar.cc/150?img=3',
+      },
+    ],
+    openRoles: [{ title: 'продуктолог', description: 'улучшение UI/UX, расширение функциональности' }],
+  },
+  {
+    id: 5,
+    name: 'Стартапы',
+    description: 'База данных стартапов и инвесторов',
+    status: 'сбор команды',
+    team: [],
+    openRoles: [{ title: 'продуктолог', description: 'продумывание UI/UX, функциональности' }],
+  },
+];
 </script>
 
 <style lang="scss" scoped>
@@ -382,10 +535,6 @@ const channelPosts = Array.from({ length: 10 }, (_, i) => ({
   justify-content: space-between;
 }
 
-.request-content {
-  flex-grow: 1;
-}
-
 .request-tags {
   padding-top: 0;
 }
@@ -397,6 +546,19 @@ const channelPosts = Array.from({ length: 10 }, (_, i) => ({
 
   &:hover {
     opacity: 1;
+  }
+}
+
+.project-card {
+  min-height: 200px;
+  min-width: 300px;
+
+  a {
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
   }
 }
 </style>
