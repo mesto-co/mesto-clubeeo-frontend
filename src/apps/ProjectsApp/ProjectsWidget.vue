@@ -70,7 +70,7 @@ const getStatusEmoji = (status) => {
 const getRoleEmoji = (role) => {
   if (role.includes('программист')) return '👨‍💻';
   if (role.includes('продуктолог')) return '🎯';
-  if (role.includes('лидер')) return '👑';
+  if (role.includes('лидер')) return '🚀';
   return '👤';
 };
 
