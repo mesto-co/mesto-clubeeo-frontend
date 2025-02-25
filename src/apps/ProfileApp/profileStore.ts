@@ -61,6 +61,7 @@ const MY_PROFILE_QUERY = gql`
     club(slug: "mesto") {
       memberProfileGet(profileId: "my") {
         id
+        userId
         name
         headline
         aboutMe
@@ -161,6 +162,7 @@ const APPLY_PROFILE_MUTATION = gql`
 export const useProfileStore = defineStore('profile', {
   state: () => ({
     isLoading: true,
+    userId: null,
     name: '',
     headline: '',
     location: '',
@@ -208,6 +210,7 @@ export const useProfileStore = defineStore('profile', {
         const profileData = data.data.club.memberProfileGet;
         const roles = data.data.club.memberRoles;
 
+        this.userId = profileData.userId;
         this.name = profileData.name;
         this.headline = profileData.headline;
         this.location = profileData.location;
