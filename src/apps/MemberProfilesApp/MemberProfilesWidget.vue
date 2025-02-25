@@ -13,12 +13,7 @@
     >
       <q-card v-ripple class="my-box cursor-pointer q-hoverable member-card" dark>
         <q-card-section class="text-center">
-          <q-avatar size="80px">
-            <img
-              :src="getAvatarUrl(member.userId)"
-              @error="$event.target.src = getFallbackAvatarUrl(member?.id || 0)"
-            />
-          </q-avatar>
+          <user-avatar :user-id="member.userId" />
           <div class="text-subtitle1 q-mt-sm name-text">{{ member.name }}</div>
           <div class="text-caption headline-text">{{ member.headline }}</div>
         </q-card-section>
@@ -50,19 +45,11 @@
 <script setup>
 import { useMemberProfileSearchStore } from './memberProfileSearch';
 import { onMounted, ref } from 'vue';
+import UserAvatar from '../ProfileApp/components/UserAvatar.vue';
 
 const store = useMemberProfileSearchStore();
 const scrollContainer = ref(null);
 const isLoadingMore = ref(false);
-
-// Generate a consistent avatar URL for each user
-const getAvatarUrl = (memberId) => {
-  return `/api/telegram/user/${memberId}/avatar`;
-};
-
-const getFallbackAvatarUrl = (id) => {
-  return `https://api.dicebear.com/7.x/identicon/svg?seed=${id}`;
-};
 
 const handleScroll = async (event) => {
   const container = event.target;

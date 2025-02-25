@@ -7,6 +7,7 @@ import { print } from 'graphql';
 export const useMemberProfileSearchStore = defineStore('memberProfileSearch', () => {
   const searchQuery = ref('');
   const profiles = ref([]);
+  const isLoaded = ref(false);
   const isLoading = ref(false);
   const hasSearched = ref(false);
   const currentPage = ref(1);
@@ -78,12 +79,14 @@ export const useMemberProfileSearchStore = defineStore('memberProfileSearch', ()
       profiles.value = loadMore ? profiles.value : [];
     } finally {
       isLoading.value = false;
+      isLoaded.value = true;
     }
   };
 
   return {
     searchQuery,
     profiles,
+    isLoaded,
     isLoading,
     hasSearched,
     hasMore,

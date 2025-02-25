@@ -1,5 +1,5 @@
 <template>
-  <club-page header="Местные" sticky="bottom" :loading="store.isLoading">
+  <club-page header="Местные" sticky="bottom" :loading="!store.isLoaded">
     <!-- Search Input -->
     <div class="q-pa-md">
       <q-input
@@ -18,23 +18,26 @@
     <!-- Results -->
     <div v-if="store.profiles.length" class="q-pa-md">
       <div v-for="(profile, index) in store.profiles" :key="index" class="q-mb-lg">
-        <profile-view
-          :to="{
-            name: 'club-dynamic-app-page',
-            params: { appSlug: appData.appSlug, appPage: 'show' },
-            query: { profileId: profile.id },
-          }"
-          :profile="profile"
-          :show-about-me="true"
-          :show-professions="true"
-          :show-industries="true"
-          :show-skills="false"
-          :show-experience="false"
-          :show-education="false"
-          :show-projects="false"
-          :show-social-links="true"
-        />
-        <q-separator dark class="q-my-md" />
+        <q-card dark flat class="clubCard">
+          <q-card-section>
+            <profile-view
+              :to="{
+                name: 'club-dynamic-app-page',
+                params: { appSlug: appData.appSlug, appPage: 'show' },
+                query: { profileId: profile.id },
+              }"
+              :profile="profile"
+              :show-about-me="true"
+              :show-professions="true"
+              :show-industries="true"
+              :show-skills="false"
+              :show-experience="false"
+              :show-education="false"
+              :show-projects="false"
+              :show-social-links="true"
+            />
+          </q-card-section>
+        </q-card>
       </div>
 
       <!-- Load More Button -->

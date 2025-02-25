@@ -4,6 +4,9 @@
     <div>
       <component :is="to ? 'router-link' : 'div'" :to="to" class="profile-header q-py-sm row no-wrap items-center">
         <div class="q-pl-md">
+          <user-avatar :user-id="profile.userId" size="100px" />
+        </div>
+        <div class="q-pl-md">
           <div class="text-h5">{{ profile.name }}</div>
           <div class="text-subtitle1">{{ profile.headline }}</div>
           <div class="text-caption" v-if="profile.location">
@@ -13,12 +16,12 @@
       </component>
     </div>
 
-    <template v-if="showSocialLinks">
+    <template v-if="showSocialLinks && profile.socialLinks?.length">
       <profile-social-links :social-links="profile.socialLinks" />
     </template>
 
     <!-- About Me Section -->
-    <template v-if="showAboutMe">
+    <template v-if="showAboutMe && profile.aboutMe">
       <div class="q-pa-md">
         <div class="text-right q-pb-md">
           Обо мне
@@ -30,7 +33,7 @@
     </template>
 
     <!-- Tags/Skills Section -->
-    <template v-if="showProfessions">
+    <template v-if="showProfessions && profile.professions?.length">
       <div class="q-pa-md row">
         <profile-section label="Профессия" icon="fa-solid fa-briefcase" :items="profile.professions" class="col" />
       </div>
@@ -217,11 +220,13 @@ import { defineComponent } from 'vue';
 import { sanitizeHtmlTelegram } from 'src/utils/sanitizeHtml';
 import ProfileSection from '../ProfileSection.vue';
 import ProfileSocialLinks from './ProfileSocialLinks.vue';
+import UserAvatar from './UserAvatar.vue';
 
 defineComponent({
   components: {
     ProfileSection,
     ProfileSocialLinks,
+    UserAvatar,
   },
 });
 
