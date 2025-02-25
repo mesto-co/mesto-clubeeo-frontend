@@ -54,7 +54,7 @@ const isLoadingMore = ref(false);
 
 // Generate a consistent avatar URL for each user
 const getAvatarUrl = (id) => {
-  return `https://api.dicebear.com/7.x/identicon/svg?seed=${id}`;
+  return `/api/telegram/user/${id}/avatar`;
 };
 
 const handleScroll = async (event) => {

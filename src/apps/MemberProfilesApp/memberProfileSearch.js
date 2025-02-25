@@ -20,6 +20,7 @@ export const useMemberProfileSearchStore = defineStore('memberProfileSearch', ()
           items {
             id
             memberId
+            userId
             name
             headline
             aboutMe
