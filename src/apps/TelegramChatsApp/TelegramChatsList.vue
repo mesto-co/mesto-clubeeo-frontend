@@ -6,9 +6,7 @@
           <!-- Avatar and Info Section -->
           <div class="col-grow row items-center q-pa-md">
             <div class="col-auto">
-              <q-avatar size="56px">
-                <chat-avatar :chat-id="chat.extId" />
-              </q-avatar>
+              <chat-avatar :chat-id="chat.extId" size="56px" />
             </div>
             <div class="col q-ml-md">
               <div class="text-h6">{{ chat.name }}</div>
@@ -24,12 +22,13 @@
             <q-btn
               v-if="chat.chatInviteLink"
               flat
-              color="primary"
               :href="chat.chatInviteLink"
               target="_blank"
               icon="fas fa-external-link-alt"
-              label="Присоединиться"
+              label="открыть"
               class="full-width"
+              no-caps
+              size="sm"
             />
           </div>
         </div>

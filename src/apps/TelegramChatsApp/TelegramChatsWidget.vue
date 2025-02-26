@@ -9,9 +9,7 @@
       dark
     >
       <q-card-section class="text-center">
-        <q-avatar size="56px">
-          <chat-avatar :chat-id="chat.extId" />
-        </q-avatar>
+        <chat-avatar :chat-id="chat.extId" size="56px" />
         <div class="text-subtitle1 q-mt-sm name-text">{{ chat.name }}</div>
         <div class="text-caption type-text">
           <q-icon :name="chatTypeIcon(chat)" class="q-mr-xs" />
@@ -19,8 +17,8 @@
         </div>
         <q-btn
           v-if="chat.chatInviteLink"
-          color="secondary"
-          class="q-mt-sm"
+          flat
+          class="q-mt-sm full-width"
           :href="chat.chatInviteLink"
           target="_blank"
           icon="fas fa-external-link-alt"

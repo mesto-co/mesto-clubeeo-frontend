@@ -1,5 +1,5 @@
 <template>
-  <q-avatar :size="size">
+  <q-avatar :size="size" rounded>
     <img :src="getAvatarUrl(chatId)" @error="$event.target.src = getFallbackAvatarUrl(chatId)" />
   </q-avatar>
 </template>
