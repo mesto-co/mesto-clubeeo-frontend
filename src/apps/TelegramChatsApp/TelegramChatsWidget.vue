@@ -10,7 +10,7 @@
     >
       <q-card-section class="text-center">
         <q-avatar size="56px">
-          <chat-avatar :chat-id="chat.id" />
+          <chat-avatar :chat-id="chat.extId" />
         </q-avatar>
         <div class="text-subtitle1 q-mt-sm name-text">{{ chat.name }}</div>
         <div class="text-caption type-text">
