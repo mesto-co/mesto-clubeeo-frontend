@@ -19,6 +19,9 @@
       <!-- Events -->
       <events-widget />
 
+      <!-- Telegram Chats -->
+      <telegram-chats-widget />
+
       <!-- Members -->
       <div class="section-container">
         <member-profiles-widget />
@@ -26,9 +29,6 @@
 
       <!-- Projects -->
       <projects-widget />
-
-      <!-- Telegram Chats -->
-      <telegram-chats-widget />
 
       <!-- Startups -->
       <!-- <div class="section-container">
