@@ -26,6 +26,7 @@ import TelegramApp from '@apps/TelegramApp/TelegramApp.vue';
 import ListsApp from 'src/apps/ListsApp/ListsApp.vue';
 import FrameApp from 'src/apps/FrameApp/FrameApp.vue';
 import UniApp from 'src/apps/UniApp/UniApp.vue';
+import TelegramChatsApp from 'apps/TelegramChatsApp/TelegramChatsApp.vue';
 
 const APP_COMPONENTS = {
   profile: ProfileApp,
@@ -39,6 +40,7 @@ const APP_COMPONENTS = {
   telegram: TelegramApp,
   frame: FrameApp,
   uni: UniApp,
+  'telegram-chats': TelegramChatsApp,
 };
 
 const routeParamToString = (param) => {
@@ -50,6 +52,7 @@ export default defineComponent({
   name: 'DynamicAppComponent',
   components: {
     ClubPage,
+    TelegramChatsApp,
   },
   props: {
     clubSlug: {

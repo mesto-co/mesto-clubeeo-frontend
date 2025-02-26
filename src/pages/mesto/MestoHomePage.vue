@@ -27,6 +27,9 @@
       <!-- Projects -->
       <projects-widget />
 
+      <!-- Telegram Chats -->
+      <telegram-chats-widget />
+
       <!-- Startups -->
       <!-- <div class="section-container">
         <h2 class="text-h5 q-mb-md">Новые стартапы</h2>
@@ -101,6 +104,7 @@
 import MemberProfilesWidget from 'apps/MemberProfilesApp/MemberProfilesWidget.vue';
 import ProjectsWidget from 'apps/ProjectsApp/ProjectsWidget.vue';
 import EventsWidget from 'apps/EventsApp/EventsWidget.vue';
+import TelegramChatsWidget from 'apps/TelegramChatsApp/TelegramChatsWidget.vue';
 
 // Categories
 // const categories = [
