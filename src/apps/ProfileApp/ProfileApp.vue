@@ -1,9 +1,6 @@
 <template>
   <profile-app-show v-if="!$route.params.appPage" :app-data="appData" />
-  <profile-app-edit
-    v-else-if="$route.params.appPage === 'edit'"
-    :app-data="appData"
-  />
+  <profile-app-edit v-else-if="$route.params.appPage === 'edit'" :app-data="appData" />
 </template>
 
 <script setup>

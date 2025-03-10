@@ -15,6 +15,7 @@ import { useDynamicAppStore } from '@stores/dynamicAppStore';
 import ClubPage from '@components/clublayout/ClubPage.vue';
 
 // Static imports to avoid Vite/Quasar issues with dynamic imports
+import ApplicationApp from 'apps/ApplicationApp/ApplicationApp.vue';
 import ProfileApp from 'apps/ProfileApp/ProfileApp.vue';
 import ApplicantsApp from 'apps/ApplicantsApp/ApplicantsApp.vue';
 import MemberProfilesApp from 'apps/MemberProfilesApp/MemberProfilesApp.vue';
@@ -29,8 +30,9 @@ import UniApp from 'src/apps/UniApp/UniApp.vue';
 import TelegramChatsApp from 'apps/TelegramChatsApp/TelegramChatsApp.vue';
 
 const APP_COMPONENTS = {
-  profile: ProfileApp,
   applicants: ApplicantsApp,
+  application: ApplicationApp,
+  profile: ProfileApp,
   'member-profiles': MemberProfilesApp,
   lists: ListsApp,
   feed: FeedApp,
