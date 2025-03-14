@@ -92,6 +92,9 @@
         </div>
         <q-separator />
         <applicants-app-profile-show :profile="selectedMember.profile" />
+        <q-separator />
+        <!-- Add the application details component -->
+        <application-details v-if="selectedMember?.id" :member-id="selectedMember?.id" />
       </q-card-section>
 
       <q-separator />
@@ -139,6 +142,7 @@ import { defineComponent, ref, watch, onMounted } from 'vue';
 import ClubPage from '@components/clublayout/ClubPage.vue';
 import { useApplicantsStore } from './applicantsStore';
 import ApplicantsAppProfileShow from './ApplicantsAppProfileShow.vue';
+import ApplicationDetails from './components/ApplicationDetails.vue';
 
 defineComponent({
   components: { ClubPage, ApplicantsAppProfileShow },

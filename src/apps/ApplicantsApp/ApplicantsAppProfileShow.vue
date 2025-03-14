@@ -2,9 +2,6 @@
   <div>
     <profile-view v-if="profile" :profile="profile" />
 
-    <!-- Add the application details component -->
-    <application-details v-if="profile?.memberId" :member-id="profile.memberId" :can-manage="hasAdminRole" />
-
     <q-loading :show="!profile" />
   </div>
 </template>
@@ -12,10 +9,9 @@
 <script setup>
 import { defineComponent } from 'vue';
 import ProfileView from '../ProfileApp/components/ProfileView.vue';
-import ApplicationDetails from './components/ApplicationDetails.vue';
 
 defineComponent({
-  components: { ProfileView, ApplicationDetails },
+  components: { ProfileView },
 });
 
 defineProps({

@@ -23,19 +23,19 @@
             <q-list dense>
               <q-item>
                 <q-item-section>
-                  <q-item-label caption>Имя</q-item-label>
+                  <q-item-label caption class="white-alpha-6">Имя</q-item-label>
                   <q-item-label>{{ application.name }}</q-item-label>
                 </q-item-section>
               </q-item>
               <q-item>
                 <q-item-section>
-                  <q-item-label caption>Город</q-item-label>
+                  <q-item-label caption class="white-alpha-6">Город</q-item-label>
                   <q-item-label>{{ application.city }}</q-item-label>
                 </q-item-section>
               </q-item>
               <q-item>
                 <q-item-section>
-                  <q-item-label caption>Тип сообщества</q-item-label>
+                  <q-item-label caption class="white-alpha-6">Тип сообщества</q-item-label>
                   <q-item-label>{{ application.communityType }} ({{ communityName }})</q-item-label>
                 </q-item-section>
               </q-item>
