@@ -176,9 +176,25 @@
           <div class="col-auto">
             <q-btn
               color="positive"
-              label="Принять"
+              label="Принять (Исследователь)"
               :disable="application.status === 'approved'"
-              @click="updateStatus('approved')"
+              @click="updateStatus('approved', 'researcher')"
+            />
+          </div>
+          <div class="col-auto">
+            <q-btn
+              color="positive"
+              label="Принять (Мастер)"
+              :disable="application.status === 'approved'"
+              @click="updateStatus('approved', 'master')"
+            />
+          </div>
+          <div class="col-auto">
+            <q-btn
+              color="positive"
+              label="Принять (Легенда)"
+              :disable="application.status === 'approved'"
+              @click="updateStatus('approved', 'legend')"
             />
           </div>
           <div class="col-auto">
@@ -280,10 +296,11 @@ const fetchApplication = async () => {
 };
 
 // Update application status
-const updateStatus = async (status) => {
+const updateStatus = async (status, additionalRole = '') => {
   try {
     const payload = {
       status,
+      roles: [additionalRole].filter(Boolean), // additional role to set
       ...(status === 'rejected' && { rejectionReason: rejectionReason.value }),
     };
 
