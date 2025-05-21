@@ -1,23 +1,14 @@
 <template>
-  <club-page sticky="bottom">
-    <iframe
-      :src="appData.url || 'https://analytics.mesto.co/telegram'"
-      class="frame-content"
-      frameborder="0"
-      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-      allowfullscreen
-    ></iframe>
-  </club-page>
+  <iframe
+    :src="appData.publicConfig?.url || 'https://analytics.mesto.co/telegram'"
+    class="frame-content"
+    frameborder="0"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+    allowfullscreen
+  ></iframe>
 </template>
 
 <script setup>
-import { defineComponent } from 'vue';
-import ClubPage from '@components/clublayout/ClubPage.vue';
-
-defineComponent({
-  components: { ClubPage },
-});
-
 // Define props
 defineProps({
   appData: {
@@ -33,7 +24,7 @@ defineProps({
   padding: 0;
   margin: 0;
   width: 100%;
-  height: calc(100vh - 100px);
+  height: 100vh;
   border: none;
   background-color: rgb(29 29 39);
 }

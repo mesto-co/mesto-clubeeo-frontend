@@ -11,7 +11,7 @@
 
 <script>
 import { defineComponent, onMounted, watch, computed } from 'vue';
-import { useDynamicAppStore } from '@stores/dynamicAppStore';
+import { useDynamicAppStore } from 'stores/dynamicAppStore';
 import ClubPage from '@components/clublayout/ClubPage.vue';
 
 // Static imports to avoid Vite/Quasar issues with dynamic imports
