@@ -405,8 +405,8 @@ const hasAdditionalData = computed(() => {
 
 const canManageApplication = computed(() => {
   // disable for now
-  return false;
-  return props.canManage && application.value && application.value.status === 'pending';
+  // return false;
+  return props.canManage && application.value?.status === 'pending';
 });
 </script>
 

@@ -41,7 +41,7 @@
 
       <template v-slot:body-cell-actions="props">
         <q-td :props="props">
-          <q-btn
+          <!-- <q-btn
             v-if="props.row.rolesMap.applicant"
             dense
             no-caps
@@ -58,7 +58,7 @@
             label="Reject"
             class="q-ml-sm"
             @click.stop="changeRole(props.row.id, 'rejected')"
-          />
+          /> -->
           <q-btn
             v-if="props.row.rolesMap.rejected"
             dense
@@ -94,7 +94,7 @@
         <applicants-app-profile-show :profile="selectedMember.profile" />
         <q-separator />
         <!-- Add the application details component -->
-        <application-details v-if="selectedMember?.id" :member-id="selectedMember?.id" />
+        <application-details v-if="selectedMember?.id" :member-id="selectedMember?.id" canManage="true" />
       </q-card-section>
 
       <q-separator />
@@ -102,7 +102,7 @@
       <q-card-actions align="right" class="q-px-md q-py-sm" style="border-top: 1px solid rgba(0, 0, 0, 0.2)">
         <q-btn label="Отмена" flat no-caps v-close-popup />
         <q-space />
-        <q-btn
+        <!-- <q-btn
           v-if="selectedMember.rolesMap.applicant"
           dense
           no-caps
@@ -121,7 +121,7 @@
           class="q-ml-sm"
           v-close-popup
           @click="changeRole(selectedMember.id, 'rejected')"
-        />
+        /> -->
         <q-btn
           v-if="selectedMember.rolesMap.rejected"
           dense
