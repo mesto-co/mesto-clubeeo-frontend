@@ -1,11 +1,13 @@
 <template>
   <iframe
-    :src="appData.publicConfig?.url || 'https://analytics.mesto.co/telegram'"
+    v-if="appData.publicConfig?.url"
+    :src="appData.publicConfig.url"
     class="frame-content"
     frameborder="0"
     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
     allowfullscreen
   ></iframe>
+  <div v-else>No URL provided in config</div>
 </template>
 
 <script setup>
