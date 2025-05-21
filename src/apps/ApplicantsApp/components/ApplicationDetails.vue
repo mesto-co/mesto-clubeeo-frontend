@@ -178,7 +178,7 @@
               color="positive"
               label="Принять (Исследователь)"
               :disable="application.status === 'approved'"
-              @click="updateStatus('approved', 'researcher')"
+              @click="updateStatus('approved', 'explorer')"
             />
           </div>
           <div class="col-auto">
